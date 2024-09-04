@@ -4,5 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+pulldown-cmark = "0.12.0"
 yew = { git = "https://github.com/yewstack/yew/", features = ["csr"] }
-pulldown-cmark = "0.9"
+
+
