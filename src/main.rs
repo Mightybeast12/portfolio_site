@@ -49,6 +49,14 @@ Custom Excel workflow for Apple titles to create labels for outgoing data.\
     create_markdown(&markdown) 
  
 }
+ 
+fn h2_test() -> Html {
+    let markdown = r#"
+## Test
+    "# ; 
+    create_markdown(&markdown) 
+ 
+}
   
 #[function_component]
 fn App() -> Html {
@@ -57,6 +65,7 @@ fn App() -> Html {
             {create_inspekt_markdown()}
             {create_alula_auto_ingest_markdown()}
             {create_alula_bible_markdown()}
+            {h2_test()}
         </div> 
     }
 }
