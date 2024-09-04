@@ -1,4 +1,7 @@
 use yew::prelude::*;
+// use yew_layout::{
+//     Align, AlignRows, Column, CrossAlign, Gap, Length, Margin, Overflow, Padding, Row
+// };
 use pulldown_cmark::{html, Parser};
 
 fn create_markdown(markdown_input: &str) -> Html {
@@ -47,15 +50,14 @@ Custom Excel workflow for Apple titles to create labels for outgoing data.\
  
 }
   
-
 #[function_component]
 fn App() -> Html {
     html! {
-        <div>
+        <div> 
             {create_inspekt_markdown()}
             {create_alula_auto_ingest_markdown()}
             {create_alula_bible_markdown()}
-        </div>
+        </div> 
     }
 }
 
