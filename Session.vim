@@ -15,11 +15,13 @@ else
   set shortmess=aoO
 endif
 badd +0 src/main.rs
+badd +168 ~/.cargo/registry/src/index.crates.io-6f17d22bba15001f/pulldown-cmark-0.9.6/src/parse.rs
 argglobal
 %argdel
 $argadd src/main.rs
 edit src/main.rs
 argglobal
+balt ~/.cargo/registry/src/index.crates.io-6f17d22bba15001f/pulldown-cmark-0.9.6/src/parse.rs
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -30,12 +32,12 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 18 - ((17 * winheight(0) + 23) / 47)
+let s:l = 15 - ((14 * winheight(0) + 23) / 47)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 18
-normal! 010|
+keepjumps 15
+normal! 030|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0
   silent exe 'bwipe ' . s:wipebuf
