@@ -2,6 +2,11 @@
 # https://hub.docker.com/_/rust
 FROM rust:1.67
 
+#Set Web assembly
+RUN rustup target add wasm32-unknown-unknown
+
+RUN cargo install --locked trunk
+
 # Copy local code to the container image.
 WORKDIR /usr/src/app
 COPY . .
