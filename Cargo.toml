@@ -7,5 +7,6 @@ edition = "2021"
 pulldown-cmark = "0.12.0"
 yew = { git = "https://github.com/yewstack/yew/", features = ["csr"] }
 yew-layout = "0.7.3"
+yew-router = { git = "https://github.com/yewstack/yew.git" }
 
 

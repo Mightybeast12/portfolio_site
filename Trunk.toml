@@ -1,0 +1,11 @@
+[build]
+out = "dist"
+
+[serve]
+port = 8080
+ 
+[watch]
+reload = true
+ 
+[assets]
+include = "static/**/**"  
