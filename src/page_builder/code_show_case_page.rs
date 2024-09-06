@@ -2,19 +2,33 @@ use yew::prelude::*;
 use crate::utils::{mark_down_utils, file_reader};
 
 pub fn create_code_markdown(file: &str) -> Html {
+    let markdown = r#"
+```docker     
+# Use the official Rust image.
+# https://hub.docker.com/_/rust
+FROM rust:1.67
+
+#Set Web assembly
+RUN rustup target add wasm32-unknown-unknown
+
+RUN cargo install --locked trunk
+
+# Copy local code to the container image.
+WORKDIR /usr/src/app
+COPY . .
+
+# Install production dependencies and build a release artifact.
+RUN cargo install --path .
+
+# Run the web service on container startup.
+CMD ["trunk serve"]
+
+    "#; 
     
-    // Read the file
-    let file_content = file_reader::read_file(&file);
-    
-    // Determine the markdown content based on file reading result
-    let markdown = match file_content {
-        Ok(content) => content,
-        Err(e) => format!("# Content Not Found\nFile: {}\nError:{}", file,e),
-    };
     
     html! {
         <div>
-            { mark_down_utils::create_markdown(&markdown) }
+            { mark_down_utils::create_code_styled_markdown(&markdown) }
         </div>
     }
 }
