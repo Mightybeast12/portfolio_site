@@ -2,6 +2,7 @@
 use yew::prelude::*; 
 
 use crate::utils::mark_down_utils;
+use crate::page_builder::code_show_case_page; 
 
 fn create_inspekt_markdown() -> Html{
     let markdown_input = r#"
@@ -48,6 +49,7 @@ pub fn create_home_page() -> Html{
             {create_inspekt_markdown()}
             {create_alula_auto_ingest_markdown()}
             {create_alula_bible_markdown()}
+            {code_show_case_page::create_code_markdown(&"shym")} 
         </div>
     )
      

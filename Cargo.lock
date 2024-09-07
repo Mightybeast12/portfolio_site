@@ -135,6 +135,8 @@ name = "cv_portfolio_site"
 version = "0.1.0"
 dependencies = [
  "pulldown-cmark",
+ "wasm-bindgen-futures",
+ "web-sys",
  "yew 0.21.0",
  "yew-layout",
  "yew-router",

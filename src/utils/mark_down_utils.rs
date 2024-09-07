@@ -10,7 +10,7 @@ pub fn create_markdown(markdown_input: &str) -> Html{
 
 pub fn create_code_styled_markdown(input: &str) -> Html {
     html! {
-        <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+        <div style="display: flex; justify-content: center; align-items: center; height: 10%;">
             <div style="
                 background-color: color: rgb(42, 57, 141);
                 border: 2px solid #ddd; 

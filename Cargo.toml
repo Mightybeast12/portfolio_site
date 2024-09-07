@@ -5,6 +5,8 @@ edition = "2021"
 
 [dependencies]
 pulldown-cmark = "0.12.0"
+wasm-bindgen-futures = "0.4.43"
+web-sys = "0.3.70"
 yew = { git = "https://github.com/yewstack/yew/", features = ["csr"] }
 yew-layout = "0.7.3"
 yew-router = { git = "https://github.com/yewstack/yew.git" }

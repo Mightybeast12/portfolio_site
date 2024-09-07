@@ -8,7 +8,7 @@ pub fn create_code_markdown(file: &str) -> Html {
 # https://hub.docker.com/_/rust
 FROM rust:1.67
 
-#Set Web assembly
+#Set Web assembly w
 RUN rustup target add wasm32-unknown-unknown
 
 RUN cargo install --locked trunk
@@ -22,7 +22,6 @@ RUN cargo install --path .
 
 # Run the web service on container startup.
 CMD ["trunk serve"]
-
     "#; 
     
     
