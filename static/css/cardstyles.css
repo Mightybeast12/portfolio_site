@@ -1,0 +1,94 @@
+/* .card-markdown */
+.card-code-1 {
+  width: fit-content; 
+  padding: 10px; 
+  height: auto; 
+  max-width: 70%;
+  max-height: 80vh;
+  margin: 0 auto; 
+  background-color: #252525;
+  border-radius: 8px;
+  z-index: 1;
+  box-shadow: 0px 10px 10px rgb(73, 70, 92);
+  transition: 0.5s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+/* .top */
+.top {
+  display: flex;
+  align-items: center;
+  padding-left: 10px; 
+  padding-top: 8px; 
+  justify-content: left;
+  width: 100%; 
+  position: absolute;
+  top: 10px;
+}
+
+/* Circle styles */
+.circle {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  margin: 0 4px;
+  background-color: gray; /* Default color for testing */
+}
+
+/* Specific colors for circles */
+.red {
+  background-color: #ff605c;
+}
+
+.yellow {
+  background-color: #ffbd44;
+}
+
+.green {
+  background-color: #00ca4e;
+}
+
+/* Header styles */
+.header {
+  margin: 5px;
+  text-align: center;
+}
+
+/* Title styles */
+#title2 {
+  color: white;
+  font-size: 18px;
+  margin: 0;
+  margin-top: 4px;
+}
+
+.code-container {
+  width: 100%; 
+  display: flex;
+  justify-content: center; 
+  font-size: 14px; 
+}
+
+/* Code block styles */
+#code {
+  width: 100%; 
+  max-width: 100%;
+  height: auto;
+  max-height: 300px; 
+  overflow: auto; 
+  resize: none;
+  background-color: #2e2e2e;
+  border-radius: 5px;
+  border: none;
+  color: white;
+  padding: 10px; 
+  box-sizing: border-box;
+}
+
+/* Focus state for code block */
+#code:focus {
+  outline: none !important;
+}

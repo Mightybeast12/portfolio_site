@@ -1,6 +1,7 @@
 use yew::prelude::{html, Html};
-use yew_router::prelude::*; // Import Link and Route
-use crate::utils::router::Route;    // Import your Route enum
+use yew_router::prelude::*; 
+use crate::utils::router::Route;
+use crate::utils::button_elements; 
 
 const LOGO_SIZE: &str = "44px";
 
@@ -25,13 +26,9 @@ fn firat_header() -> Html {
                     {"Home"} 
                     </button>
                 </Link<Route>>
-             
-                <a href={github_url} target="_blank" rel="noopener noreferrer">
-                    <img src={github_logo_url} alt="GitHub Logo" style={format!("width: {}; height: {}; ", LOGO_SIZE, LOGO_SIZE)} />
-                </a>
-                <a href={linkedin_url} target="_blank" rel="noopener noreferrer">
-                    <img src={linkedin_logo_url} alt="LinkedIn Logo" style={format!("width: {}; height: {}; ", LOGO_SIZE, LOGO_SIZE)} />
-                </a>
+                 
+                {button_elements::button_4(github_url.to_string(),github_logo_url.to_string())} 
+                {button_elements::button_4(linkedin_url.to_string(),linkedin_logo_url.to_string())} 
             </div>
         </div>
     )

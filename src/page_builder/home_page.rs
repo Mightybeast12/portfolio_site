@@ -50,7 +50,7 @@ pub fn home_page() -> Html{
             {create_inspekt_markdown()}
             {create_alula_auto_ingest_markdown()}
             {create_alula_bible_markdown()}
-            {code_show_case_page::create_code_markdown(&"shym")} 
+            {code_show_case_page::rust_docker_container_showcase()} 
         </div>
     )
 }
