@@ -2,7 +2,7 @@
 use yew::prelude::*; 
 
 use crate::utils::mark_down_utils;
-use crate::page_builder::code_show_case_page; 
+use crate::page_builder::{code_show_case_page,header_builder}; 
 
 fn create_inspekt_markdown() -> Html{
     let markdown_input = r#"
@@ -43,16 +43,14 @@ Custom Excel workflow for Apple titles to create labels for outgoing data.\
  
 }
 
-pub fn create_home_page() -> Html{
+pub fn home_page() -> Html{
     html!(
         <div>
+            {header_builder::build_header()} 
             {create_inspekt_markdown()}
             {create_alula_auto_ingest_markdown()}
             {create_alula_bible_markdown()}
             {code_show_case_page::create_code_markdown(&"shym")} 
         </div>
     )
-     
-
-
 }

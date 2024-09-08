@@ -1,7 +1,9 @@
-use yew::prelude::{html,Html};
- 
+use yew::prelude::{html, Html};
+use yew_router::prelude::*; // Import Link and Route
+use crate::utils::router::Route;    // Import your Route enum
+
 const LOGO_SIZE: &str = "44px";
- 
+
 fn firat_header() -> Html {
     let page_title = "Firat Honca";
     let github_url = "https://github.com/Mightybeast12";
@@ -13,6 +15,17 @@ fn firat_header() -> Html {
         <div style="display: flex; justify-content: space-between; align-items: center;">
             <h2 style="color: rgb(209, 167, 111); font-size: 48px;">{ page_title }</h2>
             <div style="display: flex; gap: 15px;">
+                <Link<Route> to={Route::InspektPage}>
+                    <button class ="button-54" role="button"> 
+                    {"Inspekt"} 
+                    </button>
+                </Link<Route>>
+                <Link<Route> to={Route::HomePage}>
+                    <button class ="button-54" role="button"> 
+                    {"Home"} 
+                    </button>
+                </Link<Route>>
+             
                 <a href={github_url} target="_blank" rel="noopener noreferrer">
                     <img src={github_logo_url} alt="GitHub Logo" style={format!("width: {}; height: {}; ", LOGO_SIZE, LOGO_SIZE)} />
                 </a>
@@ -24,8 +37,6 @@ fn firat_header() -> Html {
     )
 }
 
-
-
 pub fn build_header() -> Html {
-    firat_header() 
-    } 
+    firat_header()
+}
