@@ -18,7 +18,7 @@
 }
 
 /* .top */
-.top {
+.top-card-code-1 {
   display: flex;
   align-items: center;
   padding-left: 10px; 
@@ -29,16 +29,13 @@
   top: 10px;
 }
 
-/* Circle styles */
-.circle {
+.circle-card-code-1 {
   width: 16px;
   height: 16px;
   border-radius: 50%;
   margin: 0 4px;
   background-color: gray; /* Default color for testing */
 }
-
-/* Specific colors for circles */
 .red {
   background-color: #ff605c;
 }
@@ -51,29 +48,28 @@
   background-color: #00ca4e;
 }
 
-/* Header styles */
-.header {
+.header-card-code-1 {
   margin: 5px;
   text-align: center;
 }
 
-/* Title styles */
-#title2 {
+#card-code-1-title {
   color: white;
   font-size: 18px;
   margin: 0;
   margin-top: 4px;
 }
 
-.code-container {
+.cardcode-1-code-container {
   width: 100%; 
   display: flex;
   justify-content: center; 
   font-size: 14px; 
+  color: rgb(211, 203, 193) ; 
 }
 
 /* Code block styles */
-#code {
+#card-code-1-code-block {
   width: 100%; 
   max-width: 100%;
   height: auto;
@@ -89,6 +85,6 @@
 }
 
 /* Focus state for code block */
-#code:focus {
+#card-code-1-code-block:focus {
   outline: none !important;
 }
