@@ -2,6 +2,7 @@
 use yew::prelude::*;
 use yew_router::prelude::*;
 use crate::utils::pages::*;
+use super::layout::Layout; 
 
 #[derive(Routable, PartialEq, Clone, Debug)]
 pub enum Route {
@@ -12,7 +13,8 @@ pub enum Route {
     #[at("/contact")]
     ContactPage,
     #[at["/info"]]
-    Info
+    Info,
+
 }
 
 fn switch(routes: Route) -> Html {
@@ -21,7 +23,6 @@ fn switch(routes: Route) -> Html {
         Route::InspektPage => html! { <InspektPage /> },
         Route::ContactPage => html! { <ContactPage /> },
         Route::Info => html! { <Info /> },
-        _ => html! { <h1>{ "Page Not Found" }</h1> },
     }
 }
 
@@ -29,7 +30,10 @@ fn switch(routes: Route) -> Html {
 pub fn router_component() -> Html {
     html! {
         <BrowserRouter>
-            <Switch<Route> render={switch} />
+            <Layout> 
+                <Switch<Route> render={switch} />
+                <Redirect<Route> to={Route::HomePage} />
+            </Layout> 
         </BrowserRouter>
     }
 }

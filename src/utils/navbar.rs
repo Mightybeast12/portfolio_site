@@ -2,8 +2,8 @@ use yew::prelude::*;
 use crate::utils::router::Route; 
 use yew_router::prelude::*; 
 
-
-fn firat_header() -> Html {
+#[function_component(NavBar)]
+pub fn navbar_component() -> Html {
     html! {
         <nav class="navbar">
             <div class="nav-container">
@@ -23,7 +23,4 @@ fn firat_header() -> Html {
             </div>
         </nav>
     }
-}
-pub fn build_header() -> Html {
-    firat_header()
 }

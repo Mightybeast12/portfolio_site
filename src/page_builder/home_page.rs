@@ -3,7 +3,7 @@ use yew::prelude::*;
 
 use crate::utils::mark_down_utils;
 use crate::utils::card_elements;
-use crate::page_builder::{code_show_case_elements,header_builder}; 
+use crate::page_builder::code_show_case_elements;
 fn create_inspekt_markdown() -> Html{
     let markdown_input = r#"
 # Inspekt
@@ -47,7 +47,6 @@ pub fn home_page() -> Html{
     let file = "static/AutoIngest/Notification.py".to_string(); 
     html!(
         <div>
-            {header_builder::build_header()} 
             {create_inspekt_markdown()}
             {create_alula_auto_ingest_markdown()}
             {create_alula_bible_markdown()}
