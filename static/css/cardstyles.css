@@ -1,4 +1,4 @@
-/* .card-markdown */
+/* #card-code-1 */
 .card-code-1 {
   width: fit-content; 
   padding: 10px; 
@@ -88,3 +88,4 @@
 #card-code-1-code-block:focus {
   outline: none !important;
 }
+/* #endcard-code-1 */

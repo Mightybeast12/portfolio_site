@@ -6,4 +6,5 @@ port = 8080
  
 [watch]
 reload = true
+path = "static/**/*.css"
  

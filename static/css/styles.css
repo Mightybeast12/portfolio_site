@@ -1,0 +1,22 @@
+/* Site Background Colour */
+html {
+    background-color: hsl(26, 5%, 26%);
+}
+
+/* Header Properties */
+h1 {
+    text-align: center;
+    color: hsl(34, 42%, 67%);
+}
+
+/* Text Properties */
+div {
+    color: hsl(34, 40%, 63%);
+    text-align: justify;
+    margin-left: 1%;
+}
+
+/* Sub-header Properties */
+h2 {
+    color: hsl(34, 52%, 63%);
+}

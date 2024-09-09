@@ -44,14 +44,15 @@ Custom Excel workflow for Apple titles to create labels for outgoing data.\
 }
 
 pub fn home_page() -> Html{
-    let file = "static/Notification.py".to_string(); 
+    let file = "static/AutoIngest/Notification.py".to_string(); 
     html!(
         <div>
-        {header_builder::build_header()} 
-        {create_inspekt_markdown()}
-        {create_alula_auto_ingest_markdown()}
-        {create_alula_bible_markdown()}
-        {card_elements::create_dynamic_styled_markdown("Notification - Inspet".to_string(),file)} 
+            {header_builder::build_header()} 
+            {create_inspekt_markdown()}
+            {create_alula_auto_ingest_markdown()}
+            {create_alula_bible_markdown()}
+            {card_elements::create_dynamic_styled_markdown("Notification - Inspet".to_string(),file)} 
+            {code_show_case_elements::auto_ingest_docker_container_showcase()} 
             {code_show_case_elements::rust_docker_container_showcase()} 
         </div>
     )
