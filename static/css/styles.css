@@ -20,3 +20,8 @@ div {
 h2 {
     color: hsl(34, 52%, 63%);
 }
+
+p {
+    margin-left: 1in; 
+    margin-right: 1in; 
+}

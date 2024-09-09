@@ -15,15 +15,15 @@ fn firat_header() -> Html {
                 </div>
                 <ul class="menu-items">
                     <li><Link<Route> to={Route::HomePage}>{"Home"}</Link<Route>></li>
-                    <li><Link<Route> to={Route::InspektPage}>{"Home"}</Link<Route>></li>
+                    <li><Link<Route> to={Route::InspektPage}>{"Inspekt"}</Link<Route>></li>
+                    <li><Link<Route> to={Route::ContactPage}>{"Contact"}</Link<Route>></li>
+                    <li><Link<Route> to={Route::Info}>{"Info"}</Link<Route>></li>
                 </ul>
-                <span class="navbar-logo">{"Firat"}</span>
+                <span class="navbar-logo">{"Firat Honca"}</span>
             </div>
         </nav>
     }
 }
-
-
 pub fn build_header() -> Html {
     firat_header()
 }

@@ -1,7 +1,7 @@
 
 use yew::prelude::*;
-use yew_router::{prelude::*};
-use crate::utils::pages::{HomePage,InspektPage};
+use yew_router::prelude::*;
+use crate::utils::pages::*;
 
 #[derive(Routable, PartialEq, Clone, Debug)]
 pub enum Route {
@@ -11,12 +11,16 @@ pub enum Route {
     InspektPage,
     #[at("/contact")]
     ContactPage,
+    #[at["/info"]]
+    Info
 }
 
 fn switch(routes: Route) -> Html {
     match routes {
         Route::HomePage => html! {<HomePage />},
         Route::InspektPage => html! { <InspektPage /> },
+        Route::ContactPage => html! { <ContactPage /> },
+        Route::Info => html! { <Info /> },
         _ => html! { <h1>{ "Page Not Found" }</h1> },
     }
 }
