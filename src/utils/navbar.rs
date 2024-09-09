@@ -5,7 +5,7 @@ use yew_router::prelude::*;
 #[function_component(NavBar)]
 pub fn navbar_component() -> Html {
     html! {
-        <nav class="navbar">
+        <nav class="navbar-container">
             <div class="nav-container">
                 <input class="checkbox" type="checkbox" id="menu-toggle" />
                 <div class="hamburger-lines">
@@ -19,7 +19,9 @@ pub fn navbar_component() -> Html {
                     <li><Link<Route> to={Route::ContactPage}>{"Contact"}</Link<Route>></li>
                     <li><Link<Route> to={Route::Info}>{"Info"}</Link<Route>></li>
                 </ul>
-                <span class="navbar-logo">{"Firat Honca"}</span>
+                <span class="navbar-img">
+                    <img src="static/logo_transparent.png" alt="Firat Honca"/>
+                </span>
             </div>
         </nav>
     }

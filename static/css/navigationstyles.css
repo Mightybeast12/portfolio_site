@@ -98,7 +98,7 @@
 
 .menu-items {
   position: absolute;
-  border-radius: 8px;
+  border-radius: 1.5vw;
   background-color: hsl(0, 0%, 15%);
   box-shadow: inset 0 0 2000px rgba(255, 255, 255, .5);
   align-content:center ; 
@@ -119,10 +119,25 @@
   text-align: left; 
   font-weight: 500;
 }
+.navbar-img  img{
+  position: absolute; 
+  right: 15px; 
+  width: 15vw;
+  max-width: 9vw; 
+  min-width: 130px; 
+  height: auto;
+  background-color: hsl(34, 29%, 60%);
+  border-radius: 1.5vw; 
 
-.navbar-logo {
+
+} 
+.navbar-container {
+  margin-bottom: 17.9vh; 
+
+} 
+
+.navbar-header {
   position: absolute;
-  top: 5px;
   right: 15px;
   font-size: 3.2rem;
   color: hsl(34, 29%, 60%);
