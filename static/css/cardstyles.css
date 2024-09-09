@@ -6,10 +6,10 @@
   max-width: 70%;
   max-height: 80vh;
   margin: 0 auto; 
-  background-color: #252525;
+  background-color: hsl(0, 0%, 15%);
   border-radius: 8px;
   z-index: 1;
-  box-shadow: 0px 10px 10px rgb(73, 70, 92);
+  box-shadow: 0px 10px 10px hsl(250, 10%, 12%);
   transition: 0.5s;
   display: flex;
   flex-direction: column;
@@ -65,7 +65,7 @@
   display: flex;
   justify-content: center; 
   font-size: 14px; 
-  color: rgb(211, 203, 193) ; 
+  color: hsl(33, 17%, 79%) ; 
 }
 
 /* Code block styles */
@@ -76,7 +76,7 @@
   max-height: 300px; 
   overflow: auto; 
   resize: none;
-  background-color: #2e2e2e;
+  background-color: hsl(0, 0%, 18%);
   border-radius: 5px;
   border: none;
   color: white;

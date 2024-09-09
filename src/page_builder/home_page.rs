@@ -2,8 +2,8 @@
 use yew::prelude::*; 
 
 use crate::utils::mark_down_utils;
-use crate::page_builder::{code_show_case_page,header_builder}; 
-
+use crate::utils::card_elements;
+use crate::page_builder::{code_show_case_elements,header_builder}; 
 fn create_inspekt_markdown() -> Html{
     let markdown_input = r#"
 # Inspekt
@@ -44,13 +44,15 @@ Custom Excel workflow for Apple titles to create labels for outgoing data.\
 }
 
 pub fn home_page() -> Html{
+    let file = "static/Notification.py".to_string(); 
     html!(
         <div>
-            {header_builder::build_header()} 
-            {create_inspekt_markdown()}
-            {create_alula_auto_ingest_markdown()}
-            {create_alula_bible_markdown()}
-            {code_show_case_page::rust_docker_container_showcase()} 
+        {header_builder::build_header()} 
+        {create_inspekt_markdown()}
+        {create_alula_auto_ingest_markdown()}
+        {create_alula_bible_markdown()}
+        {card_elements::create_dynamic_styled_markdown("Notification - Inspet".to_string(),file)} 
+            {code_show_case_elements::rust_docker_container_showcase()} 
         </div>
     )
 }
