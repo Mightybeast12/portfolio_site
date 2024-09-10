@@ -9,13 +9,13 @@ steps:
         cargo install trunk
         trunk build --release
         
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/yew-app:$COMMIT_SHA', '.']
+  - name: 'cloud-run-source-deploy/cloud-builders/docker'
+    args: ['build', '-t', 'cloud-run-source-deploy/$PROJECT_ID/yew-app:$COMMIT_SHA', '.']
 
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/$PROJECT_ID/yew-app:$COMMIT_SHA']
+  - name: 'cloud-run-source-deploy/cloud-builders/docker'
+    args: ['push', 'cloud-run-source-deploy/$PROJECT_ID/yew-app:$COMMIT_SHA']
 
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  - name: 'cloud-run-source-deploy/google.com/cloudsdktool/cloud-sdk'
     entrypoint: gcloud
     args:
       - run
