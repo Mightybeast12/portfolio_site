@@ -31,3 +31,5 @@ steps:
 
 images:
   - 'gcr.io/$PROJECT_ID/yew-app:$COMMIT_SHA'
+options:
+  logging: None
