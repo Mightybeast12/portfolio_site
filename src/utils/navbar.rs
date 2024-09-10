@@ -16,7 +16,7 @@ pub fn navbar_component() -> Html {
                 <ul class="menu-items">
                     <li><Link<Route> to={Route::HomePage}>{"Home"}</Link<Route>></li>
                     <li><Link<Route> to={Route::InspektPage}>{"Inspekt"}</Link<Route>></li>
-                    <li><Link<Route> to={Route::ContactPage}>{"Contact"}</Link<Route>></li>
+                    <li><Link<Route> to={Route::LandingPage}>{"Landing"}</Link<Route>></li>
                     <li><Link<Route> to={Route::Info}>{"Info"}</Link<Route>></li>
                 </ul>
                 <span class="navbar-img">

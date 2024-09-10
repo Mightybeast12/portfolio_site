@@ -14,6 +14,8 @@ pub enum Route {
     ContactPage,
     #[at["/info"]]
     Info,
+    #[at["/landing"]]
+    LandingPage,
 
 }
 
@@ -22,6 +24,7 @@ fn switch(routes: Route) -> Html {
         Route::HomePage => html! {<HomePage />},
         Route::InspektPage => html! { <InspektPage /> },
         Route::ContactPage => html! { <ContactPage /> },
+        Route::LandingPage => html! { <LandingPage /> },
         Route::Info => html! { <Info /> },
     }
 }
@@ -32,7 +35,7 @@ pub fn router_component() -> Html {
         <BrowserRouter>
             <Layout> 
                 <Switch<Route> render={switch} />
-                <Redirect<Route> to={Route::HomePage} />
+                <Redirect<Route> to={Route::LandingPage} />
             </Layout> 
         </BrowserRouter>
     }

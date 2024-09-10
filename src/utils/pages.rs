@@ -17,6 +17,10 @@ pub fn about_route() -> Html {
     info_page::info_page() 
 }
   
+#[function_component(LandingPage)]
+pub fn landing_route() -> Html {
+    landing_page::landing_page() 
+}
 #[function_component(HomePage)] 
 pub fn home_route() -> Html {
     home_page::home_page() 
