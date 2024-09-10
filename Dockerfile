@@ -1,4 +1,5 @@
 # Use the official Nginx image to serve the app
+#test_build
 FROM nginx:alpine
 
 # Remove the default Nginx website
