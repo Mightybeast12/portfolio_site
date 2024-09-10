@@ -1,0 +1,33 @@
+steps:
+  # Step 1: Install Rust and Trunk
+  - name: 'rust:latest'
+    entrypoint: bash
+    args:
+      - '-c'
+      - |
+        rustup target add wasm32-unknown-unknown
+        cargo install trunk
+        trunk build --release
+        
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/yew-app:$COMMIT_SHA', '.']
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/yew-app:$COMMIT_SHA']
+
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - run
+      - deploy
+      - yew-app
+      - --image
+      - 'gcr.io/$PROJECT_ID/yew-app:$COMMIT_SHA'
+      - --region
+      - us-central1
+      - --platform
+      - managed
+      - --allow-unauthenticated
+
+images:
+  - 'gcr.io/$PROJECT_ID/yew-app:$COMMIT_SHA'
