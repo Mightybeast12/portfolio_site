@@ -32,4 +32,4 @@ steps:
 images:
   - 'gcr.io/$PROJECT_ID/yew-app:$COMMIT_SHA'
 options:
-  logging: SYSTEM
+  logging: CLOUD_LOGGING_ONLY
