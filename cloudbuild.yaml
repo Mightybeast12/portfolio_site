@@ -30,6 +30,6 @@ steps:
       - --allow-unauthenticated
 
 images:
-  - 'gcr.io/$PROJECT_ID/yew-app:$COMMIT_SHA'
+  - 'cloud-run-source-deploy/yew-app:$COMMIT_SHA'
 options:
   logging: CLOUD_LOGGING_ONLY
