@@ -22,7 +22,7 @@ steps:
       - deploy
       - yew-app
       - --image
-      - 'gcr.io/$PROJECT_ID/yew-app:$COMMIT_SHA'
+      - 'cloud-run-source-deploy/$PROJECT_ID/yew-app:$COMMIT_SHA'
       - --region
       - us-central1
       - --platform
