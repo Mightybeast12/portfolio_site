@@ -65,14 +65,18 @@
 }
 .unique-tooltip-container {
   position: relative; 
-  max-width: 80px; 
   cursor: pointer;
+  max-width: fit-content; 
   transition: all 0.2s;
   font-size: 24px; 
   border-radius: 15px; 
-  margin-left: 70px; 
+  margin-left: 80%; 
   margin-right: 30px; 
-  margin-top: 30px; 
+  margin-top: 50px; 
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center; 
 }
 
 .unique-tooltip {
@@ -107,6 +111,7 @@
 .unique-icon {
   text-decoration: none;
   color: #fff;
+  min-width: fit-content; 
   display: block;
   position: relative;
 }
@@ -118,7 +123,7 @@
 }
 
 .unique-icon:hover .unique-layer {
-  transform: rotate(-35deg) skew(20deg);
+  transform: rotate(-35deg) skew(20deg) ;
 }
 
 .unique-layer span {
@@ -236,5 +241,13 @@
 .unique-icon svg {
   padding-left: 3px; 
   width: inherit; 
-}
+  transition: width 0.3s, height 0.3s;
+   
 
+}
+.unique-icon:hover svg{
+  transform: translate(35px, -35px); 
+} 
+.unique-icon:hover .unique-layer span {
+    transition: all 0.3s ease-in-out;
+}

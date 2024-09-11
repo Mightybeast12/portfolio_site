@@ -35,7 +35,7 @@ pub fn router_component() -> Html {
         <BrowserRouter>
             <Layout> 
                 <Switch<Route> render={switch} />
-                <Redirect<Route> to={Route::LandingPage} />
+                <Redirect<Route> to={Route::HomePage} />
             </Layout> 
         </BrowserRouter>
     }
