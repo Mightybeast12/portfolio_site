@@ -1,4 +1,4 @@
-t# Use the official Nginx image to serve the app
+# Use the official Nginx image to serve the app
 FROM nginx:alpine
 
 # Remove the default Nginx website
