@@ -2,7 +2,7 @@ use yew::prelude::*;
 
 fn image_carousel_builder_helper(file: &str) -> Html {
     html! {
-        <div style="image-container">
+        <div class="image-container">
             <img 
                 src={format!("/static/{}", file)} alt="Image not Found!"  
                 class= "zoom-image" 
