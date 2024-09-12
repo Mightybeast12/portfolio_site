@@ -35,7 +35,6 @@ pub fn router_component() -> Html {
         <BrowserRouter>
             <Layout> 
                 <Switch<Route> render={switch} />
-                <Redirect<Route> to={Route::InspektPage} />
             </Layout> 
         </BrowserRouter>
     }
