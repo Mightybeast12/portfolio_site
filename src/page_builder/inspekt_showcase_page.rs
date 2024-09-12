@@ -1,39 +1,75 @@
 use yew::prelude::*;
-use crate::utils::image_utils::image_carousel_builder; 
- 
-pub fn inspekt_page() -> Html{
-    let image = vec![
-        "inspekt/autodeploy.png".to_string(),
-        "inspekt/failed.png".to_string(),
+use crate::utils::image_utils::image_carousel_builder;
+use crate::utils::mark_down_utils;
 
-    ]; 
-     
-    let image2 = vec![
-        "inspekt/autodeploy.png".to_string(),
-        "inspekt/failed.png".to_string(),
-
-    ]; 
-    html!{
-        <div>
-            <div> {image_carousel_builder(image)} </div> 
-            <div> {image_carousel_builder(image2)} </div> 
-         
+fn inspekt_markdown_intro_markdown() -> Html {
+    let markdown_input = r#"
+# Inspekt
+---  
+Inspekt is a CLI based tool that 
+A tailor-made Linux CLI-based Digital Cinema Package inspection tool performing over 180 checks, including hash validation, JPEG2000 bit checks, and CCAP/subtitle language consistency, significantly boosting the mastering team's productivity.
+######
+ **Git**: Version Control **|** 
+ **Docker**: Auto deployment/building **|**
+ **Linux**: OS **|** **Python** 
+    "#;
+    html!(
+        <div class="markdown-container">
+            {mark_down_utils::create_markdown(&markdown_input)}
         </div>
-          
+    )
+}
+
+fn inspekt_first_image_show_case() -> Html {
+    let images = vec![
+        "inspekt/Passed.png".to_string(),
+        "inspekt/gitportfolio.png".to_string(),
+    ];
+    html! {
+        <div>
+            {image_carousel_builder(images)}
+        </div>
     }
-} 
+}
+
+fn inspek_part_2()  -> Html{
+    let markdown_input = r#"
+---
+Inspekt checks all aspects of a **DCP**(*Digital Cinema Package*) 
+- *XML* validation
+- *JPEG2000* guard bit validation (**Causes older Projectors to crash**)
+- **Asset Timing Checks** 
+- **Atmos Sync Test**: Broken Sync trak validation
+- **PDF and HTML Outputs**: Exports results into a portable format 
  
-// #[function_component(App)]
-// fn app() -> Html {
-//     let images = vec![
-//         "image1.jpg".to_string(),
-//         "image2.jpg".to_string(),
-//         "image3.jpg".to_string(),
-//     ];
-// 
-//     html! {
-//         <div>
-//             <ImageCarousel images={images.clone()} />
-//         </div>
-//     }
-// }
+    "#;
+    html!(
+        <div class="markdown-container">
+            {mark_down_utils::create_markdown(&markdown_input)}
+        </div>
+    ) 
+}
+ 
+fn inspekt_second_image_show_case() -> Html {
+    let images = vec![
+        "inspekt/failed.png".to_string(),
+        "inspekt/autodeploy.png".to_string(),
+        "inspekt/pdf_utils.png".to_string(),
+    ];
+    html! {
+        <div>
+            {image_carousel_builder(images)}
+        </div>
+    }
+}
+
+pub fn inspekt_page() -> Html {
+    html! {
+        <div>
+            {inspekt_markdown_intro_markdown()}
+            {inspekt_first_image_show_case()}
+            {inspek_part_2()}
+            {inspekt_second_image_show_case()}
+        </div>
+    }
+}

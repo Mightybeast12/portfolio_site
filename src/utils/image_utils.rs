@@ -2,14 +2,10 @@ use yew::prelude::*;
 
 fn image_carousel_builder_helper(file: &str) -> Html {
     html! {
-        <div style="display: flex; justify-content: center; align-items: center;">
+        <div style="image-container">
             <img 
                 src={format!("/static/{}", file)} alt="Image not Found!"  
-                style="border-radius: 10px;
-                       display: block;
-                       max-width: 100%;
-                       height: auto;
-                       margin: 20px 0;"
+                class= "zoom-image" 
             />
         </div>
     }

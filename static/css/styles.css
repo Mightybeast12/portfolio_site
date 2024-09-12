@@ -5,13 +5,19 @@ html {
 
 h1 {
     color: antiquewhite; 
-    text-decoration: underline burlywood; 
 } 
 
+ul {
+    color: antiquewhite; 
+} 
+h2 {
+    color: antiquewhite; 
+} 
 p {
     color: whitesmoke;
     max-width: 800px; 
     text-align: left; 
+     
 }
 .home-container{
     text-align: center;

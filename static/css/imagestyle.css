@@ -1,6 +1,7 @@
 .carousel {
     position: relative;
-    width: clamp(300px, 50vw, 800px);
+    width: clamp(300px, 50vw, 300px);
+    min-width: fit-content; 
     height: auto;
     overflow: hidden;
     margin: 0 auto;
@@ -17,13 +18,12 @@
 .carousel-image {
     width: 100%;
     height: 100%;
-    object-fit: cover;
 }
 
 .carousel-control {
     position: absolute;
-    width: clamp(50px, 10vw, 80px); /* Responsive width */
-    height: clamp(50px, 10vw, 80px); /* Responsive height */
+    width: clamp(50px, 1vw, 80px); 
+    height: clamp(50px, 1vw, 80px);
     top: 50%;
     transform: translateY(-50%);
     background-color: rgba(0, 0, 0, 0.5);
@@ -52,8 +52,31 @@
     transition: background-color 50ms ease-in-out, transform 50ms ease-in-out; 
     border: 5px solid azure; 
     border-radius: 15%;
-    width: clamp(60px, 12vw, 100px); 
-    height: clamp(60px, 12vw, 100px);
+    width: clamp(60px, 2.2vw, 60px); 
+    height: clamp(60px, 2.2vw, 60px);
     transform: translateY(-50%) scale(1.1);
     font-size: clamp(1.2rem, 2.2vw, 2.2rem);
+}
+
+.image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; 
+    border-radius: 10px; 
+    transition: transform 0.3s ease; 
+}
+
+.zoom-image {
+    border-radius: 10px;
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 20px 0;
+    transition: transform 0.3s ease; 
+}
+
+.image-container:hover .zoom-image {
+    transform: scale(1.1); 
+    border: 10px white ; 
 }

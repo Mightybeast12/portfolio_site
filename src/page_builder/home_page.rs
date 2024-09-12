@@ -4,18 +4,6 @@ use yew::prelude::*;
 use crate::utils::mark_down_utils;
 use crate::utils::card_elements;
 use crate::page_builder::code_show_case_elements;
-fn create_inspekt_markdown() -> Html{
-    let markdown_input = r#"
-# Inspekt
-Inspekt is a CLI based tool that 
-A tailor-made Linux CLI-based Digital Cinema Package inspection tool performing over 180 checks, including hash validation, JPEG2000 bit checks, and CCAP/subtitle language consistency, significantly boosting the mastering team's productivity.
-######
- **Git**: Version Control **|** 
- **Docker**: Auto deployment/building **|**
- **Linux**: Os **|** **Python** 
-    "# ;
-    mark_down_utils::create_markdown(&markdown_input) 
-}  
  
 fn create_alula_auto_ingest_markdown() -> Html {
     let markdown = r#"
@@ -48,7 +36,6 @@ pub fn home_page() -> Html{
     html!(
         <div class="home-container">
             <div class = "markdown-container"> 
-            {create_inspekt_markdown()}
             {create_alula_auto_ingest_markdown()}
             {create_alula_bible_markdown()}
             </div> 
