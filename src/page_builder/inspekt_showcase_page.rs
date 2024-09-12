@@ -1,6 +1,8 @@
 use yew::prelude::*;
+ 
 use crate::utils::image_utils::image_carousel_builder;
 use crate::utils::mark_down_utils;
+use crate::utils::card_elements;
 
 fn inspekt_markdown_intro_markdown() -> Html {
     let markdown_input = r#"
@@ -24,6 +26,7 @@ fn inspekt_first_image_show_case() -> Html {
     let images = vec![
         "inspekt/Passed.png".to_string(),
         "inspekt/gitportfolio.png".to_string(),
+        "inspekt/Progress_bar.png".to_string(),
     ];
     html! {
         <div>
@@ -32,7 +35,7 @@ fn inspekt_first_image_show_case() -> Html {
     }
 }
 
-fn inspek_part_2()  -> Html{
+fn inspek_part_two_markdown()  -> Html{
     let markdown_input = r#"
 ---
 Inspekt checks all aspects of a **DCP**(*Digital Cinema Package*) 
@@ -62,14 +65,55 @@ fn inspekt_second_image_show_case() -> Html {
         </div>
     }
 }
+ 
+fn inspekt_third_image_show_case() -> Html {
+    let images = vec![
+        "inspekt/file_utils.png".to_string(),
+        "inspekt/logger_code.png".to_string(),
+    ];
+    html! {
+        <div>
+            {image_carousel_builder(images)}
+        </div>
+    }
+}
+ 
+fn inspekt_code_show_case() -> Html {
+     
+    let file = "static/AutoIngest/Notification.py".to_string(); 
+     
+    card_elements::create_dynamic_styled_markdown("Notification - Inspekt".to_string(),file) 
+}
+
+fn inspekt_all_image() -> Html {
+    let images = vec![
+        "inspekt/failed.png".to_string(),
+        "inspekt/autodeploy.png".to_string(),
+        "inspekt/pdf_utils.png".to_string(),
+        "inspekt/Passed.png".to_string(),
+        "inspekt/gitportfolio.png".to_string(),
+        "inspekt/Progress_bar.png".to_string(),
+         
+        "inspekt/file_utils.png".to_string(),
+        "inspekt/logger_code.png".to_string(),
+    ];
+    html! {
+        <div>
+            {image_carousel_builder(images)}
+        </div>
+    }
+}
 
 pub fn inspekt_page() -> Html {
     html! {
         <div>
             {inspekt_markdown_intro_markdown()}
             {inspekt_first_image_show_case()}
-            {inspek_part_2()}
+            {inspek_part_two_markdown()}
             {inspekt_second_image_show_case()}
+            {inspekt_code_show_case()}
+            {inspekt_third_image_show_case()}
+            {inspekt_all_image()}
         </div>
     }
 }

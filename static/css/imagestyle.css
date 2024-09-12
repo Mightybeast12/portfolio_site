@@ -70,13 +70,13 @@
 .zoom-image {
     border-radius: 10px;
     display: block;
-    max-width: 100%;
     height: auto;
     margin: 20px 0;
     transition: transform 0.3s ease; 
+    max-width: clamp(80vw,60vw,95vw); 
 }
 
 .image-container:hover .zoom-image {
     transform: scale(1.1); 
-    border: 10px white ; 
+    margin: scale(1.1); 
 }
