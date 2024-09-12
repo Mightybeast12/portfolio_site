@@ -1,0 +1,31 @@
+/* Site Background Colour */
+html {
+    background-color: hsl(0, 2%, 12%);
+}
+
+h1 {
+    color: antiquewhite; 
+} 
+
+ul {
+    color: antiquewhite; 
+} 
+h2 {
+    color: antiquewhite; 
+} 
+p {
+    color: whitesmoke;
+    max-width: 800px; 
+    text-align: left; 
+     
+}
+.home-container{
+    text-align: center;
+} 
+.markdown-container{
+    width: fit-content; 
+    margin: 0 auto; 
+    padding: 20px;
+    background-color: rgb(43, 43, 42); 
+    border-radius: 8px; 
+} 
