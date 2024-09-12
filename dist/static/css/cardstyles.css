@@ -75,7 +75,7 @@
 #card-code-1-code-block {
   height: auto;
   width: 90%; 
-  max-height: 300px; 
+  max-height: 60vh; 
   max-width: 900px;
   overflow: auto; 
   resize: none;
