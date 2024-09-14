@@ -1,8 +1,9 @@
 [build]
 out = "dist"
+target = "index.html"
 
 [serve]
-port = 8080
+port = 80
  
 [watch]
 reload = true
