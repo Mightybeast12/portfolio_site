@@ -4,6 +4,7 @@ pub fn landing_page() -> Html {
     html!{
     <div> 
         <div> 
+            <h3> {"Landing"} </h3> 
             {button_elements::create_github_button_animated()}
          
             {button_elements::create_linked_in_button_animated()}
