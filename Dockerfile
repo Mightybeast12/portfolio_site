@@ -1,20 +1,28 @@
-# Use an official Rust image as a parent image
-FROM rust:latest
 
-# Install Trunk
+FROM rust:slim-bookworm as builder
+
+
 RUN cargo install trunk
 
-# Set the working directory
+
+RUN rustup target add wasm32-unknown-unknown
+
+
 WORKDIR /app
 
-# Copy the Trunk configuration and source code
+
 COPY . .
 
-# Build the Yew app using Trunk
+
 RUN trunk build --release
 
-# Expose the port for the Trunk server
-EXPOSE 8080
 
-# Start Trunk server to serve the Yew app
-CMD ["trunk", "serve", "--port", "80"]
+FROM nginx:alpine
+
+
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+
+EXPOSE 80
+
+
