@@ -8,7 +8,6 @@ use crate::page_builder::code_show_case_elements;
 fn create_alula_auto_ingest_markdown() -> Html {
     let markdown = r#"
  # Alula Auto Ingest
-
 Automated the data ingestion process using Docker microservices, tailored to handle sender-specific factors (e.g., Apple, Netflix). The system dynamically creates folder structures and sends notifications to relevant teams, such as creating Pro Tools sessions for Audio QC, based on the incoming data. 
 #
  **Docker**: Containerized Service **|**

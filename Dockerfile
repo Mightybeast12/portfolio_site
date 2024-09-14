@@ -1,5 +1,5 @@
 
-FROM rust:slim-bookworm as builder
+FROM rust:slim-bookworm AS builder
 
 
 RUN cargo install trunk
@@ -14,15 +14,17 @@ WORKDIR /app
 COPY . .
 
 
+RUN trunk clean
+ 
 RUN trunk build --release
 
 
 FROM nginx:alpine
 
-
 COPY --from=builder /app/dist /usr/share/nginx/html
 
+COPY nginx.conf /etc/nginx/nginx.conf
 
-EXPOSE 80
+EXPOSE 8080
 
 

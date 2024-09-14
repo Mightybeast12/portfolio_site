@@ -6,13 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inspekt Report</title>
     <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: rgb(166, 173, 166);
+    color: #333;
+    padding-bottom: 4vh; 
+} 
+     
 p-1 {
     margin: 10px 0;
 }
- 
-
 .banner-container {
-    --container-widt: 100%;
+    --container-width: 98vw;
     --text-align: center;
     --font-size: 2em;
     --font-weight: bold;
@@ -22,8 +27,8 @@ p-1 {
     --footer-padding: 10px;
     width: var(--container-width);
     background-color: var(--background-color); 
-    margin-left: 1%; 
-    margin-right: 1%; 
+    margin-left: 1vw; 
+    margin-right: 1vw; 
 }
 
 .banner {
@@ -47,14 +52,14 @@ p-1 {
 }
 
 .overview-container {
-    width: 100%; 
+    width: 100vw; 
 } 
 
 .overview-table {
     background-color: white;
     max-width: 100%; 
-    margin-left: 1%; 
-    margin-right: 1%; 
+    margin-left: 1vw; 
+    margin-right: 1vw; 
     border-collapse: collapse;
 } 
 
@@ -84,7 +89,7 @@ p-1 {
     background-color: hsl(0, 0%, 33%);
     border-radius: 8px; 
     border-color: #ecf0f1; 
-    max-width: 99%; 
+    max-width: 99vw; 
     padding-top: 5px; 
 }
  
@@ -96,7 +101,7 @@ p-1 {
 
 
 .header-cell-2 {
-    width: 100%; 
+    width: 90vw; 
     min-width: fit-content; 
     text-align: left;
     border: 3px solid #ddd; 
@@ -120,7 +125,7 @@ p-1 {
 
 .header-cell-4 {
     width: 100%; 
-    min-width: 90%; 
+    min-width: 90vw; 
     max-width: 99%; 
     background-color: hsl(0, 0%, 80%);
     text-align: left;
@@ -187,33 +192,32 @@ p-1 {
 }
 .error-button {
     background-color: hsl(0, 100%, 64%);
-    margin-left: 0.5%; 
+    margin-left: 0.5vw; 
 }
 
 .warning-button {
     background-color: hsl(39, 100%, 50%); /* Orange for warnings */
-    margin-left: 0.5%; 
+    margin-left: 0.5vw; 
 }
 
 .pass-button {
     background-color: hsl(143, 58%, 49%); /* Aquamarine */
-    margin-left: 0.5%; 
+    margin-left: 0.5vw; 
 }
 
 .generic-button {
     background-color: hsl(0, 0%, 48%); /* Gray */
-    margin-left: 0.5%; 
+    margin-left: 0.5vw; 
 }
 .cpl-button {
     background: hsl(195, 100%, 67%);
-    margin-left: 0.5%; 
+    margin-left: 0.5vw; 
      
 }
 .reel-button {
-    background: hsl(44, 59%, 65%);
+    background: hsl(44, 38%, 14%);
     width: 80%; 
-    margin-left: auto; 
-    margin-right: auto; 
+    margin-left: 10%; 
     height: auto; 
     color: #ffffff;
 
@@ -259,27 +263,29 @@ p-1 {
 }
 
 .collapsible-content {
+    max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease-out;
     margin-bottom: 20px; 
 }
 
 .collapsible-content-container {
-    margin-left: 0.5%; 
+    margin-left: 0.5vw; 
 } 
 .collapsible-content-table {
-    width: 97%; 
+    width: 97vw; 
 }
 
 .collapsible-content-table-cpl {
-    width: 97%; 
+    width: 97vw; 
     display: flexbox; 
     flex-direction: row; 
 }
  
 .asset-details-container {
-    max-width: 90%; 
+    max-width: 90vw; 
     display: flex;
+    width: 30wv; 
     gap: 10px; 
     overflow: hidden; 
 }
@@ -290,8 +296,6 @@ p-1 {
     background: #fff4f4; 
     border: 3px solid #000000; 
     overflow: hidden; 
-    margin-left: auto; 
-    margin-right: auto; 
 }
 .main-asset-value{
     font-weight: bold;
@@ -550,6 +554,7 @@ p-1 {
             <td class="header-cell-3">Pass: 31</td>
             <td class="header-cell-4">CPL: FTR feature Matched CTT: feature</td>
         </tr>
+    
             </table>
         </div> 
     </div>
@@ -841,7 +846,7 @@ p-1 {
         </div>
     
 
-    <button type="button" class="collapsible reel-button">Reel 4</button>
+        <button type="button" class="collapsible reel-button">Reel 4</button>
         <div class="collapsible-content">
             
     <div class='collapsible asset-details-container'>  
@@ -935,10 +940,485 @@ p-1 {
         </div>
     
 
+        <button type="button" class="collapsible reel-button">Reel 5</button>
+        <div class="collapsible-content">
+            
+    <div class='collapsible asset-details-container'>  
+     
+                
+    <div class="asset-detail">
+        <div class="main-asset-name">MainPicture</div>
+        <div class="main-asset-value"><table class='asset-details-table'>
+        <tr class="overview-row-2">
+            <td class="header-cell-7">EditRate</td>
+            <td class="header-cell-8">24 1</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">IntrinsicDuration</td>
+            <td class="header-cell-8">19451</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">EntryPoint</td>
+            <td class="header-cell-8">48</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">Duration</td>
+            <td class="header-cell-8">19355</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">KeyId</td>
+            <td class="header-cell-8">urn:uuid:37f20ff6-c13e-4c34-93ff-a9ba45a9dc21</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">Hash</td>
+            <td class="header-cell-8">ju29a0upkkls/UsS0i9xa9YEYNA=</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">FrameRate</td>
+            <td class="header-cell-8">24 1</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">ScreenAspectRatio</td>
+            <td class="header-cell-8">2.39</td>
+        </tr>
+        </table></div>
+    </div>
+    
+    <div class="asset-detail">
+        <div class="main-asset-name">MainSound</div>
+        <div class="main-asset-value"><table class='asset-details-table'>
+        <tr class="overview-row-2">
+            <td class="header-cell-7">EditRate</td>
+            <td class="header-cell-8">24 1</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">IntrinsicDuration</td>
+            <td class="header-cell-8">20160</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">EntryPoint</td>
+            <td class="header-cell-8">192</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">Duration</td>
+            <td class="header-cell-8">19355</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">KeyId</td>
+            <td class="header-cell-8">urn:uuid:192c0c00-bcff-45c3-9067-721bb7e369b8</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">Hash</td>
+            <td class="header-cell-8">iehmLZgYldUhSxJOZML0p+rWkKA=</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">Language</td>
+            <td class="header-cell-8">en</td>
+        </tr>
+        </table></div>
+    </div>
+    </div>
+        </div>
+    
+
+        <button type="button" class="collapsible reel-button">Reel 6</button>
+        <div class="collapsible-content">
+            
+    <div class='collapsible asset-details-container'>  
+     
+                
+    <div class="asset-detail">
+        <div class="main-asset-name">MainPicture</div>
+        <div class="main-asset-value"><table class='asset-details-table'>
+        <tr class="overview-row-2">
+            <td class="header-cell-7">EditRate</td>
+            <td class="header-cell-8">24 1</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">IntrinsicDuration</td>
+            <td class="header-cell-8">13277</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">EntryPoint</td>
+            <td class="header-cell-8">48</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">Duration</td>
+            <td class="header-cell-8">13181</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">KeyId</td>
+            <td class="header-cell-8">urn:uuid:0ad2f737-74cf-47e3-bd56-e9590c1d38b9</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">Hash</td>
+            <td class="header-cell-8">lkOuoAc+mzV9X9fIjjjWIllJ4gA=</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">FrameRate</td>
+            <td class="header-cell-8">24 1</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">ScreenAspectRatio</td>
+            <td class="header-cell-8">2.39</td>
+        </tr>
+        </table></div>
+    </div>
+    
+    <div class="asset-detail">
+        <div class="main-asset-name">MainSound</div>
+        <div class="main-asset-value"><table class='asset-details-table'>
+        <tr class="overview-row-2">
+            <td class="header-cell-7">EditRate</td>
+            <td class="header-cell-8">24 1</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">IntrinsicDuration</td>
+            <td class="header-cell-8">14400</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">EntryPoint</td>
+            <td class="header-cell-8">192</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">Duration</td>
+            <td class="header-cell-8">13181</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">KeyId</td>
+            <td class="header-cell-8">urn:uuid:e6ef36c4-8856-442f-9875-70a2c4bbea90</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">Hash</td>
+            <td class="header-cell-8">OHuKmf6H0KGZDW8n3+ARCAJ1FtE=</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">Language</td>
+            <td class="header-cell-8">en</td>
+        </tr>
+        </table></div>
+    </div>
+    </div>
+        </div>
+    
+
+        <button type="button" class="collapsible reel-button">Reel 7</button>
+        <div class="collapsible-content">
+            
+    <div class='collapsible asset-details-container'>  
+     
+                
+    <div class="asset-detail">
+        <div class="main-asset-name">MainPicture</div>
+        <div class="main-asset-value"><table class='asset-details-table'>
+        <tr class="overview-row-2">
+            <td class="header-cell-7">EditRate</td>
+            <td class="header-cell-8">24 1</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">IntrinsicDuration</td>
+            <td class="header-cell-8">25774</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">EntryPoint</td>
+            <td class="header-cell-8">48</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">Duration</td>
+            <td class="header-cell-8">25678</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">KeyId</td>
+            <td class="header-cell-8">urn:uuid:bfbc93f9-94a0-409d-a94b-50228c16a2f1</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">Hash</td>
+            <td class="header-cell-8">05qGHrukxeCrsrO1/Zkck2EWsvA=</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">FrameRate</td>
+            <td class="header-cell-8">24 1</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">ScreenAspectRatio</td>
+            <td class="header-cell-8">2.39</td>
+        </tr>
+        </table></div>
+    </div>
+    
+    <div class="asset-detail">
+        <div class="main-asset-name">MainSound</div>
+        <div class="main-asset-value"><table class='asset-details-table'>
+        <tr class="overview-row-2">
+            <td class="header-cell-7">EditRate</td>
+            <td class="header-cell-8">24 1</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">IntrinsicDuration</td>
+            <td class="header-cell-8">27360</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">EntryPoint</td>
+            <td class="header-cell-8">192</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">Duration</td>
+            <td class="header-cell-8">25678</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">KeyId</td>
+            <td class="header-cell-8">urn:uuid:979c5046-b20d-479a-87ea-97321ac51849</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">Hash</td>
+            <td class="header-cell-8">IZlF7EyX1I9+a4UnpSA8GghPmuQ=</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">Language</td>
+            <td class="header-cell-8">en</td>
+        </tr>
+        </table></div>
+    </div>
+    </div>
+        </div>
+    
+
+        <button type="button" class="collapsible reel-button">Reel 8</button>
+        <div class="collapsible-content">
+            
+    <div class='collapsible asset-details-container'>  
+     
+                
+    <div class="asset-detail">
+        <div class="main-asset-name">MainPicture</div>
+        <div class="main-asset-value"><table class='asset-details-table'>
+        <tr class="overview-row-2">
+            <td class="header-cell-7">EditRate</td>
+            <td class="header-cell-8">24 1</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">IntrinsicDuration</td>
+            <td class="header-cell-8">25609</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">EntryPoint</td>
+            <td class="header-cell-8">48</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">Duration</td>
+            <td class="header-cell-8">1840</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">KeyId</td>
+            <td class="header-cell-8">urn:uuid:20b1d3ab-9bfd-4fb3-9eb2-74ec4d987bdb</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">Hash</td>
+            <td class="header-cell-8">jadSZs954jTMeFgEFaAY8dley5U=</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">FrameRate</td>
+            <td class="header-cell-8">24 1</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">ScreenAspectRatio</td>
+            <td class="header-cell-8">2.39</td>
+        </tr>
+        </table></div>
+    </div>
+    
+    <div class="asset-detail">
+        <div class="main-asset-name">MainSound</div>
+        <div class="main-asset-value"><table class='asset-details-table'>
+        <tr class="overview-row-2">
+            <td class="header-cell-7">EditRate</td>
+            <td class="header-cell-8">24 1</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">IntrinsicDuration</td>
+            <td class="header-cell-8">27360</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">EntryPoint</td>
+            <td class="header-cell-8">192</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">Duration</td>
+            <td class="header-cell-8">1840</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">KeyId</td>
+            <td class="header-cell-8">urn:uuid:b39f873e-e8c1-45e5-9e29-83a057805e17</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">Hash</td>
+            <td class="header-cell-8">/ZMTY4V459NIJZiJ9PgNRLQq5LQ=</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">Language</td>
+            <td class="header-cell-8">en</td>
+        </tr>
+        </table></div>
+    </div>
+    </div>
+        </div>
+    
+
+        <button type="button" class="collapsible reel-button">Reel 9</button>
+        <div class="collapsible-content">
+            
+    <div class='collapsible asset-details-container'>  
+     
+                
+    <div class="asset-detail">
+        <div class="main-asset-name">MainPicture</div>
+        <div class="main-asset-value"><table class='asset-details-table'>
+        <tr class="overview-row-2">
+            <td class="header-cell-7">EditRate</td>
+            <td class="header-cell-8">24 1</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">IntrinsicDuration</td>
+            <td class="header-cell-8">25609</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">EntryPoint</td>
+            <td class="header-cell-8">1930</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">Duration</td>
+            <td class="header-cell-8">23631</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">KeyId</td>
+            <td class="header-cell-8">urn:uuid:20b1d3ab-9bfd-4fb3-9eb2-74ec4d987bdb</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">Hash</td>
+            <td class="header-cell-8">jadSZs954jTMeFgEFaAY8dley5U=</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">FrameRate</td>
+            <td class="header-cell-8">24 1</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">ScreenAspectRatio</td>
+            <td class="header-cell-8">2.39</td>
+        </tr>
+        </table></div>
+    </div>
+    
+    <div class="asset-detail">
+        <div class="main-asset-name">MainSound</div>
+        <div class="main-asset-value"><table class='asset-details-table'>
+        <tr class="overview-row-2">
+            <td class="header-cell-7">EditRate</td>
+            <td class="header-cell-8">24 1</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">IntrinsicDuration</td>
+            <td class="header-cell-8">27360</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">EntryPoint</td>
+            <td class="header-cell-8">2074</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">Duration</td>
+            <td class="header-cell-8">23631</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">KeyId</td>
+            <td class="header-cell-8">urn:uuid:b39f873e-e8c1-45e5-9e29-83a057805e17</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">Hash</td>
+            <td class="header-cell-8">/ZMTY4V459NIJZiJ9PgNRLQq5LQ=</td>
+        </tr>
+        
+        <tr class="overview-row-2">
+            <td class="header-cell-7">Language</td>
+            <td class="header-cell-8">en</td>
+        </tr>
+        </table></div>
+    </div>
+    </div>
+        </div>
     
     </div>
          
     </div>
+    <footer class="banner-footer"> 
+        <div class="banner-container"> 
+        <div class="banner">Eikon Inspekt - Testing Only</div>
+        </div> 
+     </footer>
+    
+    
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             var coll = document.getElementsByClassName("collapsible");

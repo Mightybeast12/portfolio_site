@@ -19,15 +19,4 @@ docker build -t ${REPO} .
 docker push ${REPO}
 
 gcloud run deploy $APP_NAME --image "$REPO" --region $REGION \
---set-env-vars PORT=8080
-
-gcloud run services add-iam-policy-binding $APP_NAME \
-    --member="allUsers" \
-    --role="roles/run.invoker" \
-    --region $REGION
-
  
-#gcloud artifacts repositories create cv-portfolio-repo \
-#    --repository-format=docker \
-#    --location=europe-west9 \
-#    --description="Docker repository for Portfolio app"

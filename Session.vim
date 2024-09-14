@@ -14,11 +14,11 @@ if &shortmess =~ 'A'
 else
   set shortmess=aoO
 endif
-badd +0 Dockerfile
+badd +0 ~/.vimrc
 argglobal
 %argdel
-$argadd Dockerfile
-edit Dockerfile
+$argadd ~/.vimrc
+edit ~/.vimrc
 argglobal
 setlocal fdm=manual
 setlocal fde=0
@@ -30,12 +30,12 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 1 - ((0 * winheight(0) + 11) / 22)
+let s:l = 144 - ((9 * winheight(0) + 7) / 15)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 1
-normal! 03|
+keepjumps 144
+normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0
   silent exe 'bwipe ' . s:wipebuf
