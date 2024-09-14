@@ -1,17 +1,20 @@
-# Use the official Nginx image to serve the app
-FROM nginx:alpine
+# Use an official Rust image as a parent image
+FROM rust:latest
 
-# Remove the default Nginx website
-RUN rm -rf /usr/share/nginx/html/*
+# Install Trunk
+RUN cargo install trunk
 
-# Copy the compiled Yew app from Trunk to Nginx's web directory
-COPY dist /usr/share/nginx/html
+# Set the working directory
+WORKDIR /app
 
-# Copy the custom Nginx configuration file
-COPY nginx.conf /etc/nginx/nginx.conf
+# Copy the Trunk configuration and source code
+COPY . .
 
-# Expose port 80
-EXPOSE 80
+# Build the Yew app using Trunk
+RUN trunk build --release
 
-# Start Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Expose the port for the Trunk server
+EXPOSE 8080
+
+# Start Trunk server to serve the Yew app
+CMD ["trunk", "serve", "--port", "80"]
