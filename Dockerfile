@@ -17,4 +17,4 @@ RUN trunk build --release
 EXPOSE 8080
 
 # Start Trunk server to serve the Yew app
-CMD ["trunk", "serve", "--port", "8080"]
+CMD ["trunk", "serve", "--port", "80"]
