@@ -99,12 +99,6 @@ fn inspekt_third_image_show_case() -> Html {
     }
 }
  
-fn inspekt_code_show_case() -> Html {
-     
-    let file = "static/AutoIngest/Notification.py".to_string(); 
-     
-    card_elements::create_dynamic_styled_markdown("Notification - Inspekt".to_string(),file) 
-}
 
 fn inspekt_all_image() -> Html {
     let images = vec![
@@ -136,7 +130,6 @@ pub fn inspekt_page() -> Html {
             {inspek_part_two_markdown()}
             {inspekt_report_play()}
             {inspekt_second_image_show_case()}
-            {inspekt_code_show_case()}
             {inspekt_third_image_show_case()}
             {inspekt_all_image()}
         </div>

@@ -27,7 +27,7 @@ Perfect for both casual investors and those looking for a quick snapshot of stoc
 }
 
  
-fn inspekt_first_image_show_case() -> Html {
+fn stock_tracker_image_showcase() -> Html {
 let images = vec![
     "stock_tracker/firo_tracker_dashboard.png".to_string(),
     "stock_tracker/dcf_showcase.png".to_string(),
@@ -56,7 +56,7 @@ pub fn stock_tracker_page() -> Html {
     html! {
         <div style="display: flex; flex-direction: column; align-items: center;">
             {create_stock_tracker_markdown()} 
-            {inspekt_first_image_show_case()}
+            {stock_tracker_image_showcase()}
         </div>
     }
 }

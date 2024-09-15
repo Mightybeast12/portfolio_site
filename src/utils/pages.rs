@@ -13,9 +13,19 @@ pub fn contact_route() -> Html {
 }
  
 #[function_component(StockTrackerPage)]
-pub fn about_route() -> Html {
+pub fn stock_tracker_route() -> Html {
     stock_tracker_page::stock_tracker_page() 
 }
+ 
+#[function_component(AlulaBiblePage)]
+pub fn alula_bible_route() -> Html {
+    alula_bible_page::alula_bible_page() 
+}
+#[function_component(AutoIngestPage)]
+pub fn alula_bible_route() -> Html {
+    auto_ingest_page::auto_ingest_page() 
+}
+ 
 #[function_component(Info)]
 pub fn about_route() -> Html {
     info_page::info_page() 

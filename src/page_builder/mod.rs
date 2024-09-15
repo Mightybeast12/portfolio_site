@@ -8,4 +8,5 @@ pub mod landing_page;
 pub mod stock_tracker_page;
 pub mod auto_ingest_page;
 pub mod alula_bible_page;
+pub mod cv_portfolio_page;
  

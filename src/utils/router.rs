@@ -14,6 +14,10 @@ pub enum Route {
     ContactPage,
     #[at["/stock_tracker"]]
     StockTrackerPage,
+    #[at["/alula_bible"]]
+    AlulaBiblePage,
+    #[at["/auto_ingest_page"]]
+    AutoIngestPage,
     #[at["/info"]]
     Info,
     #[at["/landing"]]
@@ -26,6 +30,8 @@ fn switch(routes: Route) -> Html {
         Route::HomePage => html! {<HomePage />},
         Route::InspektPage => html! { <InspektPage /> },
         Route::StockTrackerPage => html! { <StockTrackerPage /> },
+        Route::AlulaBiblePage => html! { <AlulaBiblePage /> },
+        Route::AutoIngestPage => html! { <AutoIngestPage /> },
         Route::ContactPage => html! { <ContactPage /> },
         Route::LandingPage => html! { <LandingPage /> },
         Route::Info => html! { <Info /> },
