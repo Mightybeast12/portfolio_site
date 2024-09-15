@@ -43,6 +43,7 @@ Inspekt checks all aspects of a **DCP**(*Digital Cinema Package*)
 - **Asset Timing Checks** 
 - **Atmos Sync Test**: Broken Sync trak validation
 - **PDF and HTML Outputs**: Exports results into a portable format 
+- ****: Exports results into a portable format 
  
     "#;
     html!(
