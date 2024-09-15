@@ -6,6 +6,7 @@ use crate::utils::mark_down_utils;
 use crate::utils::card_elements;
 use crate::page_builder::code_show_case_elements;
 use crate::utils::router::Route; 
+use crate::page_builder::inspekt_showcase_page; 
  
 fn create_alula_auto_ingest_markdown() -> Html {
     let markdown = r#"
@@ -36,6 +37,17 @@ pub fn home_page() -> Html {
     html!(
         <div class="home-container">
             <div class="markdown-container"> 
+                {inspekt_showcase_page::inspekt_markdown_intro_markdown()}
+                <Link<Route> to={Route::InspektPage} >
+                    <div class="button-20-container">
+                        <div class="button-20">  
+                            <span class="button-20-text">{"More"}</span>   
+                            <span class="button-20-arrow"></span>   
+                        </div>
+                    </div>
+                </Link<Route>>
+            </div>
+            <div class="markdown-container"> 
                 {create_alula_auto_ingest_markdown()}
                 <Link<Route> to={Route::InspektPage} >
                     <div class="button-20-container">
@@ -48,13 +60,13 @@ pub fn home_page() -> Html {
             </div>
             <div class="markdown-container"> 
                 {create_alula_bible_markdown()}
-                {code_show_case_elements::auto_ingest_docker_container_showcase()} 
                 <div class="button-20-container"> 
                     <div class="button-20">  
                         <span class="button-20-text">{"Check out"}</span>   
                         <span class="button-20-arrow"></span>   
                     </div>
                 </div>
+                {code_show_case_elements::auto_ingest_docker_container_showcase()} 
             </div> 
             {code_show_case_elements::rust_docker_container_showcase()} 
         </div>

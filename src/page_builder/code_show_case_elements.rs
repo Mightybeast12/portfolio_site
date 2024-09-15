@@ -10,7 +10,7 @@ pub fn rust_docker_container_showcase() -> Html {
  
 pub fn auto_ingest_docker_container_showcase() -> Html {
     let title = "Auto Ingest Dockerfile".to_string(); 
-    let file = "static/AutoIngest/AutoIngest Dockerfile".to_string();
+    let file = "static/auto_ingest/docker_build".to_string();
     card_elements::create_dynamic_styled_markdown(title, file) 
     
 }

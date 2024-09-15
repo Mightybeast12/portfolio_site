@@ -4,7 +4,7 @@ use crate::utils::image_utils::image_carousel_builder;
 use crate::utils::mark_down_utils;
 use crate::utils::card_elements;
 
-fn inspekt_markdown_intro_markdown() -> Html {
+pub fn inspekt_markdown_intro_markdown() -> Html {
     let markdown_input = r#"
 # Inspekt
 ---  
