@@ -5,6 +5,7 @@ html {
 
 h1 {
     color: antiquewhite; 
+    margin-left: 20px; 
 } 
 
 ul {
@@ -14,6 +15,8 @@ h2 {
     color: antiquewhite; 
 } 
 p {
+    margin-left: 7%; 
+    margin-right: auto; 
     color: whitesmoke;
     max-width: 800px; 
     text-align: left; 
@@ -25,9 +28,11 @@ p {
 .markdown-container{
     width: fit-content; 
     margin: 0 auto; 
-    padding: 20px;
     background-color: rgb(43, 43, 42); 
     border-radius: 8px; 
+    padding-top: 20px; 
+    padding-bottom: 20px; 
+    margin-bottom: 20px; 
 } 
  
 .inspekt-play-container{
@@ -42,3 +47,23 @@ p {
     min-height: fit-content; 
 } 
  
+/* .no-underline {
+    text-decoration: none;
+    color: inherit; 
+}
+
+.no-underline:hover {
+    text-decoration: none; 
+} */
+
+/* Removes underline from all links */
+a {
+    text-decoration: none;
+    color: inherit; 
+}
+
+/* Optional: removes underline on hover and focus */
+a:hover,
+a:focus {
+    text-decoration: none;
+}
