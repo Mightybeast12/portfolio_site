@@ -38,33 +38,35 @@ pub fn home_page() -> Html {
         <div class="home-container">
             <div class="markdown-container"> 
                 {inspekt_showcase_page::inspekt_markdown_intro_markdown()}
-                <Link<Route> to={Route::InspektPage} >
-                    <div class="button-20-container">
+                <div class="button-20-container">
+                    <Link<Route> to={Route::InspektPage} classes="button-link">
                         <div class="button-20">  
-                            <span class="button-20-text">{"More"}</span>   
-                            <span class="button-20-arrow"></span>   
-                        </div>
-                    </div>
-                </Link<Route>>
+                                <span class="button-20-text">{"More"}</span>   
+                                <span class="button-20-arrow"></span>  
+                                </div>
+                    </Link<Route>>
+                </div>
             </div>
             <div class="markdown-container"> 
                 {create_alula_auto_ingest_markdown()}
-                <Link<Route> to={Route::InspektPage} >
-                    <div class="button-20-container">
+                <div class="button-20-container">
+                    <Link<Route> to={Route::InspektPage} classes="button-link">
                         <div class="button-20">  
-                            <span class="button-20-text">{"Check out"}</span>   
-                            <span class="button-20-arrow"></span>   
-                        </div>
-                    </div>
-                </Link<Route>>
+                                <span class="button-20-text">{"Check out"}</span>   
+                                <span class="button-20-arrow"></span>  
+                                </div>
+                    </Link<Route>>
+                </div>
             </div>
             <div class="markdown-container"> 
                 {create_alula_bible_markdown()}
                 <div class="button-20-container"> 
-                    <div class="button-20">  
-                        <span class="button-20-text">{"Check out"}</span>   
-                        <span class="button-20-arrow"></span>   
-                    </div>
+                    <Link<Route> to={Route::InspektPage} classes="button-link">
+                        <div class="button-20">  
+                                <span class="button-20-text">{"Check out"}</span>   
+                                <span class="button-20-arrow"></span>  
+                                </div>
+                    </Link<Route>>
                 </div>
                 {code_show_case_elements::auto_ingest_docker_container_showcase()} 
             </div> 

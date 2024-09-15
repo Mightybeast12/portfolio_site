@@ -6,7 +6,8 @@ PROJECT_ID="portfolio-site-434710"
 IMAGE_NAME="rust-image-cv-image"
 VERSION="latest"
 REGION="europe-west9"
-REPO_NAME="cv-portfolio-repo" # Name of the repository in Artifact Registry
+REPO_NAME="cv-portfolio-repo" 
+################################ 
 REPO="${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPO_NAME}/${IMAGE_NAME}:${VERSION}"
 
 # Authenticate Docker with Google Cloud Artifact Registry
