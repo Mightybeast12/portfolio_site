@@ -6,3 +6,6 @@ pub mod info_page;
 pub mod contact_page; 
 pub mod landing_page;
 pub mod stock_tracker_page;
+pub mod auto_ingest_page;
+pub mod alula_bible_page;
+ 

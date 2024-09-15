@@ -29,9 +29,10 @@ Perfect for both casual investors and those looking for a quick snapshot of stoc
  
 fn inspekt_first_image_show_case() -> Html {
 let images = vec![
+    "stock_tracker/firo_tracker_dashboard.png".to_string(),
+    "stock_tracker/dcf_showcase.png".to_string(),
    "stock_tracker/10_yr_forcast.png".to_string(),
    "stock_tracker/Cash_Flow_Statement.png".to_string(),
-   "stock_tracker/firo_tracker_dashboard.png".to_string(),
    "stock_tracker/Ratios.png".to_string(),
    "stock_tracker/automatic_changing_show.png".to_string(),
    "stock_tracker/code_import_style.png".to_string(),
@@ -41,7 +42,6 @@ let images = vec![
    "stock_tracker/dcf_chart.png".to_string(),
    "stock_tracker/Income_Statement.png".to_string(),
    "stock_tracker/Book_Value.png".to_string(),
-   "stock_tracker/dcf_showcase.png".to_string(),
    "stock_tracker/Insider_data.png".to_string(),
 ];
 
