@@ -35,10 +35,19 @@ pub fn home_page() -> Html{
         <div class="home-container">
             <div class = "markdown-container"> 
             {create_alula_auto_ingest_markdown()}
+            <div class = "button-20-container"> 
+                <div class="button-20">  
+                    <span class="button-20-text">{"Check out"}</span>   
+                    <span class="button-20-arrow"></span>   
+                </div>
+            </div>
+            <div> 
             {create_alula_bible_markdown()}
             </div> 
             {code_show_case_elements::auto_ingest_docker_container_showcase()} 
             {code_show_case_elements::rust_docker_container_showcase()} 
+            </div>
+             
         </div>
     )
 }

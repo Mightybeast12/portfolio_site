@@ -58,6 +58,7 @@ fn inspekt_report_play() -> Html {
     html! {
         <div class = "inspekt-play-container">
             <h1 style = "margin-left: 40%;"> {"Test Report Example"} </h1>
+            <h4 style = "margin-left: 40%;"> {"Use Firefox, might not display correctly"} </h4>
             { Html::from_html_unchecked(AttrValue::from(html_content)) }
         </div>
     }
