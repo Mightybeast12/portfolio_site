@@ -54,7 +54,7 @@ Inspekt checks all aspects of a **DCP**(*Digital Cinema Package*)
 }
 
 fn inspekt_report_play() -> Html {
-    let html_content = include_str!("../../static/inspekt/test_report.html");
+    let html_content = include_str!("../../static/inspekt/test_report.html").to_string();
     html! {
         <div class = "inspekt-play-container">
             <h1 style = "margin-left: 40%;"> {"Test Report Example"} </h1>

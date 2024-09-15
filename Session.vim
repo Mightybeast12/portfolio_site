@@ -14,11 +14,11 @@ if &shortmess =~ 'A'
 else
   set shortmess=aoO
 endif
-badd +0 ~/.vimrc
+badd +0 ~/.zshrc
 argglobal
 %argdel
-$argadd ~/.vimrc
-edit ~/.vimrc
+$argadd ~/.zshrc
+edit ~/.zshrc
 argglobal
 setlocal fdm=manual
 setlocal fde=0
@@ -30,11 +30,11 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 144 - ((9 * winheight(0) + 7) / 15)
+let s:l = 27 - ((3 * winheight(0) + 7) / 15)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 144
+keepjumps 27
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0
