@@ -8,7 +8,16 @@ pub fn inspekt_markdown_intro_markdown() -> Html {
     let markdown_input = r#"
 # Inspekt
 ---  
-A Linux-based command-line tool meticulously designed for the inspection of Digital Cinema Packages (DCPs). Developed to meet the needs of mastering teams, it performs over 180 rigorous checks, including hash validation, JPEG2000 bit-depth verification, and CCAP/subtitle language consistency. Additionally, Inspekt verifies metadata in Composition Playlists (CPLs) and dynamically inspects DCPs across various package types, such as SMPTE A 2.1/2 and IOP packages. By automating these essential checks, Inspekt significantly enhances productivity and ensures that each DCP complies with industry standards.
+
+A **Linux-based** command-line tool meticulously designed for the inspection of **Digital Cinema Packages (DCPs)**, tailored to meet the rigorous demands of mastering teams.
+
+## Features
+**Comprehensive Checks:** Performs over **180** essential checks, including hash validation, **JPEG2000** bit-depth verification, and **CCAP/subtitle** language consistency.
+**Metadata Verification:** Inspects and verifies metadata in **Composition Playlists (CPLs)**, ensuring accuracy and compliance with industry standards.
+**Dynamic Package Inspection:** Supports a wide range of DCP types, including **SMPTE A 2.1/2** and **IOP** packages.
+**Automation for Productivity:** Automates crucial inspection tasks, significantly boosting the productivity of mastering teams and reducing manual errors.
+**Industry Standard Compliance:** Ensures each DCP adheres to strict industry standards, guaranteeing the quality and consistency of digital cinema content.
+
 ######
  **Git**: Version Control **|** 
  **Docker**: Auto deployment/building **|**

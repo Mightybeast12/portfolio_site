@@ -12,6 +12,10 @@ pub fn contact_route() -> Html {
     contact_page::contact_page()
 }
  
+#[function_component(StockTrackerPage)]
+pub fn about_route() -> Html {
+    stock_tracker_page::stock_tracker_page() 
+}
 #[function_component(Info)]
 pub fn about_route() -> Html {
     info_page::info_page() 

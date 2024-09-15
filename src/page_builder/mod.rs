@@ -5,3 +5,4 @@ pub mod inspekt_showcase_page;
 pub mod info_page; 
 pub mod contact_page; 
 pub mod landing_page;
+pub mod stock_tracker_page;

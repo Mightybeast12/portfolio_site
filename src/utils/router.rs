@@ -12,6 +12,8 @@ pub enum Route {
     InspektPage,
     #[at("/contact")]
     ContactPage,
+    #[at["/stock_tracker"]]
+    StockTrackerPage,
     #[at["/info"]]
     Info,
     #[at["/landing"]]
@@ -23,6 +25,7 @@ fn switch(routes: Route) -> Html {
     match routes {
         Route::HomePage => html! {<HomePage />},
         Route::InspektPage => html! { <InspektPage /> },
+        Route::StockTrackerPage => html! { <StockTrackerPage /> },
         Route::ContactPage => html! { <ContactPage /> },
         Route::LandingPage => html! { <LandingPage /> },
         Route::Info => html! { <Info /> },
