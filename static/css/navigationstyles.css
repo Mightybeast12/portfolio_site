@@ -131,17 +131,17 @@
 } 
 .navbar-img  img{
   position: absolute; 
-  right: 15px; 
-  width: 15vw;
   max-width: 9vw; 
-  min-width: 130px; 
+  min-width: 140px; 
   height: auto;
   background-color: hsl(34, 29%, 60%);
   border-radius: 1.5vw; 
   margin-top: 3vh;
+  left: 50%; 
+  transform: translateX(-50%);
 } 
 .navbar-container {
-  margin-bottom: 17.9vh; 
+  margin-bottom: 19.9vh; 
 
 } 
 

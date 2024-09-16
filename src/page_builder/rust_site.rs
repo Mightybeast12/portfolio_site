@@ -28,6 +28,7 @@ fn portfolio_showcase_images() -> Html {
 let images = vec![
     "rust_site/cloud_run_home_page.png".to_string(),
     "rust_site/auto_deploy_cloud.png".to_string(),
+    "rust_site/github_home.png".to_string(),
     "rust_site/button_styles.png".to_string(),
     "rust_site/artificat_docker.png".to_string(),
     "rust_site/creating_elements.png".to_string(),

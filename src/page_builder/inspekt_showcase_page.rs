@@ -128,10 +128,10 @@ pub fn inspekt_page() -> Html {
             {inspekt_markdown_intro_markdown()}
             {inspekt_first_image_show_case()}
             {inspek_part_two_markdown()}
-            {inspekt_report_play()}
             {inspekt_second_image_show_case()}
             {inspekt_third_image_show_case()}
             {inspekt_all_image()}
+            {inspekt_report_play()}
         </div>
     }
 }
