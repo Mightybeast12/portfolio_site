@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Set variables
-APP_NAME="********************"
-PROJECT_ID="*********************"
+APP_NAME="firat-portfolio-site"
+PROJECT_ID="portfolio-site-434710"
 IMAGE_NAME="rust-image-cv-image"
 VERSION="latest"
 REGION="europe-west9"
