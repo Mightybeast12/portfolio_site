@@ -21,9 +21,15 @@ pub fn stock_tracker_route() -> Html {
 pub fn alula_bible_route() -> Html {
     alula_bible_page::alula_bible_page() 
 }
+ 
 #[function_component(AutoIngestPage)]
 pub fn alula_bible_route() -> Html {
     auto_ingest_page::auto_ingest_page() 
+}
+ 
+#[function_component(RustSite)]
+pub fn alula_bible_route() -> Html {
+    rust_site::rust_site() 
 }
  
 #[function_component(Info)]

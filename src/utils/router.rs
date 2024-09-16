@@ -8,18 +8,28 @@ use super::layout::Layout;
 pub enum Route {
     #[at("/")]
     HomePage,
+     
     #[at("/inspekt")]
     InspektPage,
+     
     #[at("/contact")]
     ContactPage,
+     
     #[at["/stock_tracker"]]
     StockTrackerPage,
+     
     #[at["/alula_bible"]]
     AlulaBiblePage,
+     
     #[at["/auto_ingest_page"]]
     AutoIngestPage,
+     
+    #[at["/rust_site"]]
+    RustSite,
+     
     #[at["/info"]]
     Info,
+     
     #[at["/landing"]]
     LandingPage,
 
@@ -32,6 +42,7 @@ fn switch(routes: Route) -> Html {
         Route::StockTrackerPage => html! { <StockTrackerPage /> },
         Route::AlulaBiblePage => html! { <AlulaBiblePage /> },
         Route::AutoIngestPage => html! { <AutoIngestPage /> },
+        Route::RustSite => html! { <RustSite /> },
         Route::ContactPage => html! { <ContactPage /> },
         Route::LandingPage => html! { <LandingPage /> },
         Route::Info => html! { <Info /> },

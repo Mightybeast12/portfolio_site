@@ -10,10 +10,24 @@ use crate::page_builder::inspekt_showcase_page;
 use crate::page_builder::stock_tracker_page; 
 use crate::page_builder::alula_bible_page; 
 use crate::page_builder::auto_ingest_page; 
+use crate::page_builder::rust_site; 
 
 pub fn home_page() -> Html {
     html! {
         <div class="home-container">
+            //Portfolio Page 
+            <div class="markdown-container"> 
+                {rust_site::port_folio_site_markdown()}
+                <div class="button-20-container">
+                    <Link<Route> to={Route::RustSite} classes="button-link">
+                        <div class="button-20">  
+                            <span class="button-20-text">{"CHECK OUT"}</span>   
+                            <span class="button-20-arrow"></span>  
+                        </div>
+                    </Link<Route>>
+                </div>
+            </div>
+            // Portfolio Page End 
             //Inspekt Page 
             <div class="markdown-container"> 
                 {inspekt_showcase_page::inspekt_markdown_intro_markdown()}
