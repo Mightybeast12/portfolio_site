@@ -1,6 +1,3 @@
-# Cloud Run Domain Mapping for custom domain
-# This replaces the expensive load balancer with free domain mapping
-
 # Domain mapping for the portfolio site
 resource "google_cloud_run_domain_mapping" "portfolio_domain" {
   location = var.region
