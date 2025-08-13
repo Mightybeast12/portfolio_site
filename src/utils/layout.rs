@@ -1,13 +1,14 @@
-use yew::prelude::*;
+use crate::styles::layout::layout as styles;
 use crate::utils::navbar::NavBar;
+use yew::prelude::*;
 
 #[function_component(Layout)]
 pub fn layout(props: &Props) -> Html {
     html! {
-        <div>
-            <NavBar />  
+        <div class={styles::layout_main()}>
+            <NavBar />
             <main>
-                { for props.children.iter() } 
+                { for props.children.iter() }
             </main>
         </div>
     }

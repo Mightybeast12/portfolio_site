@@ -1,0 +1,70 @@
+# Build artifacts
+target/
+dist/
+node_modules/
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.vim/
+Session.vim
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Documentation
+*.md
+README*
+CHANGELOG*
+LICENSE*
+CONTRIBUTING*
+
+# Environment files
+.env*
+*.env
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Testing
+coverage/
+.nyc_output/
+
+# Terraform (not needed in Docker build)
+terraform/
+*.tf
+*.tfvars
+*.tfstate*
+
+# Scripts (not needed in Docker build)
+scripts/
+build.sh
+
+# Static assets that might be large and not needed for build
+# (uncomment if you have large files you don't want in build context)
+# static/videos/
+# static/large-images/
+
+# Development files
+settings
+.settings/
