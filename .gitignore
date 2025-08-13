@@ -1,1 +1,29 @@
-/target
+# Existing gitignore content
+target/
+dist/
+.DS_Store
+*.log
+
+# Terraform
+terraform/.terraform/
+terraform/.terraform.lock.hcl
+terraform/terraform.tfstate
+terraform/terraform.tfstate.backup
+terraform/*.tfplan
+
+# Scripts runtime files
+scripts/.last_version
+scripts/.last_image
+
+# Environment specific files
+terraform/*.tfvars.local
+terraform/secrets.tf
+
+# IDE
+.idea/
+.vscode/settings.json
+*.swp
+*.swo
+
+# OS
+Thumbs.db
