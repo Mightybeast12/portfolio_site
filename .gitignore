@@ -27,3 +27,12 @@ terraform/secrets.tf
 
 # OS
 Thumbs.db
+/target
+**/*.rs.bk
+*.pdb
+*~
+.idea
+.vscode
+*.iml
+.env
+**/*.rs.bk
