@@ -777,9 +777,9 @@ checksum = "8a9ee70c43aaf417c914396645a0fa852624801b24ebb7ae78fe8272889ac888"
 
 [[package]]
 name = "hashbrown"
-version = "0.14.5"
+version = "0.15.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e5274423e17b7c9fc20b6e7e208532f9b19825d82dfd615708b70edd83df41f1"
+checksum = "9229cfe53dfd69f0609a49f65461bd93001ea1ef889cd5529dd176593f5338a1"
 
 [[package]]
 name = "hermit-abi"
@@ -816,7 +816,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f8a9aa791c7b5a71b636b7a68207fdebf171ddfc593d9c8506ec4cbc527b6a84"
 dependencies = [
  "implicit-clone-derive",
- "indexmap 2.5.0",
+ "indexmap 1.9.3",
 ]
 
 [[package]]
@@ -826,7 +826,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1bd41bf647018e1da0e32dac34d02135d61d7204cee650e4633eddbd0b23ec38"
 dependencies = [
  "implicit-clone-derive",
- "indexmap 2.5.0",
+ "indexmap 2.10.0",
 ]
 
 [[package]]
@@ -851,12 +851,12 @@ dependencies = [
 
 [[package]]
 name = "indexmap"
-version = "2.5.0"
+version = "2.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "68b900aa2f7301e21c36462b170ee99994de34dff39a4a6a528e80e7376d07e5"
+checksum = "fe4cd85333e22411419a0bcae1297d25e58c9443848b11dc6a86fefe8c78a661"
 dependencies = [
  "equivalent",
- "hashbrown 0.14.5",
+ "hashbrown 0.15.5",
 ]
 
 [[package]]
@@ -1560,7 +1560,7 @@ version = "0.19.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1b5bb770da30e5cbfde35a2d7b9b8a2c4b8ef89548a7a6aeab5c9a576e3e7421"
 dependencies = [
- "indexmap 2.5.0",
+ "indexmap 2.10.0",
  "toml_datetime",
  "winnow",
 ]
@@ -1827,7 +1827,7 @@ dependencies = [
  "futures",
  "gloo 0.10.0",
  "implicit-clone 0.4.9",
- "indexmap 2.5.0",
+ "indexmap 2.10.0",
  "js-sys",
  "prokio",
  "rustversion",
@@ -1845,13 +1845,13 @@ dependencies = [
 [[package]]
 name = "yew"
 version = "0.21.0"
-source = "git+https://github.com/yewstack/yew/#1707f0378498be4ba0b90616dab9ab791553c124"
+source = "git+https://github.com/yewstack/yew/#06845fff9f11f680f3e3404b6a8b9b8b656cfdcd"
 dependencies = [
  "console_error_panic_hook",
  "futures",
  "gloo 0.11.0",
  "implicit-clone 0.5.0",
- "indexmap 2.5.0",
+ "indexmap 2.10.0",
  "js-sys",
  "rustversion",
  "serde",
@@ -1924,7 +1924,7 @@ dependencies = [
 [[package]]
 name = "yew-macro"
 version = "0.21.0"
-source = "git+https://github.com/yewstack/yew/#1707f0378498be4ba0b90616dab9ab791553c124"
+source = "git+https://github.com/yewstack/yew/#06845fff9f11f680f3e3404b6a8b9b8b656cfdcd"
 dependencies = [
  "once_cell",
  "prettyplease",
@@ -1938,7 +1938,7 @@ dependencies = [
 [[package]]
 name = "yew-router"
 version = "0.18.0"
-source = "git+https://github.com/yewstack/yew/#1707f0378498be4ba0b90616dab9ab791553c124"
+source = "git+https://github.com/yewstack/yew/#06845fff9f11f680f3e3404b6a8b9b8b656cfdcd"
 dependencies = [
  "gloo 0.11.0",
  "js-sys",
@@ -1956,7 +1956,7 @@ dependencies = [
 [[package]]
 name = "yew-router-macro"
 version = "0.18.0"
-source = "git+https://github.com/yewstack/yew/#1707f0378498be4ba0b90616dab9ab791553c124"
+source = "git+https://github.com/yewstack/yew/#06845fff9f11f680f3e3404b6a8b9b8b656cfdcd"
 dependencies = [
  "proc-macro2",
  "quote",
