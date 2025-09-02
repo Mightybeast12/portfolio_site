@@ -1,12 +1,13 @@
+use cv_portfolio_site::utils::router::RouterComponent;
 use yew::prelude::*;
-use cv_portfolio_site::*;
-use crate::utils::router::RouterComponent; 
+
 #[function_component(App)]
 fn app() -> Html {
     html! {
-        <RouterComponent/>  
+        <RouterComponent/>
     }
 }
+
 fn main() {
     yew::Renderer::<App>::new().render();
 }

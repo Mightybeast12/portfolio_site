@@ -1,11 +1,9 @@
-use yew::prelude::*; 
-use yew_router::prelude::*; 
- 
-use crate::utils::mark_down_utils;
-use crate::utils::image_utils::image_carousel_builder;
+use yew::prelude::*;
+
 use crate::page_builder::code_show_case_elements;
 use crate::utils::card_elements;
-
+use crate::utils::image_utils::image_carousel_builder;
+use crate::utils::mark_down_utils;
 
 pub fn alula_auto_ingest_markdown() -> Html {
     let markdown = r#"
@@ -29,18 +27,17 @@ Perfect for media teams managing diverse content pipelines and looking for an ef
  **Microsoft Teams**: Notifications\
  **Adaptive Cards**: Interaction and Asset Updates **|**
  **Power Automate**: Teams HTTP Request Handling
- **AWS EC2**: Flask Relay Serve   
-    "# ;
-    mark_down_utils::create_markdown(&markdown) 
+ **AWS EC2**: Flask Relay Serve
+    "#;
+    mark_down_utils::create_markdown(&markdown)
 }
- 
+
 fn notification_scriptshowcase() -> Html {
-     
-    let file = "static/AutoIngest/Notification.py".to_string(); 
-     
-    card_elements::create_dynamic_styled_markdown("Notification - Inspekt".to_string(),file) 
+    let file = "static/AutoIngest/Notification.py".to_string();
+
+    card_elements::create_dynamic_styled_markdown("Notification - Inspekt".to_string(), file)
 }
- 
+
 fn auto_ingest_image_showcase() -> Html {
     let images = vec![
         "auto_ingest/success_message.png".to_string(),
@@ -60,18 +57,16 @@ fn auto_ingest_image_showcase() -> Html {
     }
 }
 
-
 pub fn auto_ingest_page() -> Html {
     html! {
         <div style="display: flex; flex-direction: column; align-items: center;">
-            {alula_auto_ingest_markdown()} 
-            // Images 
-            {auto_ingest_image_showcase()} 
+            {alula_auto_ingest_markdown()}
+            // Images
+            {auto_ingest_image_showcase()}
             <h2> {"Example of Auto Deplyoment"} </h2>
-            {code_show_case_elements::auto_ingest_docker_container_showcase()} 
+            {code_show_case_elements::auto_ingest_docker_container_showcase()}
             <h2> {"Notify Teams Script"} </h2>
             {notification_scriptshowcase()}
         </div>
     }
-
 }

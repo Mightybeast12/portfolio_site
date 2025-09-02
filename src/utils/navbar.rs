@@ -1,8 +1,7 @@
 use yew::prelude::*;
-use yew_router::prelude::*; 
- 
-use crate::utils::router::Route; 
-use yew_router::prelude::*; 
+use yew_router::prelude::*;
+
+use crate::utils::router::Route;
 
 #[function_component(NavBar)]
 pub fn navbar_component() -> Html {
@@ -22,9 +21,9 @@ pub fn navbar_component() -> Html {
                     <li><Link<Route> to={Route::Info}>{"Info"}</Link<Route>></li>
                 </ul>
                 <span class="navbar-img">
-                    <Link<Route> to = {Route::HomePage}> 
+                    <Link<Route> to = {Route::HomePage}>
                         <img src="static/logo_transparent.png" alt="Firat Honca"/>
-                    </Link<Route>> 
+                    </Link<Route>>
                 </span>
             </div>
         </nav>

@@ -1,9 +1,7 @@
-use yew::prelude::*; 
-use yew_router::prelude::*; 
- 
+use yew::prelude::*;
+
 use crate::utils::mark_down_utils;
-use crate::utils::image_utils::image_carousel_builder;
- 
+
 pub fn create_alula_bible_markdown() -> Html {
     let markdown = r#"
 # Alula Bible
@@ -20,33 +18,14 @@ A custom **Excel** workflow designed for handling Apple titles and generating la
 Ideal for professionals dealing with high volumes of data needing quick and accurate labeling solutions!
 
 **Python** **|** **Excel** **|** **Windows**
-    "# ; 
-    mark_down_utils::create_markdown(&markdown) 
- 
-}
- 
- 
-fn alula_bible_image_showcase() -> Html {
-let images = vec![
-    "stock_tracker/firo_tracker_dashboard.png".to_string(),
-    "put images".to_string(),
-];
-
-    html! {
-        <div>
-            {image_carousel_builder(images)}
-        </div>
-    }
+    "#;
+    mark_down_utils::create_markdown(&markdown)
 }
 
- 
-  
 pub fn alula_bible_page() -> Html {
     html! {
         <div style="display: flex; flex-direction: column; align-items: center;">
-            {create_alula_bible_markdown()} 
-             
+            {create_alula_bible_markdown()}
         </div>
-    
     }
 }

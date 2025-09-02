@@ -1,13 +1,12 @@
 use yew::prelude::*;
- 
+
 use crate::utils::image_utils::image_carousel_builder;
 use crate::utils::mark_down_utils;
-use crate::utils::card_elements;
 
 pub fn inspekt_markdown_intro_markdown() -> Html {
     let markdown_input = r#"
 # Inspekt
----  
+---
 
 A **Linux-based** command-line tool meticulously designed for the inspection of **Digital Cinema Packages (DCPs)**, tailored to meet the rigorous demands of mastering teams.
 
@@ -19,9 +18,9 @@ A **Linux-based** command-line tool meticulously designed for the inspection of 
 **Industry Standard Compliance:** Ensures each DCP adheres to strict industry standards, guaranteeing the quality and consistency of digital cinema content.
 
 ######
- **Git**: Version Control **|** 
+ **Git**: Version Control **|**
  **Docker**: Auto deployment/building **|**
- **Linux**: OS **|** **Python** 
+ **Linux**: OS **|** **Python**
     "#;
     html!(
         <div class="markdown-container">
@@ -43,23 +42,23 @@ fn inspekt_first_image_show_case() -> Html {
     }
 }
 
-fn inspek_part_two_markdown()  -> Html{
+fn inspek_part_two_markdown() -> Html {
     let markdown_input = r#"
 ---
-Inspekt checks all aspects of a **DCP**(*Digital Cinema Package*) 
+Inspekt checks all aspects of a **DCP**(*Digital Cinema Package*)
 - *XML* validation
 - *JPEG2000* guard bit validation (**Causes older Projectors to crash**)
-- **Asset Timing Checks** 
+- **Asset Timing Checks**
 - **Atmos Sync Test**: Broken Sync trak validation
-- **PDF and HTML Outputs**: Exports results into a portable format 
-- ****: Exports results into a portable format 
- 
+- **PDF and HTML Outputs**: Exports results into a portable format
+- ****: Exports results into a portable format
+
     "#;
     html!(
         <div class="markdown-container">
             {mark_down_utils::create_markdown(&markdown_input)}
         </div>
-    ) 
+    )
 }
 
 fn inspekt_report_play() -> Html {
@@ -72,7 +71,7 @@ fn inspekt_report_play() -> Html {
         </div>
     }
 }
- 
+
 fn inspekt_second_image_show_case() -> Html {
     let images = vec![
         "inspekt/webuiexpanded.png".to_string(),
@@ -86,7 +85,7 @@ fn inspekt_second_image_show_case() -> Html {
         </div>
     }
 }
- 
+
 fn inspekt_third_image_show_case() -> Html {
     let images = vec![
         "inspekt/file_utils.png".to_string(),
@@ -98,7 +97,6 @@ fn inspekt_third_image_show_case() -> Html {
         </div>
     }
 }
- 
 
 fn inspekt_all_image() -> Html {
     let images = vec![
@@ -113,7 +111,6 @@ fn inspekt_all_image() -> Html {
         "inspekt/recursive_dict.png".to_string(),
         "inspekt/reeloverview.png".to_string(),
         "inspekt/webuiexpanded.png".to_string(),
-         
     ];
     html! {
         <div>

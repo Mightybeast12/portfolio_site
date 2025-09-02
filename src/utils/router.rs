@@ -1,51 +1,49 @@
-
+use super::layout::Layout;
+use crate::page_builder::*;
 use yew::prelude::*;
 use yew_router::prelude::*;
-use crate::utils::pages::*;
-use super::layout::Layout; 
 
 #[derive(Routable, PartialEq, Clone, Debug)]
 pub enum Route {
     #[at("/")]
     HomePage,
-     
+
     #[at("/inspekt")]
     InspektPage,
-     
+
     #[at("/contact")]
     ContactPage,
-     
-    #[at["/stock_tracker"]]
-    StockTrackerPage,
-     
-    #[at["/alula_bible"]]
-    AlulaBiblePage,
-     
-    #[at["/auto_ingest_page"]]
-    AutoIngestPage,
-     
-    #[at["/rust_site"]]
-    RustSite,
-     
-    #[at["/info"]]
-    Info,
-     
-    #[at["/landing"]]
-    LandingPage,
 
+    #[at("/stock_tracker")]
+    StockTrackerPage,
+
+    #[at("/alula_bible")]
+    AlulaBiblePage,
+
+    #[at("/auto_ingest_page")]
+    AutoIngestPage,
+
+    #[at("/rust_site")]
+    RustSite,
+
+    #[at("/info")]
+    Info,
+
+    #[at("/landing")]
+    LandingPage,
 }
 
 fn switch(routes: Route) -> Html {
     match routes {
-        Route::HomePage => html! {<HomePage />},
-        Route::InspektPage => html! { <InspektPage /> },
-        Route::StockTrackerPage => html! { <StockTrackerPage /> },
-        Route::AlulaBiblePage => html! { <AlulaBiblePage /> },
-        Route::AutoIngestPage => html! { <AutoIngestPage /> },
-        Route::RustSite => html! { <RustSite /> },
-        Route::ContactPage => html! { <ContactPage /> },
-        Route::LandingPage => html! { <LandingPage /> },
-        Route::Info => html! { <Info /> },
+        Route::HomePage => home_page::home_page(),
+        Route::InspektPage => inspekt_showcase_page::inspekt_page(),
+        Route::StockTrackerPage => stock_tracker_page::stock_tracker_page(),
+        Route::AlulaBiblePage => alula_bible_page::alula_bible_page(),
+        Route::AutoIngestPage => auto_ingest_page::auto_ingest_page(),
+        Route::RustSite => rust_site::rust_site(),
+        Route::ContactPage => contact_page::contact_page(),
+        Route::LandingPage => landing_page::landing_page(),
+        Route::Info => info_page::info_page(),
     }
 }
 
@@ -53,9 +51,9 @@ fn switch(routes: Route) -> Html {
 pub fn router_component() -> Html {
     html! {
         <BrowserRouter>
-            <Layout> 
+            <Layout>
                 <Switch<Route> render={switch} />
-            </Layout> 
+            </Layout>
         </BrowserRouter>
     }
 }
