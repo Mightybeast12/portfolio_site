@@ -1,8 +1,11 @@
 [build]
 out = "dist"
 
- 
+[css]
+# Enable CSS import processing
+process_imports = true
+minify          = true
+
 [watch]
 reload = true
-path = "static/**/*.css"
- 
+path   = "static/**/*.css"

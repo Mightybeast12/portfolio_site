@@ -1,4 +1,4 @@
-use super::layout::Layout;
+use crate::components::layout::Layout;
 use crate::page_builder::*;
 use yew::prelude::*;
 use yew_router::prelude::*;
@@ -51,7 +51,7 @@ fn switch(routes: Route) -> Html {
 pub fn router_component() -> Html {
     html! {
         <BrowserRouter>
-            <Layout>
+            <Layout show_navbar={true}>
                 <Switch<Route> render={switch} />
             </Layout>
         </BrowserRouter>
