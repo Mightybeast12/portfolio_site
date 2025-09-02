@@ -16,19 +16,21 @@ h3 {
 ul {
     color: antiquewhite;
     padding-left: 25px;
+    max-width: 800px;
+    margin: 0 auto;
 }
 
 li {
     color: whitesmoke;
-    margin-bottom: 8px;
-    line-height: 1.6;
-    list-style-type: disc;
-    padding-left: 5px;
+    margin-bottom: 12px;
+    line-height: 1.8;
+    list-style-type: none;
+    padding-left: 0;
+    text-align: left;
 }
 
 li::marker {
-    color: #007bff;
-    font-size: 1.2em;
+    content: "";
 }
 
 /* Enhanced list styling */
@@ -37,19 +39,50 @@ ul ul {
     margin-bottom: 8px;
 }
 
+/* Home page specific styling - no bullets */
+.home-container ul {
+    text-align: left;
+    margin: 20px auto;
+    max-width: 750px;
+}
+
+.home-container li {
+    position: relative;
+    padding-left: 0;
+    margin-bottom: 15px;
+    line-height: 1.8;
+    list-style: none;
+    font-size: 1.05em;
+}
+
+.home-container li:before {
+    content: "";
+}
+
+/* Alternative home page bullet style */
+.home-container .highlight-list li:before {
+    content: "";
+}
+
 /* Special styling for feature lists */
+.feature-list {
+    max-width: 750px;
+    margin: 0 auto;
+}
+
 .feature-list li {
     position: relative;
-    padding-left: 10px;
-    margin-bottom: 10px;
+    padding-left: 25px;
+    margin-bottom: 12px;
+    list-style: none;
 }
 
 .feature-list li:before {
-    content: "✓";
     color: #28a745;
     font-weight: bold;
     position: absolute;
-    left: -15px;
+    left: 0;
+    top: 2px;
 }
 
 h2 {
@@ -99,4 +132,139 @@ a {
 a:hover,
 a:focus {
     text-decoration: none;
+}
+
+/* Info Page Styles */
+.info-page-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.info-content {
+    text-align: left;
+    max-width: none;
+}
+
+.profile-section,
+.skills-section,
+.contact-section {
+    margin-bottom: 40px;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.02);
+    border-radius: 12px;
+    border: 1px solid rgba(0, 123, 255, 0.2);
+}
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    margin-top: 20px;
+}
+
+.skill-category {
+    background-color: rgba(0, 123, 255, 0.05);
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 123, 255, 0.1);
+}
+
+.skill-category h3 {
+    color: #007bff;
+    margin-bottom: 15px;
+    font-size: 1.2em;
+    font-weight: 600;
+}
+
+.contact-methods {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 25px;
+}
+
+.email-section,
+.social-section {
+    background-color: rgba(0, 123, 255, 0.03);
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid rgba(0, 123, 255, 0.15);
+    text-align: center;
+}
+
+.email-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 15px 20px;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 123, 255, 0.2);
+    margin-top: 15px;
+    transition: all 0.3s ease;
+}
+
+.email-container:hover {
+    background-color: rgba(0, 123, 255, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
+}
+
+.email-icon {
+    font-size: 1.5em;
+    filter: drop-shadow(0 0 8px rgba(0, 123, 255, 0.5));
+}
+
+.email-address {
+    color: #007bff;
+    font-weight: 500;
+    font-size: 1.1em;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.5px;
+}
+
+.social-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.email-section h3,
+.social-section h3 {
+    color: #007bff;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+    font-weight: 600;
+}
+
+.info-content h2 {
+    color: #007bff;
+    border-bottom: 2px solid rgba(0, 123, 255, 0.3);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.info-content p {
+    margin: 15px 0;
+    line-height: 1.7;
+    color: #e0e0e0;
+}
+
+@media (max-width: 768px) {
+    .skills-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .social-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .info-page-container {
+        padding: 10px;
+    }
 }
