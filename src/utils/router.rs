@@ -31,6 +31,22 @@ pub enum Route {
 
     #[at("/landing")]
     LandingPage,
+
+    // New repository showcase pages
+    #[at("/portfolio_site")]
+    PortfolioSitePage,
+
+    #[at("/firo_logger")]
+    FiroLoggerPage,
+
+    #[at("/css_to_rust_converter")]
+    CssToRustConverterPage,
+
+    #[at("/game_score_tracker")]
+    GameScoreTrackerPage,
+
+    #[at("/gitlab_terraform")]
+    GitlabTerraformPage,
 }
 
 fn switch(routes: Route) -> Html {
@@ -44,6 +60,11 @@ fn switch(routes: Route) -> Html {
         Route::ContactPage => contact_page::contact_page(),
         Route::LandingPage => landing_page::landing_page(),
         Route::Info => info_page::info_page(),
+        Route::PortfolioSitePage => portfolio_site_page::portfolio_site_page(),
+        Route::FiroLoggerPage => firo_logger_page::firo_logger_page(),
+        Route::CssToRustConverterPage => css_to_rust_converter_page::css_to_rust_converter_page(),
+        Route::GameScoreTrackerPage => game_score_tracker_page::game_score_tracker_page(),
+        Route::GitlabTerraformPage => gitlab_terraform_page::gitlab_terraform_page(),
     }
 }
 

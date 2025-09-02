@@ -15,6 +15,41 @@ h3 {
 
 ul {
     color: antiquewhite;
+    padding-left: 25px;
+}
+
+li {
+    color: whitesmoke;
+    margin-bottom: 8px;
+    line-height: 1.6;
+    list-style-type: disc;
+    padding-left: 5px;
+}
+
+li::marker {
+    color: #007bff;
+    font-size: 1.2em;
+}
+
+/* Enhanced list styling */
+ul ul {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+/* Special styling for feature lists */
+.feature-list li {
+    position: relative;
+    padding-left: 10px;
+    margin-bottom: 10px;
+}
+
+.feature-list li:before {
+    content: "✓";
+    color: #28a745;
+    font-weight: bold;
+    position: absolute;
+    left: -15px;
 }
 
 h2 {
