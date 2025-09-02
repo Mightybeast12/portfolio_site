@@ -1,0 +1,190 @@
+/* Unique tooltip button component */
+.unique-tooltip-container {
+    position: relative;
+    cursor: pointer;
+    max-width: fit-content;
+    transition: all 0.2s;
+    font-size: 24px;
+    border-radius: 15px;
+    margin-left: 80%;
+    margin-right: 30px;
+    margin-top: 50px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.unique-tooltip {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 20px;
+    width: 200px;
+    height: fit-content;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s;
+    border-radius: 20px;
+    box-shadow: inset 6px 6px 6px rgba(0, 0, 0, 0.2),
+        inset -6px -6px 18px rgba(255, 255, 255, 0.1),
+        6px 6px 18px rgba(0, 0, 0, 0.3),
+        -6px -6px 18px rgba(255, 255, 255, 0.1);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.unique-tooltip-container:hover .unique-tooltip {
+    top: -170px;
+    opacity: 1;
+    background-color: black;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.unique-icon {
+    text-decoration: none;
+    color: #fff;
+    min-width: fit-content;
+    display: block;
+    position: relative;
+}
+
+.unique-layer {
+    width: 80px;
+    height: 80px;
+    transition: transform 0.3s;
+}
+
+.unique-icon:hover .unique-layer {
+    transform: rotate(-35deg) skew(20deg);
+}
+
+.unique-layer span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 95%;
+    width: 95%;
+    border: 5px solid #fff;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.unique-text {
+    color: #595a5a;
+    border-color: #58595a;
+    border-radius: 3px;
+}
+
+.unique-icon:hover .unique-layer span {
+    box-shadow: -1px 1px 4px #353636;
+}
+
+.unique-icon .unique-text {
+    position: absolute;
+    left: 50%;
+    bottom: -10px;
+    opacity: 0;
+    font-weight: 600;
+    transform: translateX(-50%);
+    transition: bottom 0.3s ease, opacity 0.3s ease;
+}
+
+.unique-icon:hover .unique-text {
+    bottom: -50px;
+    opacity: 1;
+}
+
+.unique-icon:hover .unique-layer span:nth-child(1) {
+    opacity: 0.2;
+}
+
+.unique-icon:hover .unique-layer span:nth-child(2) {
+    opacity: 0.4;
+    transform: translate(10px, -10px);
+}
+
+.unique-icon:hover .unique-layer span:nth-child(3) {
+    opacity: 0.6;
+    transform: translate(20px, -20px);
+}
+
+.unique-icon:hover .unique-layer span:nth-child(4) {
+    opacity: 0.8;
+    transform: translate(30px, -30px);
+}
+
+.unique-icon:hover .unique-layer span:nth-child(5) {
+    opacity: 1;
+    transform: translate(40px, -40px);
+}
+
+.unique-layer span.fab {
+    font-size: 40px;
+    line-height: 80px;
+    text-align: center;
+    fill: #353535;
+    background: #000;
+}
+
+.unique-user {
+    display: flex;
+    gap: 10px;
+}
+
+.unique-img {
+    width: 60px;
+    height: 70px;
+    font-size: 30px;
+    font-weight: 800;
+    border: 2px solid #5f5f5f;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+}
+
+.unique-name {
+    font-size: 22px;
+    font-weight: 800;
+    color: #b4b6b8;
+}
+
+.unique-details {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    gap: 5px;
+    color: #fff;
+}
+
+.unique-about {
+    color: #ccc;
+    padding-top: 10px;
+}
+
+.resizable-icon {
+    display: inline-block;
+    fill: #3a3b3b;
+    transition: width 0.3s, height 0.3s;
+}
+
+.unique-icon svg {
+    padding-left: 3px;
+    width: inherit;
+    transition: width 0.3s, height 0.3s;
+}
+
+.unique-icon:hover svg {
+    transform: translate(35px, -35px);
+}
+
+.unique-icon:hover .unique-layer span {
+    transition: all 0.3s ease-in-out;
+}

@@ -1,0 +1,23 @@
+/* Zoom image component */
+.image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
+.zoom-image {
+    border-radius: 10px;
+    display: block;
+    height: auto;
+    margin: 20px 0;
+    transition: transform 0.3s ease;
+    max-width: clamp(80vw, 60vw, 95vw);
+}
+
+.image-container:hover .zoom-image {
+    transform: scale(1.1);
+    margin: scale(1.1);
+}
