@@ -1,0 +1,71 @@
+/* Gruvbox Color Palette Variables */
+:root {
+    /* Gruvbox Dark Background Colors */
+    --gruvbox-dark0-hard: #1d2021;
+    --gruvbox-dark0: #282828;
+    --gruvbox-dark0-soft: #32302f;
+    --gruvbox-dark1: #3c3836;
+    --gruvbox-dark2: #504945;
+    --gruvbox-dark3: #665c54;
+    --gruvbox-dark4: #7c6f64;
+
+    /* Gruvbox Light Colors */
+    --gruvbox-light0-hard: #f9f5d7;
+    --gruvbox-light0: #fbf1c7;
+    --gruvbox-light0-soft: #f2e5bc;
+    --gruvbox-light1: #ebdbb2;
+    --gruvbox-light2: #d5c4a1;
+    --gruvbox-light3: #bdae93;
+    --gruvbox-light4: #a89984;
+
+    /* Gruvbox Bright Colors */
+    --gruvbox-bright-red: #fb4934;
+    --gruvbox-bright-green: #b8bb26;
+    --gruvbox-bright-yellow: #fabd2f;
+    --gruvbox-bright-blue: #83a598;
+    --gruvbox-bright-purple: #d3869b;
+    --gruvbox-bright-aqua: #8ec07c;
+    --gruvbox-bright-orange: #fe8019;
+
+    /* Gruvbox Neutral Colors */
+    --gruvbox-neutral-red: #cc241d;
+    --gruvbox-neutral-green: #98971a;
+    --gruvbox-neutral-yellow: #d79921;
+    --gruvbox-neutral-blue: #458588;
+    --gruvbox-neutral-purple: #b16286;
+    --gruvbox-neutral-aqua: #689d6a;
+    --gruvbox-neutral-orange: #d65d0e;
+
+    /* Gruvbox Faded Colors */
+    --gruvbox-faded-red: #9d0006;
+    --gruvbox-faded-green: #79740e;
+    --gruvbox-faded-yellow: #b57614;
+    --gruvbox-faded-blue: #076678;
+    --gruvbox-faded-purple: #8f3f71;
+    --gruvbox-faded-aqua: #427b58;
+    --gruvbox-faded-orange: #af3a03;
+
+    /* Gray Colors */
+    --gruvbox-gray: #928374;
+
+    /* Semantic Color Assignments */
+    --bg-primary: var(--gruvbox-dark0);
+    --bg-secondary: var(--gruvbox-dark1);
+    --bg-tertiary: var(--gruvbox-dark2);
+    --bg-accent: var(--gruvbox-dark3);
+
+    --text-primary: var(--gruvbox-light1);
+    --text-secondary: var(--gruvbox-light2);
+    --text-muted: var(--gruvbox-light4);
+
+    --accent-primary: var(--gruvbox-bright-blue);
+    --accent-secondary: var(--gruvbox-bright-aqua);
+    --accent-tertiary: var(--gruvbox-bright-yellow);
+    --accent-warning: var(--gruvbox-bright-orange);
+    --accent-success: var(--gruvbox-bright-green);
+    --accent-danger: var(--gruvbox-bright-red);
+
+    --border-primary: var(--gruvbox-dark4);
+    --border-secondary: var(--gruvbox-dark3);
+    --border-accent: var(--gruvbox-neutral-blue);
+}

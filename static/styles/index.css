@@ -1,6 +1,7 @@
 /* Main CSS entry point - imports all component styles using organized folder structure */
 
 /* Base styles */
+@import './base/gruvbox-variables.css';
 @import './base/global.css';
 
 /* Button components */

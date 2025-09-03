@@ -27,10 +27,10 @@
     pointer-events: none;
     transition: all 0.3s;
     border-radius: 20px;
-    box-shadow: inset 6px 6px 6px rgba(0, 0, 0, 0.2),
-        inset -6px -6px 18px rgba(255, 255, 255, 0.1),
-        6px 6px 18px rgba(0, 0, 0, 0.3),
-        -6px -6px 18px rgba(255, 255, 255, 0.1);
+    box-shadow: inset 6px 6px 6px rgba(0, 0, 0, 0.3),
+        inset -6px -6px 18px var(--bg-accent),
+        6px 6px 18px rgba(0, 0, 0, 0.4),
+        -6px -6px 18px var(--bg-accent);
     z-index: 1000;
     display: flex;
     align-items: center;
@@ -40,14 +40,14 @@
 .unique-tooltip-container:hover .unique-tooltip {
     top: -170px;
     opacity: 1;
-    background-color: black;
+    background-color: var(--bg-secondary);
     visibility: visible;
     pointer-events: auto;
 }
 
 .unique-icon {
     text-decoration: none;
-    color: #fff;
+    color: var(--text-primary);
     min-width: fit-content;
     display: block;
     position: relative;
@@ -69,19 +69,19 @@
     left: 0;
     height: 95%;
     width: 95%;
-    border: 5px solid #fff;
+    border: 5px solid var(--text-primary);
     border-radius: 8px;
     transition: all 0.3s;
 }
 
 .unique-text {
-    color: #595a5a;
-    border-color: #58595a;
+    color: var(--text-muted);
+    border-color: var(--border-primary);
     border-radius: 3px;
 }
 
 .unique-icon:hover .unique-layer span {
-    box-shadow: -1px 1px 4px #353636;
+    box-shadow: -1px 1px 4px var(--bg-accent);
 }
 
 .unique-icon .unique-text {
