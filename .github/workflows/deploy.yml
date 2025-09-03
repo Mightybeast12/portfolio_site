@@ -1,0 +1,48 @@
+name: Deploy Portfolio Site
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'Cargo.toml'
+  workflow_dispatch:
+
+env:
+  PROJECT_ID: portfolio-site-434710
+  REGION: europe-west9
+  APP_NAME: firat-portfolio-site
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@v2
+      with:
+        credentials_json: ${{ secrets.GCP_SA_KEY }}
+    
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v2
+    
+    - name: Configure Docker
+      run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
+    
+    - name: Build and Push Docker Image
+      run: |
+        docker build --platform linux/amd64 \
+          -t ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cv-portfolio-repo/rust-image-cv-image:latest \
+          -t ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cv-portfolio-repo/rust-image-cv-image:${{ github.sha }} \
+          .
+        docker push ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cv-portfolio-repo/rust-image-cv-image:latest
+        docker push ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cv-portfolio-repo/rust-image-cv-image:${{ github.sha }}
+    
+    - name: Deploy to Cloud Run
+      run: |
+        gcloud run deploy ${{ env.APP_NAME }} \
+          --image ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cv-portfolio-repo/rust-image-cv-image:latest \
+          --region ${{ env.REGION }} \
+          --platform managed \
+          --allow-unauthenticated

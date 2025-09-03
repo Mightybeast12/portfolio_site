@@ -86,16 +86,9 @@ build_image() {
     echo -e "${YELLOW}Building Docker image for Cloud Run (linux/amd64)...${NC}"
     cd "$ROOT_DIR"
 
-    # Initialize buildx builder if it doesn't exist
-    docker buildx create --use --name cloudrun-builder >/dev/null 2>&1 || true
-
-    # Build the image for linux/amd64 and push both tags
-    docker buildx build \
-        --platform linux/amd64 \
-        -t "$IMAGE_LATEST" \
-        -t "$IMAGE_VERSIONED" \
-        --push \
-        .
+    # Build the image locally first
+    docker build --platform linux/amd64 -t "$IMAGE_LATEST" .
+    docker tag "$IMAGE_LATEST" "$IMAGE_VERSIONED"
 
     echo -e "${GREEN}✓ Image built successfully${NC}"
 }
@@ -103,7 +96,11 @@ build_image() {
 # Push Docker image
 push_image() {
     echo -e "${YELLOW}Pushing Docker images to Artifact Registry...${NC}"
+    
+    # Use docker push directly (gcloud auth configure-docker already set up)
     docker push "$IMAGE_LATEST"
+    docker push "$IMAGE_VERSIONED"
+    
     echo -e "${GREEN}✓ Images pushed successfully${NC}"
 }
 
