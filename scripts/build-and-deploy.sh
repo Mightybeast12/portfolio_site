@@ -104,21 +104,9 @@ build_image() {
 push_image() {
     echo -e "${YELLOW}Pushing Docker images to Artifact Registry...${NC}"
     docker push "$IMAGE_LATEST"
-    docker push "$IMAGE_VERSIONED"
     echo -e "${GREEN}✓ Images pushed successfully${NC}"
 }
 
-# Update Cloud Run service
-update_cloud_run() {
-    echo -e "${YELLOW}Updating Cloud Run service...${NC}"
-    gcloud run deploy "$APP_NAME" \
-        --image "$IMAGE_LATEST" \
-        --region "$REGION" \
-        --platform managed \
-        --project "$PROJECT_ID" \
-        --quiet
-    echo -e "${GREEN}✓ Cloud Run service updated${NC}"
-}
 
 # Get service status
 get_service_status() {
@@ -156,7 +144,6 @@ main() {
     authenticate_gcloud
     build_image
     push_image
-    update_cloud_run
     get_service_status
     cleanup_local_images
 

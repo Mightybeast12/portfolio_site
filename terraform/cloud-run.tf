@@ -26,10 +26,10 @@ resource "google_cloud_run_v2_service" "portfolio_site" {
       }
 
       # Environment variables (add more as needed)
-      env {
-        name  = "PORT"
-        value = "8080"
-      }
+      # env {
+      #   name  = "PORT"
+      #   value = "8080"
+      # }
 
       env {
         name  = "ENVIRONMENT"
@@ -45,7 +45,8 @@ resource "google_cloud_run_v2_service" "portfolio_site" {
 
   depends_on = [
     google_artifact_registry_repository.portfolio_images,
-    google_service_account.cloud_run_service
+    google_service_account.cloud_run_service,
+    null_resource.docker_build
   ]
 }
 
