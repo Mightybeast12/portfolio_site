@@ -7,13 +7,7 @@ resource "null_resource" "docker_build" {
   }
 
   provisioner "local-exec" {
-    command = <<-EOT
-      cd ${path.module}/..
-      gcloud auth configure-docker ${var.region}-docker.pkg.dev --quiet
-      docker buildx build --platform linux/amd64 \
-        -t ${var.region}-docker.pkg.dev/${var.project_id}/${var.repo_name}/${var.image_name}:latest \
-        --push .
-    EOT
+    command = "${path.module}/../scripts/build-and-deploy.sh"
   }
 
   depends_on = [

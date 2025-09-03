@@ -27,3 +27,4 @@ terraform/secrets.tf
 
 # OS
 Thumbs.db
+terraform/.terraform.tfstate.lock.info
