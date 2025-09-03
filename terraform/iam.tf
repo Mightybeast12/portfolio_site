@@ -22,7 +22,7 @@ resource "google_cloud_run_service_iam_member" "public_access" {
 
 # Service account for load balancer (if needed for advanced configurations)
 resource "google_service_account" "load_balancer_service" {
-  account_id   = "${var.app_name}-lb-service"
+  account_id   = "${var.app_name}-lb"
   display_name = "Load Balancer Service Account for ${var.app_name}"
   description  = "Service account used by Load Balancer components"
 }

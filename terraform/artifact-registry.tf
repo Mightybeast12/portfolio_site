@@ -9,16 +9,21 @@ resource "google_artifact_registry_repository" "portfolio_images" {
   cleanup_policies {
     id     = "keep-recent-versions"
     action = "DELETE"
-
     condition {
       tag_state  = "TAGGED"
-      older_than = "${var.image_retention_count * 24}h"
-    }
-
-    most_recent_versions {
-      keep_count = var.image_retention_count
+      older_than = "604800s"
     }
   }
+  # cleanup_policies {
+  #   id = "keep-x-recent-images"
+  #   action = "KEEP"
+  #   most_recent_versions {
+  #     keep_count = var.image_retention_count
+  #   }
+  #   condition {
+  #     tag_state = "TAGGED"
+  #   }
+  # }
 
   cleanup_policies {
     id     = "delete-untagged"
@@ -26,7 +31,7 @@ resource "google_artifact_registry_repository" "portfolio_images" {
 
     condition {
       tag_state  = "UNTAGGED"
-      older_than = "24h"
+      older_than = "4800s"
     }
   }
 }
