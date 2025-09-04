@@ -10,15 +10,10 @@ output "region" {
   value       = var.region
 }
 
-# Domain mapping outputs (replacing load balancer outputs)
-output "domain_mapping_status" {
-  description = "Status of the domain mapping"
-  value       = google_cloud_run_domain_mapping.portfolio_domain.status
-}
-
+# Custom domain outputs (using Cloudflare DNS)
 output "domain_mapping_url" {
   description = "The custom domain URL"
-  value       = "https://${var.subdomain}.${var.custom_domain}"
+  value       = "https://${var.custom_domain}"
 }
 
 output "cloud_run_service_url" {

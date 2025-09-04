@@ -1,8 +1,4 @@
 terraform {
-  backend "gcs" {
-    bucket = "portfolio-site-434710-terraform-state"
-    prefix = "terraform/state"
-  }
   required_version = ">= 1.0"
 
   required_providers {

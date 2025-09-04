@@ -87,5 +87,5 @@ variable "cloudflare_api_token" {
 variable "github_actions_sa_email" {
   description = "Email of the GitHub Actions service account"
   type        = string
-  default     = "github-actions@firat-portfolio-site.iam.gserviceaccount.com"
+  default     = "github-actions@portfolio-site-434710.iam.gserviceaccount.com"
 }

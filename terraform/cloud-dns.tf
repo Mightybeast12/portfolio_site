@@ -5,12 +5,12 @@ data "cloudflare_zone" "portfolio_zone" {
   name = var.custom_domain
 }
 
-# CNAME record pointing to Cloud Run
+# A record for root domain (proxied through Cloudflare)
 resource "cloudflare_record" "portfolio_root" {
   zone_id = data.cloudflare_zone.portfolio_zone.id
   name    = "@"
-  value   = replace(google_cloud_run_v2_service.portfolio_site.uri, "https://", "")
-  type    = "CNAME"
+  content = "192.0.2.1"  # Placeholder IP, Cloudflare will proxy to Cloud Run
+  type    = "A"
   proxied = true
   ttl     = 1
 }
@@ -19,7 +19,7 @@ resource "cloudflare_record" "portfolio_root" {
 resource "cloudflare_record" "portfolio_www" {
   zone_id = data.cloudflare_zone.portfolio_zone.id
   name    = "www"
-  value   = var.custom_domain
+  content = var.custom_domain
   type    = "CNAME"
   proxied = true
   ttl     = 1

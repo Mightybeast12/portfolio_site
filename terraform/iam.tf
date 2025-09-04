@@ -43,3 +43,10 @@ resource "google_project_iam_member" "github_service_account_token_creator" {
   role    = "roles/iam.serviceAccountTokenCreator"
   member  = "serviceAccount:${var.github_actions_sa_email}"
 }
+
+# Allow GitHub Actions to access GCS bucket for Terraform state
+resource "google_storage_bucket_iam_member" "github_terraform_state_admin" {
+  bucket = google_storage_bucket.terraform_state.name
+  role   = "roles/storage.admin"
+  member = "serviceAccount:${var.github_actions_sa_email}"
+}
