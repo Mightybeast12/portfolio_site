@@ -47,6 +47,7 @@ portfolio_site/
 ├── static/                 # Static assets
 └── docs/                   # Documentation
     ├── DEPLOYMENT.md       # Detailed deployment guide
+    ├── GCP_SETUP.md        # Google Cloud Platform setup
     └── GITHUB_SECRETS.md   # GitHub secrets setup
 ```
 
@@ -158,6 +159,7 @@ cd terraform && terraform destroy
 ## 📚 Documentation
 
 - [DEPLOYMENT.md](docs/DEPLOYMENT.md) - Comprehensive deployment guide
+- [GCP_SETUP.md](docs/GCP_SETUP.md) - Google Cloud Platform APIs and IAM setup
 - [GITHUB_SECRETS.md](docs/GITHUB_SECRETS.md) - GitHub secrets and service account setup
 - [Terraform Documentation](https://www.terraform.io/docs)
 - [Google Cloud Run Documentation](https://cloud.google.com/run/docs)
