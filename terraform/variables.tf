@@ -64,3 +64,15 @@ variable "image_retention_count" {
   type        = number
   default     = 2
 }
+
+variable "ci_environment" {
+  description = "Whether running in CI/CD environment"
+  type        = bool
+  default     = false
+}
+
+variable "auto_build" {
+  description = "Whether to automatically build Docker images locally"
+  type        = bool
+  default     = true
+}

@@ -55,11 +55,11 @@ output "service_account_email" {
 output "dns_configuration" {
   description = "DNS records needed for custom domain"
   value = {
-    message = "Add this CNAME record to your DNS provider (Porkbun)"
-    type    = "CNAME"
-    host    = var.subdomain
-    target  = "ghs.googlehosted.com"
-    full_domain = "${var.subdomain}.${var.custom_domain}"
+    message      = "Add this CNAME record to your DNS provider (Porkbun)"
+    type         = "CNAME"
+    host         = var.subdomain
+    target       = "ghs.googlehosted.com"
+    full_domain  = "${var.subdomain}.${var.custom_domain}"
     instructions = "Create CNAME record: ${var.subdomain}.${var.custom_domain} -> ghs.googlehosted.com"
   }
 }
@@ -68,8 +68,8 @@ output "dns_configuration" {
 output "deployment_info" {
   description = "Important information for deployment"
   value = {
-    build_command = "cd ${path.root}/.. && ./scripts/build-and-deploy.sh"
+    build_command       = "cd ${path.root}/.. && ./scripts/build-and-deploy.sh"
     terraform_workspace = path.root
-    current_image = "${var.region}-docker.pkg.dev/${var.project_id}/${var.repo_name}/${var.image_name}:latest"
+    current_image       = "${var.region}-docker.pkg.dev/${var.project_id}/${var.repo_name}/${var.image_name}:latest"
   }
 }

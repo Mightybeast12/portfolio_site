@@ -43,6 +43,14 @@ resource "google_cloud_run_v2_service" "portfolio_site" {
     type    = "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"
   }
 
+  # Ignore changes to the image tag - this allows deployments to update the image
+  # without Terraform trying to revert it back
+  lifecycle {
+    ignore_changes = [
+      template[0].containers[0].image
+    ]
+  }
+
   depends_on = [
     google_artifact_registry_repository.portfolio_images,
     google_service_account.cloud_run_service,

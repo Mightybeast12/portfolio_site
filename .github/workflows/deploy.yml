@@ -4,45 +4,85 @@ on:
   push:
     branches: [main]
     paths:
-      - 'Cargo.toml'
+      - "Cargo.toml"
   workflow_dispatch:
 
 env:
-  PROJECT_ID: portfolio-site-434710
-  REGION: europe-west9
-  APP_NAME: firat-portfolio-site
+  TF_VARS_FILE: terraform/terraform.tfvars
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Authenticate to Google Cloud
-      uses: google-github-actions/auth@v2
-      with:
-        credentials_json: ${{ secrets.GCP_SA_KEY }}
-    
-    - name: Set up Cloud SDK
-      uses: google-github-actions/setup-gcloud@v2
-    
-    - name: Configure Docker
-      run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
-    
-    - name: Build and Push Docker Image
-      run: |
-        docker build --platform linux/amd64 \
-          -t ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cv-portfolio-repo/rust-image-cv-image:latest \
-          -t ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cv-portfolio-repo/rust-image-cv-image:${{ github.sha }} \
-          .
-        docker push ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cv-portfolio-repo/rust-image-cv-image:latest
-        docker push ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cv-portfolio-repo/rust-image-cv-image:${{ github.sha }}
-    
-    - name: Deploy to Cloud Run
-      run: |
-        gcloud run deploy ${{ env.APP_NAME }} \
-          --image ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cv-portfolio-repo/rust-image-cv-image:latest \
-          --region ${{ env.REGION }} \
-          --platform managed \
-          --allow-unauthenticated
+      - uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Parse Terraform Variables
+        id: tf_vars
+        run: |
+          # Parse terraform.tfvars and set as environment variables
+          PROJECT_ID=$(grep '^project_id' ${{ env.TF_VARS_FILE }} | cut -d'"' -f2)
+          REGION=$(grep '^region' ${{ env.TF_VARS_FILE }} | cut -d'"' -f2)
+          APP_NAME=$(grep '^app_name' ${{ env.TF_VARS_FILE }} | cut -d'"' -f2)
+          IMAGE_NAME=$(grep '^image_name' ${{ env.TF_VARS_FILE }} | cut -d'"' -f2)
+          REPO_NAME=$(grep '^repo_name' ${{ env.TF_VARS_FILE }} | cut -d'"' -f2)
+
+          # Set as environment variables for subsequent steps
+          echo "PROJECT_ID=$PROJECT_ID" >> $GITHUB_ENV
+          echo "REGION=$REGION" >> $GITHUB_ENV
+          echo "APP_NAME=$APP_NAME" >> $GITHUB_ENV
+          echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_ENV
+          echo "REPO_NAME=$REPO_NAME" >> $GITHUB_ENV
+
+          # Output for verification
+          echo "Parsed configuration:"
+          echo "  Project ID: $PROJECT_ID"
+          echo "  Region: $REGION"
+          echo "  App Name: $APP_NAME"
+          echo "  Image Name: $IMAGE_NAME"
+          echo "  Repository Name: $REPO_NAME"
+
+      - name: Configure Docker
+        run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
+
+      - name: Build and Push Docker Image
+        run: |
+          # Construct image URLs using dynamic variables
+          IMAGE_BASE="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}"
+          IMAGE_LATEST="${IMAGE_BASE}:latest"
+          IMAGE_SHA="${IMAGE_BASE}:${{ github.sha }}"
+
+          echo "Building images:"
+          echo "  Latest: $IMAGE_LATEST"
+          echo "  SHA: $IMAGE_SHA"
+
+          docker build --platform linux/amd64 \
+            -t "$IMAGE_LATEST" \
+            -t "$IMAGE_SHA" \
+            .
+          docker push "$IMAGE_LATEST"
+          docker push "$IMAGE_SHA"
+
+      - name: Deploy to Cloud Run
+        run: |
+          # Construct image URL using dynamic variables
+          IMAGE_URL="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:latest"
+
+          echo "Deploying to Cloud Run:"
+          echo "  Service: ${{ env.APP_NAME }}"
+          echo "  Image: $IMAGE_URL"
+          echo "  Region: ${{ env.REGION }}"
+
+          gcloud run deploy ${{ env.APP_NAME }} \
+            --image "$IMAGE_URL" \
+            --region ${{ env.REGION }} \
+            --platform managed \
+            --allow-unauthenticated

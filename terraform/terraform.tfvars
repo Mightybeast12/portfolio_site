@@ -13,9 +13,9 @@ subdomain     = "portfolio"
 
 
 # Resource limits
-max_instances  = 2
-cpu_limit      = "1000m"
-memory_limit   = "512Mi"
+max_instances = 2
+cpu_limit     = "1000m"
+memory_limit  = "512Mi"
 
 # Image retention
 image_retention_count = 2

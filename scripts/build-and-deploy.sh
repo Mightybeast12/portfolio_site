@@ -57,8 +57,25 @@ check_dependencies() {
     done
     if [ ${#missing_tools[@]} -ne 0 ]; then
         echo -e "${RED}Error: Missing required tools: ${missing_tools[*]}${NC}"
+        echo -e "${YELLOW}Please install the missing tools and try again.${NC}"
         exit 1
     fi
+}
+
+# Check if Artifact Registry exists
+check_artifact_registry() {
+    echo -e "${YELLOW}Checking if Artifact Registry exists...${NC}"
+    if ! gcloud artifacts repositories describe "$REPO_NAME" --location="$REGION" &> /dev/null; then
+        echo -e "${RED}Error: Artifact Registry '$REPO_NAME' does not exist in region '$REGION'${NC}"
+        echo -e "${YELLOW}Please run Terraform first to create the infrastructure:${NC}"
+        echo -e "${BLUE}  cd terraform && terraform init && terraform apply${NC}"
+        echo ""
+        echo -e "${YELLOW}Or if this is your first deployment, make sure to:${NC}"
+        echo -e "${BLUE}  1. Run 'terraform apply' to create the Artifact Registry${NC}"
+        echo -e "${BLUE}  2. Then run this script to push the initial image${NC}"
+        exit 1
+    fi
+    echo -e "${GREEN}✓ Artifact Registry exists${NC}"
 }
 
 # Check Docker daemon
@@ -96,11 +113,11 @@ build_image() {
 # Push Docker image
 push_image() {
     echo -e "${YELLOW}Pushing Docker images to Artifact Registry...${NC}"
-    
+
     # Use docker push directly (gcloud auth configure-docker already set up)
     docker push "$IMAGE_LATEST"
     docker push "$IMAGE_VERSIONED"
-    
+
     echo -e "${GREEN}✓ Images pushed successfully${NC}"
 }
 
@@ -139,6 +156,7 @@ main() {
     check_dependencies
     check_docker_daemon
     authenticate_gcloud
+    check_artifact_registry
     build_image
     push_image
     get_service_status
