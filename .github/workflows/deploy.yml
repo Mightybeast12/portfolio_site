@@ -56,7 +56,7 @@ jobs:
 
       - name: Set up Cloud SDK
         if: steps.version_check.outputs.version_changed == 'true'
-        uses: google-github-actions/setup-gcloud@v2
+        uses: google-github-actions/setup-gcloud@v3
 
       - name: Parse Terraform Variables
         if: steps.version_check.outputs.version_changed == 'true'
