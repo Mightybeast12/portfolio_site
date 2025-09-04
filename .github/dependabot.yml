@@ -21,10 +21,8 @@ updates:
       - dependency-type: "direct"
       - dependency-type: "indirect"
     ignore:
-      # Ignore major version updates for core dependencies
-      - dependency-name: "yew"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "yew-router"
+      # Ignore major version updates for all dependencies
+      - dependency-name: "*"
         update-types: ["version-update:semver-major"]
 
   # Enable version updates for GitHub Actions
@@ -43,6 +41,10 @@ updates:
     labels:
       - "dependencies"
       - "github-actions"
+    ignore:
+      # Ignore major version updates
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
 
   # Enable version updates for Docker
   - package-ecosystem: "docker"
@@ -60,3 +62,7 @@ updates:
     labels:
       - "dependencies"
       - "docker"
+    ignore:
+      # Ignore major version updates
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
