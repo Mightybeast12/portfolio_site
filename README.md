@@ -3,6 +3,7 @@
 [![Lint and Check](https://github.com/Mightybeast12/portfolio_site/actions/workflows/lint.yml/badge.svg)](https://github.com/Mightybeast12/portfolio_site/actions/workflows/lint.yml)
 [![Security and Dependencies](https://github.com/Mightybeast12/portfolio_site/actions/workflows/security.yml/badge.svg)](https://github.com/Mightybeast12/portfolio_site/actions/workflows/security.yml)
 [![Deploy Portfolio Site](https://github.com/Mightybeast12/portfolio_site/actions/workflows/deploy.yml/badge.svg)](https://github.com/Mightybeast12/portfolio_site/actions/workflows/deploy.yml)
+[![Stale Issues and PRs](https://github.com/Mightybeast12/portfolio_site/actions/workflows/stale.yml/badge.svg)](https://github.com/Mightybeast12/portfolio_site/actions/workflows/stale.yml)
 
 A Rust-based portfolio website deployed on Google Cloud Run with automated CI/CD using GitHub Actions and Terraform.
 
@@ -39,8 +40,14 @@ A Rust-based portfolio website deployed on Google Cloud Run with automated CI/CD
 ```
 portfolio_site/
 ├── .github/workflows/
+│   ├── auto-merge.yml      # Automated PR merging for dependencies
 │   ├── deploy.yml          # Application deployment
+│   ├── lint.yml            # Code quality and auto-fix
+│   ├── security.yml        # Security auditing and dependency checks
+│   ├── stale.yml           # Issue and PR management
 │   └── terraform.yml       # Infrastructure management
+├── .github/
+│   └── dependabot.yml      # Automated dependency updates
 ├── src/                    # Rust source code
 ├── terraform/              # Infrastructure as Code
 │   ├── *.tf               # Terraform configurations
@@ -202,6 +209,14 @@ cd terraform && terraform destroy
 - Automatically creates PRs for dependency updates
 - Ignores major version updates for core dependencies (Yew, Yew-router)
 - Properly labeled and assigned PRs
+
+### Issue & PR Management (`stale.yml`)
+- Runs daily at 1:30 AM UTC to manage inactive issues and PRs
+- Marks issues as stale after 30 days of inactivity
+- Marks PRs as stale after 14 days of inactivity
+- Automatically closes stale items after 7 additional days
+- Exempts important labels (pinned, security, enhancement, bug)
+- Excludes draft PRs and work-in-progress items
 
 ## 🌐 Live Site
 
