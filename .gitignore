@@ -29,3 +29,4 @@ terraform/cloudflare.tfvars
 # OS
 Thumbs.db
 terraform/.terraform.tfstate.lock.info
+github-actions-key.json

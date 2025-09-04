@@ -1,12 +1,4 @@
-# Cloudflare provider
-terraform {
-  required_providers {
-    cloudflare = {
-      source  = "cloudflare/cloudflare"
-      version = "~> 4.0"
-    }
-  }
-}
+# Cloudflare DNS configuration
 
 # Get the zone ID for your domain
 data "cloudflare_zone" "portfolio_zone" {

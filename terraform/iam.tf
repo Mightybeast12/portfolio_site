@@ -20,9 +20,26 @@ resource "google_cloud_run_service_iam_member" "public_access" {
   member   = "allUsers"
 }
 
-# Service account for load balancer (if needed for advanced configurations)
-resource "google_service_account" "load_balancer_service" {
-  account_id   = "${var.app_name}-lb"
-  display_name = "Load Balancer Service Account for ${var.app_name}"
-  description  = "Service account used by Load Balancer components"
+# GitHub Actions service account permissions
+# Note: The service account key should be stored in GitHub secrets as GCP_SA_KEY
+
+# Allow GitHub Actions to push to Artifact Registry
+resource "google_project_iam_member" "github_artifact_registry_writer" {
+  project = var.project_id
+  role    = "roles/artifactregistry.writer"
+  member  = "serviceAccount:${var.github_actions_sa_email}"
+}
+
+# Allow GitHub Actions to manage Cloud Run services
+resource "google_project_iam_member" "github_cloud_run_admin" {
+  project = var.project_id
+  role    = "roles/run.admin"
+  member  = "serviceAccount:${var.github_actions_sa_email}"
+}
+
+# Allow GitHub Actions to configure Docker authentication
+resource "google_project_iam_member" "github_service_account_token_creator" {
+  project = var.project_id
+  role    = "roles/iam.serviceAccountTokenCreator"
+  member  = "serviceAccount:${var.github_actions_sa_email}"
 }
