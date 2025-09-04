@@ -76,3 +76,10 @@ variable "auto_build" {
   type        = bool
   default     = true
 }
+
+variable "cloudflare_api_token" {
+  description = "Cloudflare API token for DNS management"
+  type        = string
+  sensitive   = true
+  default     = ""
+}

@@ -18,7 +18,8 @@ scripts/.last_image
 # Environment specific files
 terraform/*.tfvars.local
 terraform/secrets.tf
-
+terraform/secrets.tfvars
+terraform/cloudflare.tfvars
 # IDE
 .idea/
 .vscode/settings.json
