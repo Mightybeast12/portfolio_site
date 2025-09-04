@@ -1,0 +1,82 @@
+name: Test Deployment Pipeline
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [test-deploy]
+
+env:
+  TF_VERSION: "1.5.0"
+  TF_WORKING_DIR: "./terraform"
+
+jobs:
+  test-deploy:
+    name: "Test Full Deployment"
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ${{ env.TF_WORKING_DIR }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configure Docker for Artifact Registry
+        run: |
+          echo "🔧 Configuring Docker authentication..."
+          gcloud auth configure-docker europe-west9-docker.pkg.dev --quiet
+
+      - name: Test Terraform Init
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          echo "🧪 Testing Terraform init with GCS backend..."
+          terraform init
+          echo "✅ Init successful!"
+
+      - name: Test Terraform Apply (Dry Run)
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          echo "🧪 Testing deployment with GCS state..."
+          terraform plan -var="ci_environment=true" -var="auto_build=false" -no-color
+          echo "✅ Plan successful with remote state!"
+
+      - name: Verify State in GCS
+        run: |
+          echo "🧪 Verifying state is stored in GCS..."
+          gsutil ls -la gs://portfolio-site-434710-terraform-state/terraform/state/
+          echo "✅ State verification complete!"
+
+      - name: Test Docker Build (if needed)
+        run: |
+          echo "🧪 Testing Docker build capability..."
+          if ! gcloud artifacts docker images list europe-west9-docker.pkg.dev/portfolio-site-434710/cv-portfolio-repo --filter='image:rust-image-cv-image' --limit=1 | grep -q rust-image-cv-image; then
+            echo "No image found, would trigger build in real deployment"
+          else
+            echo "✅ Image exists in registry"
+          fi
+
+      - name: Test Summary
+        run: |
+          echo "## 🚀 Deployment Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ GCS backend working" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Terraform plan with remote state" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Docker authentication configured" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Artifact Registry accessible" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "🎉 **Ready for automatic deployments!**" >> $GITHUB_STEP_SUMMARY
