@@ -19,7 +19,7 @@ Automatically built and pushed to **Google Cloud Artifact Registry** using a cus
 
 "#;
 
-    mark_down_utils::create_markdown(&markdown) 
+    mark_down_utils::create_markdown(markdown) 
  
 }
 

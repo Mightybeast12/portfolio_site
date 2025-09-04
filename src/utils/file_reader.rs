@@ -26,7 +26,7 @@ pub struct FileContentProps {
 
 #[function_component(FileContent)]
 pub fn file_content(props: &FileContentProps) -> Html {
-    let content = use_state(|| String::new());
+    let content = use_state(String::new);
     let file_path = props.file_path.clone();
     let title = props.title.clone();
 

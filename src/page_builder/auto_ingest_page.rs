@@ -29,7 +29,7 @@ Perfect for media teams managing diverse content pipelines and looking for an ef
  **Power Automate**: Teams HTTP Request Handling
  **AWS EC2**: Flask Relay Serve
     "#;
-    mark_down_utils::create_markdown(&markdown)
+    mark_down_utils::create_markdown(markdown)
 }
 
 fn notification_scriptshowcase() -> Html {

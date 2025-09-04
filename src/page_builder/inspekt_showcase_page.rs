@@ -24,7 +24,7 @@ A **Linux-based** command-line tool meticulously designed for the inspection of 
     "#;
     html!(
         <div class="markdown-container">
-            {mark_down_utils::create_markdown(&markdown_input)}
+            {mark_down_utils::create_markdown(markdown_input)}
         </div>
     )
 }
@@ -56,7 +56,7 @@ Inspekt checks all aspects of a **DCP**(*Digital Cinema Package*)
     "#;
     html!(
         <div class="markdown-container">
-            {mark_down_utils::create_markdown(&markdown_input)}
+            {mark_down_utils::create_markdown(markdown_input)}
         </div>
     )
 }

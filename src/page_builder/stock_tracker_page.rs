@@ -22,7 +22,7 @@ A custom **Google Sheets**-based portfolio tracker designed to provide a quick o
 Perfect for both casual investors and those looking for a quick snapshot of stock performance!
 
     "# ; 
-    mark_down_utils::create_markdown(&markdown) 
+    mark_down_utils::create_markdown(markdown) 
  
 }
 

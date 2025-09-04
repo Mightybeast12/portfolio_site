@@ -19,7 +19,7 @@ Ideal for professionals dealing with high volumes of data needing quick and accu
 
 **Python** **|** **Excel** **|** **Windows**
     "#;
-    mark_down_utils::create_markdown(&markdown)
+    mark_down_utils::create_markdown(markdown)
 }
 
 pub fn alula_bible_page() -> Html {
