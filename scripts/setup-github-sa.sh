@@ -60,6 +60,18 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
     --role="roles/iam.serviceAccountTokenCreator" \
     --condition="expression=$CONDITION,title=$TITLE"
 
+echo "Granting project IAM admin permissions (expires: $EXPIRY)..."
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+    --member="serviceAccount:${SA_EMAIL}" \
+    --role="roles/resourcemanager.projectIamAdmin" \
+    --condition="expression=$CONDITION,title=$TITLE"
+
+echo "Granting artifact registry admin permissions (expires: $EXPIRY)..."
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+    --member="serviceAccount:${SA_EMAIL}" \
+    --role="roles/artifactregistry.admin" \
+    --condition="expression=$CONDITION,title=$TITLE"
+
 # Generate key
 echo "Generating service account key..."
 gcloud iam service-accounts keys create $KEY_FILE \
