@@ -220,7 +220,9 @@ cd terraform && terraform destroy
 
 ## 🌐 Live Site
 
-The portfolio is deployed at: [Your Domain](https://firathonca.online)
+**🚀 [View Live Portfolio](https://firathonca.online)**
+
+The portfolio is automatically deployed using GitHub Actions with Terraform and hosted on Google Cloud Run.
 
 ## 📝 License
 
