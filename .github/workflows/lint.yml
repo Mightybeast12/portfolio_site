@@ -1,4 +1,4 @@
-name: Lint and Check
+name: Lint and Auto-fix
 
 on:
   push:
@@ -11,18 +11,24 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  lint:
-    name: Lint and Format Check
+  clippy-autofix:
+    name: Clippy Auto-fix
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
 
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
         with:
-          components: rustfmt, clippy
+          components: clippy
 
       - name: Cache cargo registry
         uses: actions/cache@v4
@@ -35,11 +41,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-cargo-
 
-      - name: Check formatting
-        run: cargo fmt --all -- --check
+      - name: Run Clippy with auto-fix
+        run: |
+          # Run clippy with auto-fix for automatically fixable issues
+          cargo clippy --all-targets --all-features --fix --allow-dirty --allow-staged
 
-      - name: Run Clippy
-        run: cargo clippy --all-targets --all-features -- -D warnings
+          # Run clippy again to check for remaining issues
+          cargo clippy --all-targets --all-features -- -D warnings
 
       - name: Check compilation
         run: cargo check --all-targets --all-features
@@ -47,9 +55,31 @@ jobs:
       - name: Run tests
         run: cargo test --all-features
 
+      - name: Check for changes
+        id: verify-changed-files
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "Files have been modified by clippy --fix"
+            git status --porcelain
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "No files were modified"
+          fi
+
+      - name: Commit and push changes
+        if: steps.verify-changed-files.outputs.changed == 'true'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "Auto-fix clippy warnings"
+          git push
+
   build:
     name: Build Check
     runs-on: ubuntu-latest
+    needs: clippy-autofix
 
     steps:
       - name: Checkout code
