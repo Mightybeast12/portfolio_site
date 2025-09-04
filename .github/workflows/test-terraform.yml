@@ -35,15 +35,6 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
-      - name: Enable Required APIs
-        run: |
-          echo "🔧 Enabling required Google Cloud APIs..."
-          gcloud services enable cloudresourcemanager.googleapis.com
-          gcloud services enable artifactregistry.googleapis.com
-          echo "⏳ Waiting for APIs to propagate..."
-          sleep 30
-          echo "✅ APIs enabled!"
-
       - name: Test Terraform Init with Backend
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

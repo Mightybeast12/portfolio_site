@@ -26,3 +26,10 @@ resource "google_storage_bucket_iam_member" "terraform_state_admin" {
   role   = "roles/storage.admin"
   member = "serviceAccount:${var.github_actions_sa_email}"
 }
+
+# Grant user access to the bucket for local development
+resource "google_storage_bucket_iam_member" "user_terraform_state_admin" {
+  bucket = google_storage_bucket.terraform_state.name
+  role   = "roles/storage.admin"
+  member = "user:wmhonca@gmail.com"
+}

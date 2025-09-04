@@ -50,3 +50,10 @@ resource "google_storage_bucket_iam_member" "github_terraform_state_admin" {
   role   = "roles/storage.admin"
   member = "serviceAccount:${var.github_actions_sa_email}"
 }
+
+# Allow GitHub Actions to enable APIs
+resource "google_project_iam_member" "github_service_usage_admin" {
+  project = var.project_id
+  role    = "roles/serviceusage.serviceUsageAdmin"
+  member  = "serviceAccount:${var.github_actions_sa_email}"
+}
