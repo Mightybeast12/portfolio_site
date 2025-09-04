@@ -1,5 +1,9 @@
 # Portfolio Site
 
+[![Lint and Check](https://github.com/Mightybeast12/portfolio_site/actions/workflows/lint.yml/badge.svg)](https://github.com/Mightybeast12/portfolio_site/actions/workflows/lint.yml)
+[![Security and Dependencies](https://github.com/Mightybeast12/portfolio_site/actions/workflows/security.yml/badge.svg)](https://github.com/Mightybeast12/portfolio_site/actions/workflows/security.yml)
+[![Deploy Portfolio Site](https://github.com/Mightybeast12/portfolio_site/actions/workflows/deploy.yml/badge.svg)](https://github.com/Mightybeast12/portfolio_site/actions/workflows/deploy.yml)
+
 A Rust-based portfolio website deployed on Google Cloud Run with automated CI/CD using GitHub Actions and Terraform.
 
 ## 🚀 Quick Start
@@ -172,11 +176,32 @@ cd terraform && terraform destroy
 - Pushes to Artifact Registry
 - Deploys to Cloud Run
 
+### Code Quality & Linting (`lint.yml`)
+- Triggers on push/PR to main branch
+- Runs `cargo fmt --check` for code formatting
+- Runs `cargo clippy` for linting and best practices
+- Runs `cargo check` for compilation verification
+- Runs `cargo test` for unit tests
+- Builds WASM target with Trunk
+
+### Security & Dependencies (`security.yml`)
+- Triggers on push/PR and weekly schedule
+- Runs `cargo audit` for security vulnerabilities
+- Checks for outdated dependencies with `cargo outdated`
+- Generates license reports with `cargo license`
+- Creates dependency and security reports in workflow summaries
+
 ### Infrastructure Management (`terraform.yml`)
 - Triggers on `terraform/` directory changes
 - Runs `terraform plan` on PRs
 - Applies changes on merge to main
 - Includes security and validation checks
+
+### Automated Dependency Updates (Dependabot)
+- Weekly updates for Rust dependencies, GitHub Actions, and Docker
+- Automatically creates PRs for dependency updates
+- Ignores major version updates for core dependencies (Yew, Yew-router)
+- Properly labeled and assigned PRs
 
 ## 🌐 Live Site
 
