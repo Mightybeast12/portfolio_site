@@ -8,6 +8,11 @@ on:
       - "src/**"
       - "static/**"
   workflow_dispatch:
+  workflow_run:
+    workflows: ["Terraform Infrastructure"]
+    types:
+      - completed
+    branches: [main]
 
 env:
   TF_VERSION: "1.5.0"
@@ -17,6 +22,7 @@ jobs:
   deploy:
     name: "Deploy to Cloud Run"
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name != 'workflow_run' }}
 
     defaults:
       run:
@@ -47,17 +53,21 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: terraform init
 
-      - name: Deploy Application
+      - name: Build Container
+        run: |
+          echo "📦 Building and pushing container..."
+          cd ..
+          ./scripts/build-and-deploy.sh
+
+      - name: Deploy to Cloud Run
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
-          echo "🚀 Deploying application..."
+          echo "🚀 Deploying to Cloud Run..."
           terraform apply -auto-approve \
             -target=google_cloud_run_v2_service.portfolio_site \
-            -target=null_resource.docker_build \
-            -target=null_resource.check_image_exists \
             -var="ci_environment=true" \
-            -var="auto_build=true"
+            -var="auto_build=false"
 
       - name: Output URLs
         run: |

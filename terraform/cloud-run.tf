@@ -41,6 +41,7 @@ resource "google_cloud_run_v2_service" "portfolio_site" {
   traffic {
     percent = 100
     type    = "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"
+    # Explicitly no tag
   }
 
   # Ignore changes to the image tag - this allows deployments to update the image
