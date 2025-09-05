@@ -59,6 +59,16 @@ jobs:
           cd ..
           ./scripts/build-and-deploy.sh
 
+      - name: Fix Cloud Run Service
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          echo "🔧 Fixing Cloud Run service traffic configuration..."
+          terraform apply -auto-approve \
+            -replace=google_cloud_run_v2_service.portfolio_site \
+            -var="ci_environment=true" \
+            -var="auto_build=false"
+
       - name: Deploy to Cloud Run
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

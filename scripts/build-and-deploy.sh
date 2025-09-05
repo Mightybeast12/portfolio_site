@@ -28,10 +28,10 @@ else
     exit 1
 fi
 
-# Generate version tag
-TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+# Generate version tag from Cargo.toml (safe for Cloud Run)
+CARGO_VERSION=$(grep '^version' "$ROOT_DIR/Cargo.toml" | cut -d'"' -f2 | tr '.' '-')
 GIT_COMMIT=$(git rev-parse --short HEAD 2>/dev/null || echo "unknown")
-VERSION="v1.0.0-${TIMESTAMP}-${GIT_COMMIT}"
+VERSION="v${CARGO_VERSION}-${GIT_COMMIT}"
 
 # Construct image URLs
 REPO_BASE="${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPO_NAME}"
@@ -154,7 +154,6 @@ main() {
     check_artifact_registry
     build_image
     push_image
-    get_service_status
     cleanup_local_images
 
     echo ""
