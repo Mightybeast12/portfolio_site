@@ -28,10 +28,16 @@ else
     exit 1
 fi
 
-# Generate version tag from Cargo.toml (safe for Cloud Run)
-CARGO_VERSION=$(grep '^version' "$ROOT_DIR/Cargo.toml" | cut -d'"' -f2 | tr '.' '-')
-GIT_COMMIT=$(git rev-parse --short HEAD 2>/dev/null || echo "unknown")
-VERSION="v${CARGO_VERSION}-${GIT_COMMIT}"
+# Use provided image tag or generate from Cargo.toml (safe for Cloud Run)
+if [ -n "${IMAGE_TAG:-}" ]; then
+    VERSION="$IMAGE_TAG"
+    echo "🏷️ Using provided image tag: $VERSION"
+else
+    CARGO_VERSION=$(grep '^version' "$ROOT_DIR/Cargo.toml" | head -1 | cut -d'"' -f2 | tr '.' '-')
+    GIT_COMMIT=$(git rev-parse --short HEAD 2>/dev/null || echo "unknown")
+    VERSION="v${CARGO_VERSION}-${GIT_COMMIT}"
+    echo "🏷️ Generated image tag: $VERSION"
+fi
 
 # Construct image URLs
 REPO_BASE="${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPO_NAME}"

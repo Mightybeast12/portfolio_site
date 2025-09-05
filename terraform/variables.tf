@@ -22,6 +22,12 @@ variable "image_name" {
   default     = "rust-image-cv-image"
 }
 
+variable "image_tag" {
+  description = "Docker image tag (version-based for unique deployments)"
+  type        = string
+  default     = "latest"
+}
+
 variable "repo_name" {
   description = "Artifact Registry repository name"
   type        = string

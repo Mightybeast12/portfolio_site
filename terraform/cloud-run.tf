@@ -12,7 +12,7 @@ resource "google_cloud_run_v2_service" "portfolio_site" {
     }
 
     containers {
-      image = "${var.region}-docker.pkg.dev/${var.project_id}/${var.repo_name}/${var.image_name}:latest"
+      image = "${var.region}-docker.pkg.dev/${var.project_id}/${var.repo_name}/${var.image_name}:${var.image_tag}"
 
       ports {
         container_port = 8080
@@ -44,13 +44,6 @@ resource "google_cloud_run_v2_service" "portfolio_site" {
     # Explicitly no tag
   }
 
-  # Ignore changes to the image tag - this allows deployments to update the image
-  # without Terraform trying to revert it back
-  lifecycle {
-    ignore_changes = [
-      template[0].containers[0].image
-    ]
-  }
 
   depends_on = [
     google_artifact_registry_repository.portfolio_images,
