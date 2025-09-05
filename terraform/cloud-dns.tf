@@ -25,6 +25,16 @@ resource "cloudflare_record" "portfolio_www" {
   ttl     = 1
 }
 
+# CNAME for portfolio subdomain pointing to Cloud Run
+resource "cloudflare_record" "portfolio_subdomain" {
+  zone_id = data.cloudflare_zone.portfolio_zone.id
+  name    = var.subdomain
+  content = replace(google_cloud_run_v2_service.portfolio_site.uri, "https://", "")
+  type    = "CNAME"
+  proxied = true
+  ttl     = 1
+}
+
 # SSL settings
 resource "cloudflare_zone_settings_override" "portfolio_ssl" {
   zone_id = data.cloudflare_zone.portfolio_zone.id

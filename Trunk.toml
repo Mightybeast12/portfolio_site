@@ -1,5 +1,6 @@
 [build]
 out = "dist"
+public_url = "./"
 
 [css]
 # Enable CSS import processing
