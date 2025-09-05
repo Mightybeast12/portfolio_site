@@ -72,6 +72,12 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
     --role="roles/artifactregistry.admin" \
     --condition="expression=$CONDITION,title=$TITLE"
 
+echo "Granting service account user permissions (expires: $EXPIRY)..."
+gcloud iam service-accounts add-iam-policy-binding \
+    firat-portfolio-site-service@${PROJECT_ID}.iam.gserviceaccount.com \
+    --member="serviceAccount:${SA_EMAIL}" \
+    --role="roles/iam.serviceAccountUser"
+
 # Generate key
 echo "Generating service account key..."
 gcloud iam service-accounts keys create $KEY_FILE \

@@ -65,7 +65,7 @@ jobs:
           CUSTOM_DOMAIN_URL=$(terraform output -raw custom_domain_url)
           
           # Update README with live URLs
-          sed -i "s|\*\*🚀 \[View Live Portfolio\](.*)|**🚀 [View Live Portfolio]($CUSTOM_DOMAIN_URL)**|"
+          sed -i "s|\*\*🚀 \[View Live Portfolio\](.*)|**🚀 [View Live Portfolio]($CUSTOM_DOMAIN_URL)**|" ../README.md
           
           echo "## 🚀 Deployment Complete!" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
