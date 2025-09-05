@@ -2,7 +2,7 @@
 
 [![Lint and Check](https://github.com/Mightybeast12/portfolio_site/actions/workflows/lint.yml/badge.svg)](https://github.com/Mightybeast12/portfolio_site/actions/workflows/lint.yml)
 [![Security and Dependencies](https://github.com/Mightybeast12/portfolio_site/actions/workflows/security.yml/badge.svg)](https://github.com/Mightybeast12/portfolio_site/actions/workflows/security.yml)
-[![Deploy Portfolio Site](https://github.com/Mightybeast12/portfolio_site/actions/workflows/deploy.yml/badge.svg)](https://github.com/Mightybeast12/portfolio_site/actions/workflows/deploy.yml)
+[![Terraform Deploy](https://github.com/Mightybeast12/portfolio_site/actions/workflows/terraform.yml/badge.svg)](https://github.com/Mightybeast12/portfolio_site/actions/workflows/terraform.yml)
 [![Stale Issues and PRs](https://github.com/Mightybeast12/portfolio_site/actions/workflows/stale.yml/badge.svg)](https://github.com/Mightybeast12/portfolio_site/actions/workflows/stale.yml)
 
 A Rust-based portfolio website deployed on Google Cloud Run with automated CI/CD using GitHub Actions and Terraform.
@@ -41,11 +41,10 @@ A Rust-based portfolio website deployed on Google Cloud Run with automated CI/CD
 portfolio_site/
 ├── .github/workflows/
 │   ├── auto-merge.yml      # Automated PR merging for dependencies
-│   ├── deploy.yml          # Application deployment
 │   ├── lint.yml            # Code quality and auto-fix
 │   ├── security.yml        # Security auditing and dependency checks
 │   ├── stale.yml           # Issue and PR management
-│   └── terraform.yml       # Infrastructure management
+│   └── terraform.yml       # Unified infrastructure and deployment management
 ├── .github/
 │   └── dependabot.yml      # Automated dependency updates
 ├── src/                    # Rust source code
@@ -81,10 +80,11 @@ cargo test
 ./scripts/build-and-deploy.sh
 ```
 
-**Option 2: GitHub Actions**
-- Push to `main` branch
-- Modify `Cargo.toml` to trigger deployment
-- Use "Run workflow" button
+**Option 2: GitHub Actions (Unified Terraform Workflow)**
+- Push to `main` branch with changes to `Cargo.toml` or `terraform/` directory
+- Automatic deployment triggered by version changes or infrastructure modifications
+- Use "Run workflow" button for manual deployment
+- Rich output display shows deployment URLs and configuration details
 
 ### Infrastructure Changes
 ```bash
@@ -177,11 +177,14 @@ cd terraform && terraform destroy
 
 ## 🔄 CI/CD Workflows
 
-### Application Deployment (`deploy.yml`)
-- Triggers on `Cargo.toml` changes or manual dispatch
-- Builds Docker image
-- Pushes to Artifact Registry
-- Deploys to Cloud Run
+### Unified Infrastructure & Deployment (`terraform.yml`)
+- Triggers on `Cargo.toml` changes, `terraform/` directory changes, or manual dispatch
+- Smart change detection for infrastructure, application, and version changes
+- Multi-job architecture with infrastructure planning and build-deploy phases
+- Builds Docker image and pushes to Artifact Registry
+- Deploys to Cloud Run with Terraform
+- Rich output display showing Cloud Run URLs, custom domain URLs, Docker image info, and DNS configuration
+- Proper Terraform state management with remote backend
 
 ### Code Quality & Linting (`lint.yml`)
 - Triggers on push/PR to main branch
@@ -197,12 +200,6 @@ cd terraform && terraform destroy
 - Checks for outdated dependencies with `cargo outdated`
 - Generates license reports with `cargo license`
 - Creates dependency and security reports in workflow summaries
-
-### Infrastructure Management (`terraform.yml`)
-- Triggers on `terraform/` directory changes
-- Runs `terraform plan` on PRs
-- Applies changes on merge to main
-- Includes security and validation checks
 
 ### Automated Dependency Updates (Dependabot)
 - Weekly updates for Rust dependencies, GitHub Actions, and Docker

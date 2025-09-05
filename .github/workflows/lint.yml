@@ -17,11 +17,15 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+      actions: read
+      checks: write
+      statuses: write
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
         with:
+          # Use GITHUB_TOKEN with enhanced permissions
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
@@ -67,14 +71,59 @@ jobs:
             echo "No files were modified"
           fi
 
+      - name: Bump patch version
+        if: steps.verify-changed-files.outputs.changed == 'true'
+        id: bump-version
+        run: |
+          # Get current version
+          CURRENT_VERSION=$(grep '^version = ' Cargo.toml | head -1 | cut -d'"' -f2)
+          echo "Current version: $CURRENT_VERSION"
+
+          # Split version into parts (major.minor.patch)
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT_VERSION"
+
+          # Increment patch version
+          NEW_PATCH=$((PATCH + 1))
+          NEW_VERSION="$MAJOR.$MINOR.$NEW_PATCH"
+
+          echo "New version: $NEW_VERSION"
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+
+          # Update Cargo.toml
+          sed -i "s/^version = \"$CURRENT_VERSION\"/version = \"$NEW_VERSION\"/" Cargo.toml
+
+          # Verify the change
+          echo "Updated Cargo.toml:"
+          grep '^version = ' Cargo.toml | head -1
+
       - name: Commit and push changes
         if: steps.verify-changed-files.outputs.changed == 'true'
         run: |
+          # Configure git
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
+
+          # Add all changes
           git add .
-          git commit -m "Auto-fix clippy warnings"
-          git push
+
+          # Commit changes
+          git commit -m "Auto-fix clippy warnings and bump version to ${{ steps.bump-version.outputs.new_version }}"
+
+          # Push changes with error handling
+          if ! git push; then
+            echo "❌ Failed to push changes. This might be due to:"
+            echo "1. Branch protection rules preventing direct pushes"
+            echo "2. Insufficient GITHUB_TOKEN permissions"
+            echo "3. Repository settings requiring pull requests"
+            echo ""
+            echo "💡 Consider:"
+            echo "- Enabling 'Allow GitHub Actions to create and approve pull requests' in repository settings"
+            echo "- Updating branch protection rules to allow GitHub Actions to push"
+            echo "- Using a Personal Access Token instead of GITHUB_TOKEN if needed"
+            exit 1
+          else
+            echo "✅ Successfully pushed auto-fix changes and version bump"
+          fi
 
   build:
     name: Build Check
@@ -84,6 +133,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
+        with:
+          # Ensure we get the latest changes if version was bumped
+          ref: ${{ github.head_ref || github.ref }}
 
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable

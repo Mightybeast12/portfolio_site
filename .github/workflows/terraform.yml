@@ -1,32 +1,117 @@
-name: Terraform Infrastructure
+name: Terraform Infrastructure & Application Deployment
 
 on:
   push:
-    branches: [main]
+    branches: [main, test-deploy]
     paths:
       - "terraform/**"
+      - "Cargo.toml"
+      - "src/**"
+      - "static/**"
   pull_request:
     branches: [main]
     paths:
       - "terraform/**"
+      - "Cargo.toml"
+      - "src/**"
+      - "static/**"
   workflow_dispatch:
+  workflow_run:
+    workflows: ["Lint and Check", "Security and Dependencies"]
+    types:
+      - completed
 
 env:
   TF_VERSION: "1.5.0"
   TF_WORKING_DIR: "./terraform"
+  CARGO_TERM_COLOR: always
 
 jobs:
-  terraform:
-    name: "Terraform"
+  infrastructure:
+    name: "Infrastructure Planning"
     runs-on: ubuntu-latest
+    # Only run if triggered by workflow_run and the prerequisite workflows succeeded
+    if: |
+      github.event_name != 'workflow_run' ||
+      github.event.workflow_run.conclusion == 'success'
 
     defaults:
       run:
         working-directory: ${{ env.TF_WORKING_DIR }}
 
+    outputs:
+      terraform-changed: ${{ steps.terraform-changes.outputs.changed }}
+      app-changed: ${{ steps.app-changes.outputs.changed }}
+      version-changed: ${{ steps.version-check.outputs.changed }}
+      deploy-version: ${{ steps.version-check.outputs.version }}
+
     steps:
+      - name: Check Prerequisite Workflows
+        if: github.event_name == 'workflow_run'
+        run: |
+          echo "🔍 Triggered by workflow: ${{ github.event.workflow_run.name }}"
+          echo "📊 Workflow conclusion: ${{ github.event.workflow_run.conclusion }}"
+          if [ "${{ github.event.workflow_run.conclusion }}" != "success" ]; then
+            echo "❌ Prerequisite workflow failed. Deployment blocked."
+            exit 1
+          else
+            echo "✅ Prerequisite workflow succeeded. Proceeding with deployment."
+          fi
+
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 2
+
+      - name: Check Terraform Changes
+        id: terraform-changes
+        run: |
+          if git diff --name-only HEAD~1 HEAD | grep -q "^terraform/"; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "🏗️ Terraform infrastructure changes detected"
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "📋 No Terraform changes detected"
+          fi
+
+      - name: Check Application Changes
+        id: app-changes
+        run: |
+          cd ..
+          if git diff --name-only HEAD~1 HEAD | grep -E "^(src/|static/|Cargo\.(toml|lock)|Dockerfile)"; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "📦 Application changes detected"
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "📋 No application changes detected"
+          fi
+
+      - name: Check Version Change
+        id: version-check
+        run: |
+          cd ..
+          # Get current version
+          CURRENT_VERSION=$(grep '^version = ' Cargo.toml | head -1 | cut -d'"' -f2)
+          echo "Current version: $CURRENT_VERSION"
+          echo "version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+
+          # Check if this is the first commit or if we can compare with previous
+          if git rev-parse HEAD~1 >/dev/null 2>&1; then
+            # Get previous version from the last commit
+            PREVIOUS_VERSION=$(git show HEAD~1:Cargo.toml | grep '^version = ' | head -1 | cut -d'"' -f2 || echo "")
+            echo "Previous version: $PREVIOUS_VERSION"
+
+            if [ "$CURRENT_VERSION" != "$PREVIOUS_VERSION" ] && [ -n "$PREVIOUS_VERSION" ]; then
+              echo "✅ Version changed from $PREVIOUS_VERSION to $CURRENT_VERSION"
+              echo "changed=true" >> $GITHUB_OUTPUT
+            else
+              echo "⏭️ Version unchanged ($CURRENT_VERSION)"
+              echo "changed=false" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "🚀 First commit or no previous version found"
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
@@ -48,6 +133,8 @@ jobs:
 
       - name: Terraform Init
         id: init
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: terraform init
 
       - name: Terraform Validate
@@ -56,11 +143,10 @@ jobs:
 
       - name: Terraform Plan
         id: plan
-        if: github.event_name == 'pull_request'
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
-          terraform plan -no-color -input=false -var="ci_environment=true" -var="auto_build=false"
+          terraform plan -no-color -input=false -var="ci_environment=true" -var="auto_build=false" -out=tfplan
         continue-on-error: true
 
       - name: Update Pull Request
@@ -84,6 +170,11 @@ jobs:
 
             </details>
 
+            **Change Detection:**
+            - 🏗️ Infrastructure: ${{ steps.terraform-changes.outputs.changed }}
+            - 📦 Application: ${{ steps.app-changes.outputs.changed }}
+            - 🏷️ Version: ${{ steps.version-check.outputs.changed }} (${{ steps.version-check.outputs.version }})
+
             *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
 
             github.rest.issues.createComment({
@@ -97,17 +188,120 @@ jobs:
         if: steps.plan.outcome == 'failure'
         run: exit 1
 
-      - name: Terraform Apply
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+  build-deploy:
+    name: "Build & Deploy Application"
+    runs-on: ubuntu-latest
+    needs: infrastructure
+    if: |
+      github.ref == 'refs/heads/main' &&
+      (github.event_name == 'push' || github.event_name == 'workflow_run') &&
+      (needs.infrastructure.outputs.terraform-changed == 'true' ||
+       needs.infrastructure.outputs.app-changed == 'true' ||
+       needs.infrastructure.outputs.version-changed == 'true')
+
+    defaults:
+      run:
+        working-directory: ${{ env.TF_WORKING_DIR }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configure Docker
+        run: gcloud auth configure-docker europe-west9-docker.pkg.dev --quiet
+
+      - name: Terraform Init
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: terraform init
+
+      - name: Build and Push Container
+        if: needs.infrastructure.outputs.app-changed == 'true' || needs.infrastructure.outputs.version-changed == 'true'
+        run: |
+          echo "📦 Building and pushing container..."
+          cd ..
+          ./scripts/build-and-deploy.sh
+
+      - name: Deploy Infrastructure & Application
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
-          terraform apply -auto-approve -input=false -var="ci_environment=true" -var="auto_build=false"
+          echo "🚀 Deploying infrastructure and application..."
+          terraform apply -auto-approve \
+            -var="ci_environment=true" \
+            -var="auto_build=false"
 
-      - name: Output Infrastructure URLs
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      - name: Capture Terraform Outputs
+        id: outputs
         run: |
-          echo "## 🚀 Infrastructure Deployed Successfully!" >> $GITHUB_STEP_SUMMARY
+          echo "cloud_run_url=$(terraform output -raw cloud_run_service_url)" >> $GITHUB_OUTPUT
+          echo "custom_domain_url=$(terraform output -raw custom_domain_url)" >> $GITHUB_OUTPUT
+          echo "subdomain_url=$(terraform output -raw subdomain_url)" >> $GITHUB_OUTPUT
+          echo "docker_image_url=$(terraform output -raw docker_image_url)" >> $GITHUB_OUTPUT
+          echo "artifact_registry=$(terraform output -raw artifact_registry_repository)" >> $GITHUB_OUTPUT
+
+      - name: Display Deployment Summary
+        run: |
+          echo "## 🚀 Deployment Complete!" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### Outputs:" >> $GITHUB_STEP_SUMMARY
-          terraform output -no-color >> $GITHUB_STEP_SUMMARY
+          echo "### 📊 Deployment Information" >> $GITHUB_STEP_SUMMARY
+          echo "- **Version**: ${{ needs.infrastructure.outputs.deploy-version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Terraform Changed**: ${{ needs.infrastructure.outputs.terraform-changed }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Application Changed**: ${{ needs.infrastructure.outputs.app-changed }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Version Changed**: ${{ needs.infrastructure.outputs.version-changed }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🌐 Application URLs" >> $GITHUB_STEP_SUMMARY
+          echo "- **🔗 Custom Domain**: [${{ steps.outputs.outputs.custom_domain_url }}](${{ steps.outputs.outputs.custom_domain_url }})" >> $GITHUB_STEP_SUMMARY
+          echo "- **🏷️ Subdomain**: [${{ steps.outputs.outputs.subdomain_url }}](${{ steps.outputs.outputs.subdomain_url }})" >> $GITHUB_STEP_SUMMARY
+          echo "- **☁️ Cloud Run Direct**: [${{ steps.outputs.outputs.cloud_run_url }}](${{ steps.outputs.outputs.cloud_run_url }})" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📦 Container Information" >> $GITHUB_STEP_SUMMARY
+          echo "- **Docker Image**: \`${{ steps.outputs.outputs.docker_image_url }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- **Registry**: \`${{ steps.outputs.outputs.artifact_registry }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🔧 DNS Configuration" >> $GITHUB_STEP_SUMMARY
+          terraform output -json dns_configuration | jq -r '.instructions' >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📋 All Terraform Outputs" >> $GITHUB_STEP_SUMMARY
+          echo '```json' >> $GITHUB_STEP_SUMMARY
+          terraform output -json >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
+  skip-deployment:
+    name: "Deployment Skipped"
+    runs-on: ubuntu-latest
+    needs: infrastructure
+    if: |
+      github.ref == 'refs/heads/main' &&
+      (github.event_name == 'push' || github.event_name == 'workflow_run') &&
+      needs.infrastructure.outputs.terraform-changed == 'false' &&
+      needs.infrastructure.outputs.app-changed == 'false' &&
+      needs.infrastructure.outputs.version-changed == 'false'
+
+    steps:
+      - name: Skip Deployment Summary
+        run: |
+          echo "## ⏭️ Deployment Skipped" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Reason**: No changes detected that require deployment" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📊 Change Detection Results" >> $GITHUB_STEP_SUMMARY
+          echo "- **🏗️ Infrastructure Changes**: ${{ needs.infrastructure.outputs.terraform-changed }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **📦 Application Changes**: ${{ needs.infrastructure.outputs.app-changed }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **🏷️ Version Changes**: ${{ needs.infrastructure.outputs.version-changed }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **📋 Current Version**: ${{ needs.infrastructure.outputs.deploy-version }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "💡 **To trigger deployment**: Update version in Cargo.toml, modify application code, or change infrastructure"
