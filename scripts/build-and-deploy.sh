@@ -122,21 +122,16 @@ push_image() {
 }
 
 
-# Get service status
+# Get service status (read-only check)
 get_service_status() {
-    SERVICE_URL=$(gcloud run services describe "$APP_NAME" \
-        --region="$REGION" \
-        --format="value(status.url)")
-    echo -e "${GREEN}✓ Service deployed successfully${NC}"
-    echo -e "${BLUE}Service URL:${NC} $SERVICE_URL"
-
-    if command -v curl &> /dev/null; then
-        echo -e "${YELLOW}Testing service endpoint...${NC}"
-        if curl -s -o /dev/null -w "%{http_code}" "$SERVICE_URL" | grep -q "200\|301\|302"; then
-            echo -e "${GREEN}✓ Service is responding${NC}"
-        else
-            echo -e "${YELLOW}⚠ Service may still be starting up${NC}"
-        fi
+    if gcloud run services describe "$APP_NAME" --region="$REGION" &> /dev/null; then
+        SERVICE_URL=$(gcloud run services describe "$APP_NAME" \
+            --region="$REGION" \
+            --format="value(status.url)")
+        echo -e "${GREEN}✓ Service exists${NC}"
+        echo -e "${BLUE}Service URL:${NC} $SERVICE_URL"
+    else
+        echo -e "${YELLOW}⚠ Service will be deployed by Terraform${NC}"
     fi
 }
 
@@ -163,10 +158,9 @@ main() {
     cleanup_local_images
 
     echo ""
-    echo -e "${GREEN}=== Deployment Complete ===${NC}"
+    echo -e "${GREEN}=== Build Complete ===${NC}"
     echo -e "${GREEN}✓ Image built and pushed: $IMAGE_VERSIONED${NC}"
-    echo -e "${GREEN}✓ Cloud Run service updated: $APP_NAME${NC}"
-    echo -e "${BLUE}Service URL: $SERVICE_URL${NC}"
+    echo -e "${YELLOW}⚠ Cloud Run deployment handled by Terraform${NC}"
 
     # Save deployment info
     echo "$VERSION" > "$SCRIPT_DIR/.last_version"

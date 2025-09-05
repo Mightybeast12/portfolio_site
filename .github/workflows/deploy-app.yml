@@ -59,13 +59,10 @@ jobs:
             -var="ci_environment=true" \
             -var="auto_build=true"
 
-      - name: Update README with URLs
+      - name: Output URLs
         run: |
           CLOUD_RUN_URL=$(terraform output -raw cloud_run_url)
           CUSTOM_DOMAIN_URL=$(terraform output -raw custom_domain_url)
-          
-          # Update README with live URLs
-          sed -i "s|\*\*🚀 \[View Live Portfolio\](.*)|**🚀 [View Live Portfolio]($CUSTOM_DOMAIN_URL)**|" ../README.md
           
           echo "## 🚀 Deployment Complete!" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
@@ -73,11 +70,4 @@ jobs:
           echo "- Custom Domain: $CUSTOM_DOMAIN_URL" >> $GITHUB_STEP_SUMMARY
           echo "- Cloud Run: $CLOUD_RUN_URL" >> $GITHUB_STEP_SUMMARY
 
-      - name: Commit README Updates
-        run: |
-          cd ..
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add README.md
-          git diff --staged --quiet || git commit -m "Update README with deployment URLs [skip ci]"
-          git push || echo "No changes to push"
+
