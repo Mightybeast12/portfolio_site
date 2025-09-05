@@ -57,3 +57,10 @@ resource "google_project_iam_member" "github_service_usage_admin" {
   role    = "roles/serviceusage.serviceUsageAdmin"
   member  = "serviceAccount:${var.github_actions_sa_email}"
 }
+
+# Allow GitHub Actions to act as the Cloud Run service account
+resource "google_project_iam_member" "github_service_account_user" {
+  project = var.project_id
+  role    = "roles/iam.serviceAccountUser"
+  member  = "serviceAccount:${var.github_actions_sa_email}"
+}
