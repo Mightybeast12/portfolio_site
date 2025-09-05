@@ -48,14 +48,14 @@ output "service_account_email" {
 
 # DNS Configuration Instructions
 output "dns_configuration" {
-  description = "DNS records needed for custom domain"
+  description = "DNS records needed for custom domain (direct routing to Cloud Run)"
   value = {
-    message      = "Add this CNAME record to your DNS provider (Porkbun)"
+    message      = "Add this CNAME record to your DNS provider (Cloudflare)"
     type         = "CNAME"
     host         = var.subdomain
-    target       = "ghs.googlehosted.com"
+    target       = replace(google_cloud_run_v2_service.portfolio_site.uri, "https://", "")
     full_domain  = "${var.subdomain}.${var.custom_domain}"
-    instructions = "Create CNAME record: ${var.subdomain}.${var.custom_domain} -> ghs.googlehosted.com"
+    instructions = "Create CNAME record: ${var.subdomain}.${var.custom_domain} -> ${replace(google_cloud_run_v2_service.portfolio_site.uri, "https://", "")}"
   }
 }
 
