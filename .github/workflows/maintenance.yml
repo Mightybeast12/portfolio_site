@@ -1,4 +1,4 @@
-name: Repository Maintenance
+name: Auto-close stale issues & PRs (30/14 days)
 
 on:
   schedule:
@@ -14,7 +14,9 @@ jobs:
       pull-requests: write
 
     steps:
-      - uses: actions/stale@v9
+      - name: Mark and close stale issues/PRs based on inactivity periods
+        id: stale-action
+        uses: actions/stale@v9
         with:
           # General settings
           repo-token: ${{ secrets.GITHUB_TOKEN }}
@@ -55,3 +57,25 @@ jobs:
 
           # Exclude certain types
           exempt-draft-pr: true
+
+      - name: Generate maintenance summary report
+        if: always()
+        run: |
+          echo "## 🧹 Repository Maintenance Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📊 Configuration" >> $GITHUB_STEP_SUMMARY
+          echo "- **Issues become stale after**: 30 days of inactivity" >> $GITHUB_STEP_SUMMARY
+          echo "- **PRs become stale after**: 14 days of inactivity" >> $GITHUB_STEP_SUMMARY
+          echo "- **Stale items close after**: 7 additional days" >> $GITHUB_STEP_SUMMARY
+          echo "- **Max operations per run**: 30" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🏷️ Exempt Labels" >> $GITHUB_STEP_SUMMARY
+          echo "**Issues**: pinned, security, enhancement, bug" >> $GITHUB_STEP_SUMMARY
+          echo "**PRs**: pinned, security, work-in-progress, wip" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### ℹ️ Notes" >> $GITHUB_STEP_SUMMARY
+          echo "- Draft PRs are automatically excluded" >> $GITHUB_STEP_SUMMARY
+          echo "- Stale labels are removed when items are updated" >> $GITHUB_STEP_SUMMARY
+          echo "- Processing order: oldest items first" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Check the workflow logs for details on which items were processed." >> $GITHUB_STEP_SUMMARY
