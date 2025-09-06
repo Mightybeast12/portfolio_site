@@ -5,9 +5,15 @@ data "cloudflare_zone" "portfolio_zone" {
   name = var.custom_domain
 }
 
-# Root domain record managed manually in Cloudflare dashboard
-# Point @ record to: replace(google_cloud_run_v2_service.portfolio_site.uri, "https://", "")
-# Type: CNAME, Proxied: Yes
+# Root domain record for domain mapping
+resource "cloudflare_record" "portfolio_root" {
+  zone_id = data.cloudflare_zone.portfolio_zone.id
+  name    = "@"
+  content = "ghs.googlehosted.com"
+  type    = "CNAME"
+  proxied = true
+  ttl     = 1
+}
 
 # CNAME for www subdomain
 resource "cloudflare_record" "portfolio_www" {
@@ -19,11 +25,11 @@ resource "cloudflare_record" "portfolio_www" {
   ttl     = 1
 }
 
-# CNAME for portfolio subdomain pointing to Cloud Run
+# CNAME for portfolio subdomain pointing to Google hosted service for domain mapping
 resource "cloudflare_record" "portfolio_subdomain" {
   zone_id = data.cloudflare_zone.portfolio_zone.id
   name    = var.subdomain
-  content = replace(google_cloud_run_v2_service.portfolio_site.uri, "https://", "")
+  content = "ghs.googlehosted.com"
   type    = "CNAME"
   proxied = true
   ttl     = 1
@@ -46,8 +52,12 @@ output "cloudflare_nameservers" {
   value       = data.cloudflare_zone.portfolio_zone.name_servers
 }
 
-# Output Cloud Run URL for manual DNS configuration
-output "cloud_run_dns_target" {
-  description = "Cloud Run URL to use as CNAME target in Cloudflare (remove https://)"
-  value       = replace(google_cloud_run_v2_service.portfolio_site.uri, "https://", "")
+# Output domain mapping instructions
+output "domain_mapping_instructions" {
+  description = "Domain mapping setup instructions"
+  value = {
+    root_domain = "Point @ to ghs.googlehosted.com (CNAME, not proxied)"
+    subdomain   = "Point ${var.subdomain} to ghs.googlehosted.com (CNAME, not proxied)"
+    note        = "Domain mapping requires ghs.googlehosted.com target and proxied=false"
+  }
 }

@@ -30,3 +30,4 @@ terraform/cloudflare.tfvars
 Thumbs.db
 terraform/.terraform.tfstate.lock.info
 github-actions-key.json
+terraform/errored.tfstate
