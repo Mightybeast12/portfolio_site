@@ -14,16 +14,7 @@ resource "google_artifact_registry_repository" "portfolio_images" {
       older_than = "604800s"
     }
   }
-  # cleanup_policies {
-  #   id = "keep-x-recent-images"
-  #   action = "KEEP"
-  #   most_recent_versions {
-  #     keep_count = var.image_retention_count
-  #   }
-  #   condition {
-  #     tag_state = "TAGGED"
-  #   }
-  # }
+
 
   cleanup_policies {
     id     = "delete-untagged"
