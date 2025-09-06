@@ -1,5 +1,5 @@
 use crate::components::layout::Layout;
-use crate::page_builder::*;
+use crate::pages::{core, projects};
 use yew::prelude::*;
 use yew_router::prelude::*;
 
@@ -51,20 +51,22 @@ pub enum Route {
 
 fn switch(routes: Route) -> Html {
     match routes {
-        Route::HomePage => home_page::home_page(),
-        Route::InspektPage => inspekt_showcase_page::inspekt_page(),
-        Route::StockTrackerPage => stock_tracker_page::stock_tracker_page(),
-        Route::AlulaBiblePage => alula_bible_page::alula_bible_page(),
-        Route::AutoIngestPage => auto_ingest_page::auto_ingest_page(),
-        Route::RustSite => rust_site::rust_site(),
-        Route::ContactPage => contact_page::contact_page(),
-        Route::LandingPage => landing_page::landing_page(),
-        Route::Info => info_page::info_page(),
-        Route::PortfolioSitePage => portfolio_site_page::portfolio_site_page(),
-        Route::FiroLoggerPage => firo_logger_page::firo_logger_page(),
-        Route::CssToRustConverterPage => css_to_rust_converter_page::css_to_rust_converter_page(),
-        Route::GameScoreTrackerPage => game_score_tracker_page::game_score_tracker_page(),
-        Route::GitlabTerraformPage => gitlab_terraform_page::gitlab_terraform_page(),
+        Route::HomePage => core::home::home_page(),
+        Route::InspektPage => projects::inspekt::inspekt_page(),
+        Route::StockTrackerPage => projects::stock_tracker::stock_tracker_page(),
+        Route::AlulaBiblePage => projects::alula_bible::alula_bible_page(),
+        Route::AutoIngestPage => projects::auto_ingest::auto_ingest_page(),
+        Route::RustSite => projects::rust_site::rust_site(),
+        Route::ContactPage => core::contact::contact_page(),
+        Route::LandingPage => core::landing::landing_page(),
+        Route::Info => core::info::info_page(),
+        Route::PortfolioSitePage => projects::portfolio_site::portfolio_site_page(),
+        Route::FiroLoggerPage => projects::firo_logger::firo_logger_page(),
+        Route::CssToRustConverterPage => {
+            projects::css_to_rust_converter::css_to_rust_converter_page()
+        }
+        Route::GameScoreTrackerPage => projects::game_score_tracker::game_score_tracker_page(),
+        Route::GitlabTerraformPage => projects::gitlab_terraform::gitlab_terraform_page(),
     }
 }
 

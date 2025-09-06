@@ -1,4 +1,4 @@
-use crate::utils::button_elements;
+use crate::shared::ui::buttons;
 use yew::prelude::*;
 
 pub fn info_page() -> Html {
@@ -65,8 +65,8 @@ pub fn info_page() -> Html {
                             <div class="social-section">
                                 <h3>{"Social Media"}</h3>
                                 <div class="social-buttons">
-                                    {button_elements::create_github_button_animated()}
-                                    {button_elements::create_linked_in_button_animated()}
+                                    {buttons::create_github_button_animated()}
+                                    {buttons::create_linked_in_button_animated()}
                                 </div>
                             </div>
                         </div>

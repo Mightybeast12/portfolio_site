@@ -1,12 +1,9 @@
 use yew::prelude::*;
- 
-use crate::utils::image_utils::image_carousel_builder;
- 
-use crate::utils::mark_down_utils;
- 
- 
+
+use crate::services::markdown_service;
+use crate::shared::ui::images::image_carousel_builder;
+
 pub fn create_stock_tracker_markdown() -> Html {
-     
     let markdown = r#"
 # Stock Tracker
 
@@ -21,29 +18,27 @@ A custom **Google Sheets**-based portfolio tracker designed to provide a quick o
 
 Perfect for both casual investors and those looking for a quick snapshot of stock performance!
 
-    "# ; 
-    mark_down_utils::create_markdown(markdown) 
- 
+    "#;
+    markdown_service::create_markdown(markdown)
 }
 
- 
 fn stock_tracker_image_showcase() -> Html {
-let images = vec![
-    "stock_tracker/firo_tracker_dashboard.png".to_string(),
-    "stock_tracker/dcf_showcase.png".to_string(),
-   "stock_tracker/10_yr_forcast.png".to_string(),
-   "stock_tracker/Cash_Flow_Statement.png".to_string(),
-   "stock_tracker/Ratios.png".to_string(),
-   "stock_tracker/automatic_changing_show.png".to_string(),
-   "stock_tracker/code_import_style.png".to_string(),
-   "stock_tracker/Full_Dashboard.png".to_string(),
-   "stock_tracker/Ratios_Table.png".to_string(),
-   "stock_tracker/BalanceSheet.png".to_string(),
-   "stock_tracker/dcf_chart.png".to_string(),
-   "stock_tracker/Income_Statement.png".to_string(),
-   "stock_tracker/Book_Value.png".to_string(),
-   "stock_tracker/Insider_data.png".to_string(),
-];
+    let images = vec![
+        "stock_tracker/firo_tracker_dashboard.png".to_string(),
+        "stock_tracker/dcf_showcase.png".to_string(),
+        "stock_tracker/10_yr_forcast.png".to_string(),
+        "stock_tracker/Cash_Flow_Statement.png".to_string(),
+        "stock_tracker/Ratios.png".to_string(),
+        "stock_tracker/automatic_changing_show.png".to_string(),
+        "stock_tracker/code_import_style.png".to_string(),
+        "stock_tracker/Full_Dashboard.png".to_string(),
+        "stock_tracker/Ratios_Table.png".to_string(),
+        "stock_tracker/BalanceSheet.png".to_string(),
+        "stock_tracker/dcf_chart.png".to_string(),
+        "stock_tracker/Income_Statement.png".to_string(),
+        "stock_tracker/Book_Value.png".to_string(),
+        "stock_tracker/Insider_data.png".to_string(),
+    ];
 
     html! {
         <div>
@@ -51,11 +46,11 @@ let images = vec![
         </div>
     }
 }
- 
+
 pub fn stock_tracker_page() -> Html {
     html! {
         <div style="display: flex; flex-direction: column; align-items: center;">
-            {create_stock_tracker_markdown()} 
+            {create_stock_tracker_markdown()}
             {stock_tracker_image_showcase()}
         </div>
     }

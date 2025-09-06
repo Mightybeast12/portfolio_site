@@ -1,102 +1,278 @@
-/* Code Card 1 - Terminal-style code display card */
+/* Code Card 1 - Enhanced Terminal-style code display card */
 .card-code-1 {
     width: fit-content;
-    min-width: fit-content;
-    padding: 10px;
+    min-width: 320px;
+    max-width: min(90vw, 1000px);
     height: auto;
-    max-width: 70%;
-    max-height: 80vh;
-    margin: 0 auto;
-    background-color: hsl(0, 0%, 15%);
-    border-radius: 8px;
-    z-index: 1;
-    box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.4);
-    transition: 0.5s;
+    max-height: 85vh;
+    margin: 1.5rem auto;
+    background: linear-gradient(145deg, var(--gruvbox-dark0-hard), var(--gruvbox-dark0));
+    border: 1px solid var(--border-primary);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3),
+        0 2px 8px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     flex-direction: column;
-    align-items: center;
     position: relative;
+    overflow: hidden;
 }
 
-/* Top section with terminal controls */
+/* Hover state with subtle glow */
+.card-code-1:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4),
+        0 4px 16px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05),
+        0 0 24px rgba(131, 165, 152, 0.1);
+    /* Subtle blue glow */
+}
+
+/* Top section with terminal controls - Better positioning */
 .top-card-code-1 {
     display: flex;
     align-items: center;
-    padding-left: 10px;
-    padding-top: 8px;
-    justify-content: left;
-    width: 100%;
-    position: absolute;
-    top: 10px;
+    padding: 12px 16px;
+    background: var(--gruvbox-dark0-hard);
+    border-bottom: 1px solid var(--border-secondary);
+    position: relative;
+    z-index: 10;
 }
 
+/* Terminal control buttons with better styling */
 .circle-card-code-1 {
-    width: 16px;
-    height: 16px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
-    margin: 0 4px;
-    background-color: gray;
-    /* Default color for testing */
+    margin-right: 8px;
+    position: relative;
+    transition: all 0.2s ease;
 }
 
-.red {
-    background-color: #ff605c;
+/* Add hover effects to terminal buttons */
+.circle-card-code-1:hover {
+    transform: scale(1.1);
 }
 
-.yellow {
-    background-color: #ffbd44;
+.circle-card-code-1.red {
+    background: #ff5f56;
+    box-shadow: 0 0 4px rgba(255, 95, 86, 0.5);
 }
 
-.green {
-    background-color: #00ca4e;
+.circle-card-code-1.red:hover {
+    background: #ff6b61;
+    box-shadow: 0 0 8px rgba(255, 95, 86, 0.8);
 }
 
+.circle-card-code-1.yellow {
+    background: #ffbd2e;
+    box-shadow: 0 0 4px rgba(255, 189, 46, 0.5);
+}
+
+.circle-card-code-1.yellow:hover {
+    background: #ffc94a;
+    box-shadow: 0 0 8px rgba(255, 189, 46, 0.8);
+}
+
+.circle-card-code-1.green {
+    background: #27c93f;
+    box-shadow: 0 0 4px rgba(39, 201, 63, 0.5);
+}
+
+.circle-card-code-1.green:hover {
+    background: #2dd54a;
+    box-shadow: 0 0 8px rgba(39, 201, 63, 0.8);
+}
+
+/* Header section with better typography */
 .header-card-code-1 {
-    margin: 5px;
+    padding: 16px 24px 8px;
     text-align: center;
+    background: var(--gruvbox-dark0);
 }
 
 #card-code-1-title {
     color: var(--text-primary);
-    font-size: 18px;
-    min-width: fit-content;
+    font-size: 1.125rem;
+    font-weight: 600;
     margin: 0;
-    margin-top: 4px;
+    letter-spacing: 0.025em;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
+/* Code container with improved styling */
 .cardcode-1-code-container {
+    flex: 1;
     width: 100%;
-    max-width: 90vw;
+    padding: 0 16px 16px;
     display: flex;
     justify-content: center;
-    font-size: 14px;
-    color: var(--text-secondary);
+    overflow: hidden;
 }
 
-/* Code block styles */
+/* Enhanced code block styles */
 #card-code-1-code-block {
-    height: auto;
-    width: 90%;
-    max-height: 60vh;
-    max-width: 900px;
+    width: 100%;
+    max-height: 65vh;
     overflow: auto;
-    resize: none;
-    background-color: var(--bg-tertiary);
-    border-radius: 5px;
-    border: none;
+    background: var(--gruvbox-dark0-soft);
+    border: 1px solid var(--border-secondary);
+    border-radius: 8px;
     color: var(--text-primary);
-    padding: 10px;
-    box-sizing: border-box;
-    text-align: left;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+    padding: 16px 20px;
+    font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-break: break-word;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
 }
 
+/* Enhanced scrollbar styling */
 #card-code-1-code-block::-webkit-scrollbar {
-    display: none;
+    width: 10px;
+    height: 10px;
+}
+
+#card-code-1-code-block::-webkit-scrollbar-track {
+    background: var(--gruvbox-dark1);
+    border-radius: 4px;
+}
+
+#card-code-1-code-block::-webkit-scrollbar-thumb {
+    background: var(--gruvbox-dark4);
+    border-radius: 4px;
+    transition: background 0.2s ease;
+}
+
+#card-code-1-code-block::-webkit-scrollbar-thumb:hover {
+    background: var(--gruvbox-light4);
+}
+
+/* Firefox scrollbar styling */
+#card-code-1-code-block {
+    scrollbar-width: thin;
+    scrollbar-color: var(--gruvbox-dark4) var(--gruvbox-dark1);
 }
 
 /* Focus state for code block */
 #card-code-1-code-block:focus {
-    outline: none !important;
+    outline: 2px solid var(--accent-primary);
+    outline-offset: -2px;
+    border-color: var(--accent-primary);
+}
+
+/* Selection styling */
+#card-code-1-code-block::selection {
+    background: var(--accent-primary);
+    color: var(--gruvbox-dark0);
+}
+
+/* Syntax highlighting classes (optional - for future use) */
+.card-code-1 .keyword {
+    color: var(--gruvbox-bright-red);
+}
+
+.card-code-1 .string {
+    color: var(--gruvbox-bright-green);
+}
+
+.card-code-1 .comment {
+    color: var(--gruvbox-gray);
+    font-style: italic;
+}
+
+.card-code-1 .function {
+    color: var(--gruvbox-bright-blue);
+}
+
+.card-code-1 .number {
+    color: var(--gruvbox-bright-purple);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .card-code-1 {
+        min-width: 280px;
+        margin: 1rem auto;
+        max-width: 95vw;
+    }
+
+    .top-card-code-1 {
+        padding: 10px 12px;
+    }
+
+    .circle-card-code-1 {
+        width: 10px;
+        height: 10px;
+        margin-right: 6px;
+    }
+
+    #card-code-1-title {
+        font-size: 1rem;
+    }
+
+    .header-card-code-1 {
+        padding: 12px 16px 6px;
+    }
+
+    #card-code-1-code-block {
+        padding: 12px 16px;
+        font-size: 0.8125rem;
+        max-height: 50vh;
+    }
+}
+
+/* Loading state animation (optional) */
+.card-code-1.loading #card-code-1-code-block::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg,
+            transparent,
+            var(--accent-primary) 20%,
+            var(--accent-primary) 80%,
+            transparent);
+    animation: loading 2s linear infinite;
+}
+
+@keyframes loading {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* Copy button styling (if you want to add one) */
+.card-code-1 .copy-button {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    background: var(--gruvbox-dark2);
+    border: 1px solid var(--border-primary);
+    color: var(--text-secondary);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    opacity: 0;
+}
+
+.card-code-1:hover .copy-button {
+    opacity: 1;
+}
+
+.card-code-1 .copy-button:hover {
+    background: var(--gruvbox-dark3);
+    color: var(--text-primary);
+    border-color: var(--accent-primary);
 }

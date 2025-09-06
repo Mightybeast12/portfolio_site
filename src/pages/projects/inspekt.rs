@@ -1,7 +1,7 @@
 use yew::prelude::*;
 
-use crate::utils::image_utils::image_carousel_builder;
-use crate::utils::mark_down_utils;
+use crate::services::markdown_service;
+use crate::shared::ui::images::image_carousel_builder;
 
 pub fn inspekt_markdown_intro_markdown() -> Html {
     let markdown_input = r#"
@@ -24,7 +24,7 @@ A **Linux-based** command-line tool meticulously designed for the inspection of 
     "#;
     html!(
         <div class="markdown-container">
-            {mark_down_utils::create_markdown(markdown_input)}
+            {markdown_service::create_markdown(markdown_input)}
         </div>
     )
 }
@@ -56,13 +56,13 @@ Inspekt checks all aspects of a **DCP**(*Digital Cinema Package*)
     "#;
     html!(
         <div class="markdown-container">
-            {mark_down_utils::create_markdown(markdown_input)}
+            {markdown_service::create_markdown(markdown_input)}
         </div>
     )
 }
 
 fn inspekt_report_play() -> Html {
-    let html_content = include_str!("../../static/inspekt/test_report.html").to_string();
+    let html_content = include_str!("../../../static/inspekt/test_report.html").to_string();
     html! {
         <div class = "inspekt-play-container">
             <h1 style = "margin-left: 40%;"> {"Test Report Example"} </h1>

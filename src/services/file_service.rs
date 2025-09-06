@@ -1,6 +1,6 @@
+use crate::shared::ui::cards;
 use gloo_net::http::Request;
 use yew::prelude::*;
-use crate::utils::card_elements; 
 
 /// Asynchronously fetches file content, returning a String.
 /// Returns "content not found" if the file is missing or there's an error.
@@ -46,7 +46,7 @@ pub fn file_content(props: &FileContentProps) -> Html {
 
     html! {
         <div>
-            { card_elements::create_code_styled_markdown(title, content.to_string()) }
+            { cards::create_code_styled_markdown(title, content.to_string()) }
         </div>
     }
 }

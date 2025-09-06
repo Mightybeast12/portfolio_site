@@ -1,18 +1,9 @@
 use yew::prelude::*;
 use yew_router::prelude::*;
 
-use crate::page_builder::alula_bible_page;
-use crate::page_builder::auto_ingest_page;
-use crate::page_builder::code_show_case_elements;
-use crate::page_builder::css_to_rust_converter_page;
-use crate::page_builder::firo_logger_page;
-use crate::page_builder::game_score_tracker_page;
-use crate::page_builder::gitlab_terraform_page;
-use crate::page_builder::inspekt_showcase_page;
-use crate::page_builder::portfolio_site_page;
-use crate::page_builder::rust_site;
-use crate::page_builder::stock_tracker_page;
-use crate::utils::router::Route;
+use crate::pages::projects;
+use crate::routing::Route;
+use crate::shared::ui::code_showcase;
 
 pub fn home_page() -> Html {
     html! {
@@ -21,7 +12,7 @@ pub fn home_page() -> Html {
 
             // Portfolio Site Infrastructure
             <div class="markdown-container">
-                {portfolio_site_page::portfolio_site_intro()}
+                {projects::portfolio_site::portfolio_site_intro()}
                 <div class="button-20-container">
                     <Link<Route> to={Route::PortfolioSitePage} classes="button-link">
                         <div class="button-20">
@@ -35,7 +26,7 @@ pub fn home_page() -> Html {
 
             // Firo Logger
             <div class="markdown-container">
-                {firo_logger_page::firo_logger_intro()}
+                {projects::firo_logger::firo_logger_intro()}
                 <div class="button-20-container">
                     <Link<Route> to={Route::FiroLoggerPage} classes="button-link">
                         <div class="button-20">
@@ -49,7 +40,7 @@ pub fn home_page() -> Html {
 
             // CSS to Rust Converter
             <div class="markdown-container">
-                {css_to_rust_converter_page::css_to_rust_converter_intro()}
+                {projects::css_to_rust_converter::css_to_rust_converter_intro()}
                 <div class="button-20-container">
                     <Link<Route> to={Route::CssToRustConverterPage} classes="button-link">
                         <div class="button-20">
@@ -63,7 +54,7 @@ pub fn home_page() -> Html {
 
             // Game Score Tracker
             <div class="markdown-container">
-                {game_score_tracker_page::game_score_tracker_intro()}
+                {projects::game_score_tracker::game_score_tracker_intro()}
                 <div class="button-20-container">
                     <Link<Route> to={Route::GameScoreTrackerPage} classes="button-link">
                         <div class="button-20">
@@ -77,7 +68,7 @@ pub fn home_page() -> Html {
 
             // GitLab Terraform Infrastructure
             <div class="markdown-container">
-                {gitlab_terraform_page::gitlab_terraform_intro()}
+                {projects::gitlab_terraform::gitlab_terraform_intro()}
                 <div class="button-20-container">
                     <Link<Route> to={Route::GitlabTerraformPage} classes="button-link">
                         <div class="button-20">
@@ -93,7 +84,7 @@ pub fn home_page() -> Html {
 
             //Portfolio Page
             <div class="markdown-container">
-                {rust_site::port_folio_site_markdown()}
+                {projects::rust_site::port_folio_site_markdown()}
                 <div class="button-20-container">
                     <Link<Route> to={Route::RustSite} classes="button-link">
                         <div class="button-20">
@@ -106,7 +97,7 @@ pub fn home_page() -> Html {
             // Portfolio Page End
             //Inspekt Page
             <div class="markdown-container">
-                {inspekt_showcase_page::inspekt_markdown_intro_markdown()}
+                {projects::inspekt::inspekt_markdown_intro_markdown()}
                 <div class="button-20-container">
                     <Link<Route> to={Route::InspektPage} classes="button-link">
                         <div class="button-20">
@@ -120,7 +111,7 @@ pub fn home_page() -> Html {
 
             // StockTrackerPage
             <div class="markdown-container">
-                {stock_tracker_page::create_stock_tracker_markdown()}
+                {projects::stock_tracker::create_stock_tracker_markdown()}
                 <div class="button-20-container">
                     <Link<Route> to={Route::StockTrackerPage} classes="button-link">
                         <div class="button-20">
@@ -134,7 +125,7 @@ pub fn home_page() -> Html {
 
             //AutoIngestPage
             <div class="markdown-container">
-                {auto_ingest_page::alula_auto_ingest_markdown()}
+                {projects::auto_ingest::alula_auto_ingest_markdown()}
                 <div class="button-20-container">
                     <Link<Route> to={Route::AutoIngestPage} classes="button-link">
                         <div class="button-20">
@@ -148,7 +139,7 @@ pub fn home_page() -> Html {
 
             // Alula BiblePage
             <div class="markdown-container">
-                {alula_bible_page::create_alula_bible_markdown()}
+                {projects::alula_bible::create_alula_bible_markdown()}
                 <div class="button-20-container">
                     <Link<Route> to={Route::AlulaBiblePage} classes="button-link">
                         <div class="button-20">
@@ -160,7 +151,7 @@ pub fn home_page() -> Html {
             </div>
             // Alula bible End
 
-            {code_show_case_elements::rust_docker_container_showcase()}
+            {code_showcase::rust_docker_container_showcase()}
         </div>
     }
 }

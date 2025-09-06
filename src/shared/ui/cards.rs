@@ -1,10 +1,9 @@
-
+use crate::services::file_service::FileContent;
 use yew::prelude::*;
-use crate::utils::file_reader::FileContent;
-  
-pub fn create_code_styled_markdown(title:String,input:String) -> Html {
+
+pub fn create_code_styled_markdown(title: String, input: String) -> Html {
     html! {
-        <div> 
+        <div>
             <div class="card-code-1">
                 <div class="top-card-code-1">
                     <div class="circle-card-code-1 red"></div>
@@ -21,10 +20,10 @@ pub fn create_code_styled_markdown(title:String,input:String) -> Html {
         </div>
     }
 }
- 
+
 pub fn create_dynamic_styled_markdown(title: String, file: String) -> Html {
     html! {
-        <div style="padding: 20px;">  
+        <div style="padding: 20px;">
             <FileContent file_path={file} title={title} />
         </div>
     }

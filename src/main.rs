@@ -1,4 +1,4 @@
-use cv_portfolio_site::utils::router::RouterComponent;
+use cv_portfolio_site::routing::RouterComponent;
 use yew::prelude::*;
 
 #[function_component(App)]

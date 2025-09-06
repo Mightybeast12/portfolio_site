@@ -1,13 +1,13 @@
+use crate::shared::helpers::navbar::NavBar;
 use yew::prelude::*;
-use crate::utils::navbar::NavBar;
 
 #[function_component(Layout)]
 pub fn layout(props: &Props) -> Html {
     html! {
         <div>
-            <NavBar />  
+            <NavBar />
             <main>
-                { for props.children.iter() } 
+                { for props.children.iter() }
             </main>
         </div>
     }

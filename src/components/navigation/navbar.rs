@@ -1,7 +1,7 @@
 //! Navigation bar components
 
 use crate::constants::social::FULL_NAME;
-use crate::utils::router::Route;
+use crate::routing::Route;
 use yew::prelude::*;
 use yew_router::prelude::*;
 

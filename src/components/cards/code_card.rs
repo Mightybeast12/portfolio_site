@@ -1,7 +1,7 @@
 //! Code display card components
 
 use crate::constants::ui::*;
-use crate::utils::file_reader::FileContent;
+use crate::services::file_service::FileContent;
 use yew::prelude::*;
 
 /// Props for the code card component
