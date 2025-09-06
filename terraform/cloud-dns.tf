@@ -5,34 +5,14 @@ data "cloudflare_zone" "portfolio_zone" {
   name = var.custom_domain
 }
 
-# Root domain record for domain mapping
-resource "cloudflare_record" "portfolio_root" {
-  zone_id = data.cloudflare_zone.portfolio_zone.id
-  name    = "@"
-  content = "ghs.googlehosted.com"
-  type    = "CNAME"
-  proxied = true
-  ttl     = 1
-}
-
-# CNAME for www subdomain
-resource "cloudflare_record" "portfolio_www" {
-  zone_id = data.cloudflare_zone.portfolio_zone.id
-  name    = "www"
-  content = var.custom_domain
-  type    = "CNAME"
-  proxied = true
-  ttl     = 1
-}
-
 # CNAME for portfolio subdomain pointing to Google hosted service for domain mapping
 resource "cloudflare_record" "portfolio_subdomain" {
   zone_id = data.cloudflare_zone.portfolio_zone.id
   name    = var.subdomain
   content = "ghs.googlehosted.com"
   type    = "CNAME"
-  proxied = true
-  ttl     = 1
+  proxied = false
+  ttl     = 300
 }
 
 # SSL settings
