@@ -124,7 +124,7 @@ terraform apply
 gcloud logs read "resource.type=cloud_run_revision AND resource.labels.service_name=firat-portfolio-site" --limit=50
 
 # Check service status
-gcloud run services list --region=europe-west9
+gcloud run services list --region=europe-west1
 
 # View deployment history
 cat scripts/.last_version

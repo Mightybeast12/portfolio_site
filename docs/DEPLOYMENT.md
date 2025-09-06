@@ -139,7 +139,7 @@ cd terraform && terraform apply
 ```bash
 # Solution: Authenticate with GCP
 gcloud auth login
-gcloud auth configure-docker europe-west9-docker.pkg.dev
+gcloud auth configure-docker europe-west1-docker.pkg.dev
 ```
 
 ### Checking Status
@@ -152,7 +152,7 @@ terraform show
 
 **Check Cloud Run service:**
 ```bash
-gcloud run services list --region=europe-west9
+gcloud run services list --region=europe-west1
 ```
 
 **View recent deployments:**
@@ -183,13 +183,13 @@ terraform apply -var="ci_environment=true" -var="auto_build=false"
 To deploy a specific image version:
 ```bash
 # Build with custom tag
-docker build -t europe-west9-docker.pkg.dev/portfolio-site-434710/cv-portfolio-repo/rust-image-cv-image:v2.0.0 .
-docker push europe-west9-docker.pkg.dev/portfolio-site-434710/cv-portfolio-repo/rust-image-cv-image:v2.0.0
+docker build -t europe-west1-docker.pkg.dev/portfolio-site-434710/cv-portfolio-repo/rust-image-cv-image:v2.0.0 .
+docker push europe-west1-docker.pkg.dev/portfolio-site-434710/cv-portfolio-repo/rust-image-cv-image:v2.0.0
 
 # Update Cloud Run service
 gcloud run deploy firat-portfolio-site \
-  --image europe-west9-docker.pkg.dev/portfolio-site-434710/cv-portfolio-repo/rust-image-cv-image:v2.0.0 \
-  --region europe-west9
+  --image europe-west1-docker.pkg.dev/portfolio-site-434710/cv-portfolio-repo/rust-image-cv-image:v2.0.0 \
+  --region europe-west1
 ```
 
 ### Rollback Procedures
@@ -204,12 +204,12 @@ terraform apply
 **Using Cloud Run:**
 ```bash
 # List revisions
-gcloud run revisions list --service=firat-portfolio-site --region=europe-west9
+gcloud run revisions list --service=firat-portfolio-site --region=europe-west1
 
 # Rollback to specific revision
 gcloud run services update-traffic firat-portfolio-site \
   --to-revisions=<revision-name>=100 \
-  --region=europe-west9
+  --region=europe-west1
 ```
 
 ## Security Considerations

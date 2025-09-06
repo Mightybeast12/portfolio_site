@@ -185,10 +185,10 @@ gcloud projects test-iam-permissions $PROJECT_ID \
 
 ```bash
 # Test Artifact Registry access
-gcloud artifacts repositories list --location=europe-west9 --project=portfolio-site-434710
+gcloud artifacts repositories list --location=europe-west1 --project=portfolio-site-434710
 
 # Test Cloud Run access
-gcloud run services list --region=europe-west9 --project=portfolio-site-434710
+gcloud run services list --region=europe-west1 --project=portfolio-site-434710
 
 # Test IAM access
 gcloud iam service-accounts list --project=portfolio-site-434710

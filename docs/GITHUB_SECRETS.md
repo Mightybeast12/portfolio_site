@@ -195,10 +195,10 @@ output "github_actions_key" {
 gcloud auth activate-service-account --key-file=github-actions-key.json
 
 # Test Cloud Run access
-gcloud run services list --region=europe-west9
+gcloud run services list --region=europe-west1
 
 # Test Artifact Registry access
-gcloud artifacts repositories list --location=europe-west9
+gcloud artifacts repositories list --location=europe-west1
 
 # Test IAM access
 gcloud iam service-accounts list

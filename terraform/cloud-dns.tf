@@ -5,15 +5,9 @@ data "cloudflare_zone" "portfolio_zone" {
   name = var.custom_domain
 }
 
-# A record for root domain (proxied through Cloudflare)
-resource "cloudflare_record" "portfolio_root" {
-  zone_id = data.cloudflare_zone.portfolio_zone.id
-  name    = "@"
-  content = "192.0.2.1"  # Placeholder IP, Cloudflare will proxy to Cloud Run
-  type    = "A"
-  proxied = true
-  ttl     = 1
-}
+# Root domain record managed manually in Cloudflare dashboard
+# Point @ record to: replace(google_cloud_run_v2_service.portfolio_site.uri, "https://", "")
+# Type: CNAME, Proxied: Yes
 
 # CNAME for www subdomain
 resource "cloudflare_record" "portfolio_www" {
@@ -50,4 +44,10 @@ resource "cloudflare_zone_settings_override" "portfolio_ssl" {
 output "cloudflare_nameservers" {
   description = "Cloudflare nameservers to configure in Porkbun"
   value       = data.cloudflare_zone.portfolio_zone.name_servers
+}
+
+# Output Cloud Run URL for manual DNS configuration
+output "cloud_run_dns_target" {
+  description = "Cloud Run URL to use as CNAME target in Cloudflare (remove https://)"
+  value       = replace(google_cloud_run_v2_service.portfolio_site.uri, "https://", "")
 }
