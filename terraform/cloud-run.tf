@@ -24,13 +24,6 @@ resource "google_cloud_run_v2_service" "portfolio_site" {
           memory = var.memory_limit
         }
       }
-
-      # Environment variables (add more as needed)
-      # env {
-      #   name  = "PORT"
-      #   value = "8080"
-      # }
-
       env {
         name  = "ENVIRONMENT"
         value = "production"
@@ -41,7 +34,6 @@ resource "google_cloud_run_v2_service" "portfolio_site" {
   traffic {
     percent = 100
     type    = "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"
-    # Explicitly no tag
   }
 
 

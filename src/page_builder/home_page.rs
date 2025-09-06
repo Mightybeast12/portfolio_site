@@ -25,7 +25,7 @@ pub fn home_page() -> Html {
                 <div class="button-20-container">
                     <Link<Route> to={Route::PortfolioSitePage} classes="button-link">
                         <div class="button-20">
-                            <span class="button-20-text">{"merge test CHECK OUT"}</span>
+                            <span class="button-20-text">{"clean merge test CHECK OUT"}</span>
                             <span class="button-20-arrow"></span>
                         </div>
                     </Link<Route>>

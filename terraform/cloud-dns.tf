@@ -11,8 +11,8 @@ resource "cloudflare_record" "portfolio_subdomain" {
   name    = var.subdomain
   content = "ghs.googlehosted.com"
   type    = "CNAME"
-  proxied = false
-  ttl     = 300
+  proxied = true
+  ttl     = 1
 }
 
 # SSL settings
