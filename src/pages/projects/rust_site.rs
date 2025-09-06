@@ -1,7 +1,7 @@
 use yew::prelude::*;
 
+use crate::components::media::image_carousel_builder;
 use crate::services::markdown_service;
-use crate::shared::ui::images::image_carousel_builder;
 
 pub fn port_folio_site_markdown() -> Html {
     let markdown = r#"

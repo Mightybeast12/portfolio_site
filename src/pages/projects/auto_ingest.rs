@@ -1,9 +1,9 @@
 use yew::prelude::*;
 
+use crate::components::media::image_carousel_builder;
 use crate::services::markdown_service;
 use crate::shared::ui::cards;
 use crate::shared::ui::code_showcase;
-use crate::shared::ui::images::image_carousel_builder;
 
 pub fn alula_auto_ingest_markdown() -> Html {
     let markdown = r#"
