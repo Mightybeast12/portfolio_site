@@ -1,4 +1,4 @@
-name: Terraform Infrastructure & Application Deployment
+name: Deploy to GCP Cloud Run - Terraform + Docker (Auto-triggers on code changes)
 
 on:
   push:
@@ -46,7 +46,7 @@ jobs:
       deploy-version: ${{ steps.version-check.outputs.version }}
 
     steps:
-      - name: Check Prerequisite Workflows
+      - name: Verify prerequisite workflows succeeded before deploying
         if: github.event_name == 'workflow_run'
         run: |
           echo "🔍 Triggered by workflow: ${{ github.event.workflow_run.name }}"
@@ -58,12 +58,12 @@ jobs:
             echo "✅ Prerequisite workflow succeeded. Proceeding with deployment."
           fi
 
-      - name: Checkout
+      - name: Checkout repository with history for change detection
         uses: actions/checkout@v5
         with:
           fetch-depth: 2
 
-      - name: Debug Git State
+      - name: Display Git state for debugging change detection
         run: |
           echo "🔍 DEBUG: Git state information"
           echo "Current HEAD: $(git rev-parse HEAD)"
@@ -73,7 +73,7 @@ jobs:
           echo "Changed files:"
           git diff --name-only HEAD~1 HEAD 2>/dev/null || echo "Cannot compare with previous commit"
 
-      - name: Check Terraform Changes
+      - name: Detect if terraform infrastructure files have changed
         id: terraform-changes
         run: |
           echo "🔍 Checking terraform changes..."
@@ -88,7 +88,7 @@ jobs:
             echo "📋 No Terraform changes detected"
           fi
 
-      - name: Check Application Changes
+      - name: Detect if application source code or static files have changed
         id: app-changes
         run: |
           cd ..
@@ -106,7 +106,7 @@ jobs:
             echo "📋 No application changes detected"
           fi
 
-      - name: Check Version Change
+      - name: Compare Cargo.toml version with previous commit
         id: version-check
         run: |
           cd ..
@@ -134,35 +134,35 @@ jobs:
             echo "changed=true" >> $GITHUB_OUTPUT
           fi
 
-      - name: Setup Terraform
+      - name: Install Terraform CLI version ${{ env.TF_VERSION }}
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: ${{ env.TF_VERSION }}
 
-      - name: Authenticate to Google Cloud
+      - name: Authenticate to GCP using service account credentials
         uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
 
-      - name: Set up Cloud SDK
+      - name: Install Google Cloud SDK for GCP operations
         uses: google-github-actions/setup-gcloud@v2
 
-      - name: Terraform Format Check
+      - name: Verify Terraform files are properly formatted
         id: fmt
         run: terraform fmt -check
         continue-on-error: true
 
-      - name: Terraform Init
+      - name: Initialize Terraform backend and providers
         id: init
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: terraform init
 
-      - name: Terraform Validate
+      - name: Validate Terraform configuration syntax
         id: validate
         run: terraform validate -no-color
 
-      - name: Terraform Plan
+      - name: Generate Terraform plan to preview infrastructure changes
         id: plan
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -170,7 +170,7 @@ jobs:
           terraform plan -no-color -input=false -var="ci_environment=true" -var="auto_build=false" -out=tfplan
         continue-on-error: true
 
-      - name: Update Pull Request
+      - name: Comment Terraform plan results on pull request
         uses: actions/github-script@v7
         if: github.event_name == 'pull_request'
         env:
@@ -205,7 +205,7 @@ jobs:
               body: output
             })
 
-      - name: Terraform Plan Status
+      - name: Fail workflow if Terraform plan failed
         if: steps.plan.outcome == 'failure'
         run: exit 1
 
@@ -226,31 +226,31 @@ jobs:
         working-directory: ${{ env.TF_WORKING_DIR }}
 
     steps:
-      - name: Checkout
+      - name: Checkout repository for deployment
         uses: actions/checkout@v5
 
-      - name: Setup Terraform
+      - name: Install Terraform CLI for infrastructure deployment
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: ${{ env.TF_VERSION }}
 
-      - name: Authenticate to Google Cloud
+      - name: Authenticate to GCP for deployment operations
         uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
 
-      - name: Set up Cloud SDK
+      - name: Install GCP Cloud SDK for deployment
         uses: google-github-actions/setup-gcloud@v2
 
-      - name: Configure Docker
+      - name: Configure Docker authentication for Artifact Registry
         run: gcloud auth configure-docker europe-west1-docker.pkg.dev --quiet
 
-      - name: Terraform Init
+      - name: Initialize Terraform for deployment
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: terraform init
 
-      - name: Calculate Image Tag
+      - name: Generate Docker image tag from version and commit SHA
         id: image-tag
         run: |
           cd ..
@@ -261,7 +261,7 @@ jobs:
           echo "image_tag=$IMAGE_TAG" >> $GITHUB_OUTPUT
           echo "🏷️ Generated image tag: $IMAGE_TAG"
 
-      - name: Build and Push Container
+      - name: Build Docker image and push to GCP Artifact Registry
         if: needs.infrastructure.outputs.app-changed == 'true' || needs.infrastructure.outputs.version-changed == 'true'
         env:
           IMAGE_TAG: ${{ steps.image-tag.outputs.image_tag }}
@@ -270,7 +270,7 @@ jobs:
           cd ..
           ./scripts/build-and-deploy.sh
 
-      - name: Deploy Infrastructure & Application
+      - name: Apply Terraform to deploy infrastructure and update Cloud Run
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
@@ -280,7 +280,7 @@ jobs:
             -var="auto_build=false" \
             -var="image_tag=${{ steps.image-tag.outputs.image_tag }}"
 
-      - name: Capture Terraform Outputs
+      - name: Extract deployment URLs and registry info from Terraform outputs
         id: outputs
         run: |
           echo "cloud_run_url=$(terraform output -raw cloud_run_service_url)" >> $GITHUB_OUTPUT
@@ -289,7 +289,7 @@ jobs:
           echo "docker_image_url=$(terraform output -raw docker_image_url)" >> $GITHUB_OUTPUT
           echo "artifact_registry=$(terraform output -raw artifact_registry_repository)" >> $GITHUB_OUTPUT
 
-      - name: Display Deployment Summary
+      - name: Generate comprehensive deployment summary with URLs and details
         run: |
           echo "## 🚀 Deployment Complete!" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
@@ -328,7 +328,7 @@ jobs:
       needs.infrastructure.outputs.version-changed == 'false'
 
     steps:
-      - name: Skip Deployment Summary
+      - name: Generate summary explaining why deployment was skipped
         run: |
           echo "## ⏭️ Deployment Skipped" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY

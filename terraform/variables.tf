@@ -1,7 +1,7 @@
 variable "project_id" {
   description = "The GCP project ID"
   type        = string
-  default     = "placeholder"
+  default     = "portfolio-site-434710"
 }
 
 variable "region" {
@@ -35,9 +35,9 @@ variable "repo_name" {
 }
 
 variable "custom_domain" {
-  description = "Custom domain for the portfolio site (placeholder)"
+  description = "Custom domain for the portfolio site (firathonca.online)"
   type        = string
-  default     = "pending.com"
+  default     = "firathonca.online"
 }
 
 variable "subdomain" {
