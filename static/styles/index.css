@@ -12,7 +12,6 @@
 
 /* Card components */
 @import './components/cards/code-card-1.css';
-@import './components/cards/code-card-2.css';
 
 /* Image components */
 @import './components/images/carousel.css';

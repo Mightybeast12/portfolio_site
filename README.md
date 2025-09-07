@@ -1,9 +1,9 @@
 # Portfolio Site
 
-[![Lint and Check](https://github.com/Mightybeast12/portfolio_site/actions/workflows/lint.yml/badge.svg)](https://github.com/Mightybeast12/portfolio_site/actions/workflows/lint.yml)
-[![Security and Dependencies](https://github.com/Mightybeast12/portfolio_site/actions/workflows/security.yml/badge.svg)](https://github.com/Mightybeast12/portfolio_site/actions/workflows/security.yml)
+[![Rust CI - Lint, Test, Security & Dependency Checks](https://github.com/Mightybeast12/portfolio_site/actions/workflows/ci-quality.yml/badge.svg)](https://github.com/Mightybeast12/portfolio_site/actions/workflows/ci-quality.yml)
+[![Auto-merge](https://github.com/Mightybeast12/portfolio_site/actions/workflows/auto-merge.yml/badge.svg)](https://github.com/Mightybeast12/portfolio_site/actions/workflows/auto-merge.yml)
 [![Terraform Deploy](https://github.com/Mightybeast12/portfolio_site/actions/workflows/terraform.yml/badge.svg)](https://github.com/Mightybeast12/portfolio_site/actions/workflows/terraform.yml)
-[![Stale Issues and PRs](https://github.com/Mightybeast12/portfolio_site/actions/workflows/stale.yml/badge.svg)](https://github.com/Mightybeast12/portfolio_site/actions/workflows/stale.yml)
+[![Auto-close stale issues & PRs (30/14 days)](https://github.com/Mightybeast12/portfolio_site/actions/workflows/maintenance.yml/badge.svg)](https://github.com/Mightybeast12/portfolio_site/actions/workflows/maintenance.yml)
 
 A Rust-based portfolio website deployed on Google Cloud Run with automated CI/CD using GitHub Actions and Terraform.
 
@@ -41,9 +41,8 @@ A Rust-based portfolio website deployed on Google Cloud Run with automated CI/CD
 portfolio_site/
 ├── .github/workflows/
 │   ├── auto-merge.yml      # Automated PR merging for dependencies
-│   ├── lint.yml            # Code quality and auto-fix
-│   ├── security.yml        # Security auditing and dependency checks
-│   ├── stale.yml           # Issue and PR management
+│   ├── ci-quality.yml      # Rust CI - lint, test, security & dependency checks
+│   ├── maintenance.yml     # Issue and PR stale management
 │   └── terraform.yml       # Unified infrastructure and deployment management
 ├── .github/
 │   └── dependabot.yml      # Automated dependency updates
@@ -177,6 +176,20 @@ cd terraform && terraform destroy
 
 ## 🔄 CI/CD Workflows
 
+### Rust CI - Lint, Test, Security & Dependency Checks (`ci-quality.yml`)
+- Triggers on push/PR to main branch, weekly schedule, and manual dispatch
+- Comprehensive quality checks including:
+  - **Linting & Auto-fix**: Runs `cargo clippy` with automatic fixes for code quality
+  - **Code Formatting**: Enforces consistent code style
+  - **Testing**: Runs all tests with `cargo test`
+  - **Security Audit**: Scans for known vulnerabilities with `cargo audit`
+  - **Dependency Check**: Identifies outdated dependencies with `cargo outdated`
+  - **License Compliance**: Reports licenses of all dependencies
+  - **WASM Build**: Builds release bundle with Trunk
+- Auto-increments patch version when clippy fixes are applied
+- Special handling for Dependabot PRs (no auto-fix to prevent loops)
+- Generates comprehensive workflow summaries
+
 ### Unified Infrastructure & Deployment (`terraform.yml`)
 - Triggers on `Cargo.toml` changes, `terraform/` directory changes, or manual dispatch
 - Smart change detection for infrastructure, application, and version changes
@@ -186,34 +199,26 @@ cd terraform && terraform destroy
 - Rich output display showing Cloud Run URLs, custom domain URLs, Docker image info, and DNS configuration
 - Proper Terraform state management with remote backend
 
-### Code Quality & Linting (`lint.yml`)
-- Triggers on push/PR to main branch
-- Runs `cargo fmt --check` for code formatting
-- Runs `cargo clippy` for linting and best practices
-- Runs `cargo check` for compilation verification
-- Runs `cargo test` for unit tests
-- Builds WASM target with Trunk
+### Automated PR Merging (`auto-merge.yml`)
+- Automatically merges dependency update PRs from Dependabot
+- Ensures all CI checks pass before merging
+- Streamlines dependency management process
 
-### Security & Dependencies (`security.yml`)
-- Triggers on push/PR and weekly schedule
-- Runs `cargo audit` for security vulnerabilities
-- Checks for outdated dependencies with `cargo outdated`
-- Generates license reports with `cargo license`
-- Creates dependency and security reports in workflow summaries
+### Repository Maintenance (`maintenance.yml`)
+- Runs daily at 1:30 AM UTC to manage inactive issues and PRs
+- Marks issues as stale after 30 days of inactivity
+- Marks PRs as stale after 14 days of inactivity
+- Automatically closes stale items after 7 additional days
+- Exempts important labels (pinned, security, enhancement, bug, work-in-progress)
+- Excludes draft PRs from stale management
+- Generates maintenance summary reports
 
 ### Automated Dependency Updates (Dependabot)
 - Weekly updates for Rust dependencies, GitHub Actions, and Docker
 - Automatically creates PRs for dependency updates
 - Ignores major version updates for core dependencies (Yew, Yew-router)
 - Properly labeled and assigned PRs
-
-### Issue & PR Management (`stale.yml`)
-- Runs daily at 1:30 AM UTC to manage inactive issues and PRs
-- Marks issues as stale after 30 days of inactivity
-- Marks PRs as stale after 14 days of inactivity
-- Automatically closes stale items after 7 additional days
-- Exempts important labels (pinned, security, enhancement, bug)
-- Excludes draft PRs and work-in-progress items
+- Works seamlessly with auto-merge workflow
 
 ## 🌐 Live Site
 
