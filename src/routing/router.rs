@@ -29,9 +29,6 @@ pub enum Route {
     #[at("/info")]
     Info,
 
-    #[at("/landing")]
-    LandingPage,
-
     // New repository showcase pages
     #[at("/portfolio_site")]
     PortfolioSitePage,
@@ -58,7 +55,6 @@ fn switch(routes: Route) -> Html {
         Route::AutoIngestPage => projects::auto_ingest::auto_ingest_page(),
         Route::RustSite => projects::rust_site::rust_site(),
         Route::ContactPage => core::contact::contact_page(),
-        Route::LandingPage => core::landing::landing_page(),
         Route::Info => core::info::info_page(),
         Route::PortfolioSitePage => projects::portfolio_site::portfolio_site_page(),
         Route::FiroLoggerPage => projects::firo_logger::firo_logger_page(),

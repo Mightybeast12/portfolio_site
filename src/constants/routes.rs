@@ -9,7 +9,6 @@ pub const ALULA_BIBLE_ROUTE: &str = "/alula_bible";
 pub const AUTO_INGEST_ROUTE: &str = "/auto_ingest_page";
 pub const RUST_SITE_ROUTE: &str = "/rust_site";
 pub const INFO_ROUTE: &str = "/info";
-pub const LANDING_ROUTE: &str = "/landing";
 
 // Page titles
 pub const HOME_TITLE: &str = "Home - Portfolio";
@@ -20,4 +19,3 @@ pub const ALULA_BIBLE_TITLE: &str = "Alula Bible - Scripture Study";
 pub const AUTO_INGEST_TITLE: &str = "Auto Ingest - Data Processing";
 pub const RUST_SITE_TITLE: &str = "Rust Site - Web Development";
 pub const INFO_TITLE: &str = "Info - About This Site";
-pub const LANDING_TITLE: &str = "Landing - Welcome";

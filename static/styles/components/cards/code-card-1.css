@@ -88,7 +88,7 @@
 /* Header section with better typography */
 .header-card-code-1 {
     padding: 16px 24px 8px;
-    text-align: center;
+    text-align: left;
     background: var(--gruvbox-dark0);
 }
 
@@ -107,7 +107,7 @@
     width: 100%;
     padding: 0 16px 16px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     overflow: hidden;
 }
 
