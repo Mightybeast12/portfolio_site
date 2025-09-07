@@ -291,17 +291,17 @@ pub fn rust_site() -> Html {
             {port_folio_site_markdown()}
 
             <div style="width: 100%; max-width: 900px;">
-                <h2 style="margin-bottom: 20px;">{"📁 Project Structure"}</h2>
+                <h2 style="margin-bottom: 20px;">{"Project Structure"}</h2>
                 {file_structure_showcase()}
             </div>
 
             <div style="width: 100%; max-width: 900px;">
-                <h2 style="margin-bottom: 20px;">{"🦀 Rust Code Examples"}</h2>
+                <h2 style="margin-bottom: 20px;">{"Rust Code Examples"}</h2>
                 {rust_code_examples()}
             </div>
 
             <div style="width: 100%; max-width: 900px;">
-                <h2 style="margin-bottom: 20px;">{"🔧 Terraform Infrastructure"}</h2>
+                <h2 style="margin-bottom: 20px;">{"Terraform Infrastructure"}</h2>
                 {terraform_examples()}
             </div>
 

@@ -52,7 +52,7 @@ pub fn portfolio_site_markdown() -> Html {
 
             <h2>{"Key Features"}</h2>
             <ul>
-                <li>{"🚀 Serverless deployment with Google Cloud Run"}</li>
+                <li>{"Serverless deployment with Google Cloud Run"}</li>
                 <li>{"🔒 Automated SSL/TLS certificates"}</li>
                 <li>{"📦 Multi-stage Docker builds for optimization"}</li>
                 <li>{"⚡ Infrastructure as Code with Terraform"}</li>
