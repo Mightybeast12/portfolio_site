@@ -86,27 +86,27 @@ pub fn image_carousel(props: &ImageCarouselProps) -> Html {
                     src={image_src}
                     alt={props.default_alt.clone()}
                 />
+
+                if image_count > 1 {
+                    <div class="carousel-indicators">
+                        {for (0..image_count).map(|index| {
+                            let is_active = index == *current_index;
+                            let current_index = current_index.clone();
+                            let onclick = Callback::from(move |_| current_index.set(index));
+
+                            html! {
+                                <button
+                                    class={if is_active { "indicator active" } else { "indicator" }}
+                                    onclick={onclick}
+                                />
+                            }
+                        })}
+                    </div>
+                }
             </div>
 
             if image_count > 1 {
                 <button onclick={next_image} class="carousel-control next">{"›"}</button>
-            }
-
-            if image_count > 1 {
-                <div class="carousel-indicators">
-                    {for (0..image_count).map(|index| {
-                        let is_active = index == *current_index;
-                        let current_index = current_index.clone();
-                        let onclick = Callback::from(move |_| current_index.set(index));
-
-                        html! {
-                            <button
-                                class={if is_active { "indicator active" } else { "indicator" }}
-                                onclick={onclick}
-                            />
-                        }
-                    })}
-                </div>
             }
         </div>
     }
