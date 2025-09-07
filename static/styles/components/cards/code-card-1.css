@@ -112,7 +112,7 @@
 
 /* Enhanced code block styles */
 #card-code-1-code-block {
-    width: 100%;
+    width: 90%;
     max-height: 65vh;
     overflow: auto;
     background: var(--gruvbox-dark0-soft);
