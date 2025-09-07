@@ -41,6 +41,7 @@ pub struct ImageCarouselProps {
 #[function_component(ImageCarousel)]
 pub fn image_carousel(props: &ImageCarouselProps) -> Html {
     let current_index = use_state(|| 0);
+    let show_fullscreen = use_state(|| false);
     let image_count = props.images.len();
 
     // Early return if no images
@@ -75,6 +76,20 @@ pub fn image_carousel(props: &ImageCarouselProps) -> Html {
     let current_image = &props.images[*current_index];
     let image_src = format!("{}/{}", props.base_path, current_image);
 
+    let open_fullscreen = {
+        let show_fullscreen = show_fullscreen.clone();
+        Callback::from(move |_| {
+            show_fullscreen.set(true);
+        })
+    };
+
+    let close_fullscreen = {
+        let show_fullscreen = show_fullscreen.clone();
+        Callback::from(move |_| {
+            show_fullscreen.set(false);
+        })
+    };
+
     html! {
         <div class={props.class.clone()}>
             if image_count > 1 {
@@ -82,10 +97,13 @@ pub fn image_carousel(props: &ImageCarouselProps) -> Html {
             }
 
             <div class="carousel-inner">
-                <CarouselImage
-                    src={image_src}
-                    alt={props.default_alt.clone()}
-                />
+                <div class="image-container" onclick={open_fullscreen.clone()}>
+                    <img
+                        src={image_src.clone()}
+                        alt={props.default_alt.clone()}
+                        class="carousel-image clickable"
+                    />
+                </div>
 
                 if image_count > 1 {
                     <div class="carousel-indicators">
@@ -107,6 +125,19 @@ pub fn image_carousel(props: &ImageCarouselProps) -> Html {
 
             if image_count > 1 {
                 <button onclick={next_image} class="carousel-control next">{"›"}</button>
+            }
+
+            if *show_fullscreen {
+                <div class="fullscreen-overlay" onclick={close_fullscreen.clone()}>
+                    <div class="fullscreen-container">
+                        <img
+                            src={image_src}
+                            alt={props.default_alt.clone()}
+                            class="fullscreen-image"
+                        />
+                        <button class="fullscreen-close" onclick={close_fullscreen}>{"×"}</button>
+                    </div>
+                </div>
             }
         </div>
     }

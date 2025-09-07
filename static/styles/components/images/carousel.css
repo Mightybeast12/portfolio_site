@@ -18,14 +18,16 @@
 .image-container {
     position: relative;
     width: 100%;
+    aspect-ratio: 16/9;
+    overflow: hidden;
 }
 
 .image-container img {
     width: 100%;
-    height: auto;
+    height: 100%;
     display: block;
-    /* Ensure image defines the carousel height */
-    max-width: 100%;
+    object-fit: cover;
+    /* Prevents layout shifts with consistent dimensions */
 }
 
 .carousel-control {
@@ -70,13 +72,11 @@
 .carousel-indicators {
     position: absolute;
     bottom: 10px;
-    left: 100px;
-    right: 0;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
     align-items: center;
-    justify-content: center;
     z-index: 20;
-    margin: 0 auto;
     width: fit-content;
     background-color: rgba(0, 0, 0, 0.3);
     padding: 4px 8px;
@@ -108,4 +108,77 @@
     width: 10px;
     height: 10px;
     transform: scale(1);
+}
+
+/* Clickable image styling */
+.carousel-image.clickable {
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.carousel-image.clickable:hover {
+    opacity: 0.9;
+}
+
+/* Fullscreen overlay */
+.fullscreen-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.fullscreen-container {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fullscreen-image {
+    max-width: 100%;
+    max-height: 90vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    cursor: default;
+}
+
+/* Close button for fullscreen */
+.fullscreen-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 30px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    z-index: 1001;
+}
+
+.fullscreen-close:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+    transform: scale(1.1);
+}
+
+/* Scrollable for very tall images */
+.fullscreen-container {
+    overflow-y: auto;
 }

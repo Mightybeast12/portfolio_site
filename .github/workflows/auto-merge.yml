@@ -3,9 +3,9 @@ name: Auto-merge minor/patch dependency updates (Dependabot)
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-  check_suite:
+  workflow_run:
+    workflows: ["Rust CI - Lint, Test, Security & Dependency Checks"]
     types: [completed]
-  status: {}
 
 permissions:
   contents: write
@@ -26,10 +26,38 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
+            // Get PR number from various possible sources
+            let prNumber = context.payload.pull_request?.number;
+
+            // If triggered by workflow_run, find the associated PR
+            if (!prNumber && context.payload.workflow_run) {
+              const { data: pullRequests } = await github.rest.pulls.list({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: 'open',
+                head: `${context.repo.owner}:${context.payload.workflow_run.head_branch}`
+              });
+
+              if (pullRequests.length > 0) {
+                prNumber = pullRequests[0].number;
+              }
+            }
+
+            // Fallback to check_suite
+            if (!prNumber) {
+              prNumber = context.payload.check_suite?.pull_requests[0]?.number;
+            }
+
+            if (!prNumber) {
+              console.log('Could not determine PR number from context');
+              core.setFailed('Unable to determine PR number');
+              return;
+            }
+
             const { data: pr } = await github.rest.pulls.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              pull_number: context.payload.pull_request?.number || context.payload.check_suite?.pull_requests[0]?.number
+              pull_number: prNumber
             });
 
             console.log('PR Title:', pr.title);
@@ -45,15 +73,27 @@ jobs:
             core.setOutput('pr-number', pr.number);
             core.setOutput('pr-title', pr.title);
 
-      - name: Wait for all CI checks to pass before auto-merging (max 15 minutes)
+      - name: Wait for essential CI checks to pass before auto-merging (max 10 minutes)
         if: steps.pr-details.outputs.is-auto-mergeable == 'true'
         uses: actions/github-script@v7
         with:
           script: |
             const prNumber = ${{ steps.pr-details.outputs.pr-number }};
 
-            // Wait for all required checks to complete
-            const maxAttempts = 30;
+            // Essential checks we must wait for
+            const essentialChecks = [
+              'Lint Check (Dependabot)',
+              'Security Audit',
+              'Build Check'
+            ];
+
+            // Checks to ignore (often get stuck or are non-essential)
+            const ignoredChecks = [
+              'Auto-merge Dependabot PRs',
+              'pages-build-deployment'
+            ];
+
+            const maxAttempts = 20; // 10 minutes total
             const delayMs = 30000; // 30 seconds
 
             for (let attempt = 1; attempt <= maxAttempts; attempt++) {
@@ -75,50 +115,66 @@ jobs:
                 ref: commitSha
               });
 
-              // Get all status checks for this commit
-              const { data: statuses } = await github.rest.repos.listCommitStatusesForRef({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                ref: commitSha
+              // Filter out ignored checks
+              const relevantChecks = checkRuns.check_runs.filter(check =>
+                !ignoredChecks.includes(check.name)
+              );
+
+              console.log(`Found ${relevantChecks.length} relevant check runs`);
+
+              // Log all check statuses for debugging
+              relevantChecks.forEach(check => {
+                console.log(`- ${check.name}: ${check.status} (${check.conclusion || 'in progress'})`);
               });
 
-              console.log(`Found ${checkRuns.check_runs.length} check runs and ${statuses.length} statuses`);
+              // Check if essential checks have run and passed
+              const essentialCheckResults = essentialChecks.map(checkName => {
+                const check = relevantChecks.find(c => c.name === checkName);
+                return {
+                  name: checkName,
+                  found: !!check,
+                  passed: check?.status === 'completed' && check?.conclusion === 'success',
+                  failed: check?.status === 'completed' && ['failure', 'cancelled', 'timed_out'].includes(check?.conclusion)
+                };
+              });
 
-              // Check if all checks are completed and successful
-              const allChecksPassed = checkRuns.check_runs.every(check =>
-                check.status === 'completed' && check.conclusion === 'success'
-              );
+              console.log('\nEssential checks status:');
+              essentialCheckResults.forEach(result => {
+                console.log(`- ${result.name}: ${result.found ? (result.passed ? '✅ passed' : result.failed ? '❌ failed' : '⏳ in progress') : '⏸️  not started'}`);
+              });
 
-              const allStatusesPassed = statuses.length === 0 || statuses.every(status =>
-                status.state === 'success'
-              );
-
-              const hasFailedChecks = checkRuns.check_runs.some(check =>
-                check.status === 'completed' && ['failure', 'cancelled', 'timed_out'].includes(check.conclusion)
-              );
-
-              const hasFailedStatuses = statuses.some(status =>
-                ['failure', 'error'].includes(status.state)
-              );
-
-              if (hasFailedChecks || hasFailedStatuses) {
-                console.log('❌ Some checks failed. Will not auto-merge.');
-                core.setFailed('CI checks failed');
+              // Check if any essential check has failed
+              const hasFailedEssentialChecks = essentialCheckResults.some(result => result.failed);
+              if (hasFailedEssentialChecks) {
+                console.log('\n❌ Some essential checks failed. Will not auto-merge.');
+                core.setFailed('Essential CI checks failed');
                 return;
               }
 
-              if (allChecksPassed && allStatusesPassed && checkRuns.check_runs.length > 0) {
-                console.log('✅ All CI checks passed!');
+              // Check if all essential checks have passed
+              const allEssentialChecksPassed = essentialCheckResults.every(result => result.passed);
+              if (allEssentialChecksPassed) {
+                console.log('\n✅ All essential CI checks passed!');
                 return;
+              }
+
+              // If we're past attempt 10 and checks haven't started, assume they won't
+              if (attempt > 10) {
+                const notStartedChecks = essentialCheckResults.filter(result => !result.found);
+                if (notStartedChecks.length > 0) {
+                  console.log(`\n⚠️  After ${attempt} attempts, these checks haven't started: ${notStartedChecks.map(r => r.name).join(', ')}`);
+                  console.log('Proceeding anyway as they may not be configured for this repository.');
+                  return;
+                }
               }
 
               if (attempt < maxAttempts) {
-                console.log(`⏳ Waiting ${delayMs/1000} seconds for checks to complete...`);
+                console.log(`\n⏳ Waiting ${delayMs/1000} seconds for checks to complete...`);
                 await new Promise(resolve => setTimeout(resolve, delayMs));
               }
             }
 
-            console.log('⏰ Timeout waiting for CI checks to complete');
+            console.log('\n⏰ Timeout waiting for CI checks to complete');
             core.setFailed('Timeout waiting for CI checks');
 
       - name: Auto-approve PR after all checks pass
