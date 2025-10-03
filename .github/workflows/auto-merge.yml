@@ -1,4 +1,5 @@
 name: Auto-merge minor/patch dependency updates (Dependabot)
+
 on:
   workflow_dispatch:
     inputs:
@@ -43,12 +44,9 @@ jobs:
           script: |
             let prNumber;
 
-            // pull_request event
             if (context.payload.pull_request) {
               prNumber = context.payload.pull_request.number;
-            }
-            // manual run via workflow_dispatch
-            else if (github.event_name === 'workflow_dispatch') {
+            } else if (github.event_name === 'workflow_dispatch') {
               if (github.event.inputs.pr_number) {
                 prNumber = github.event.inputs.pr_number;
               } else if (github.event.inputs.pr_branch) {
@@ -68,7 +66,9 @@ jobs:
                 return;
               }
             }
+
             core.setOutput('pr-number', prNumber);
+
       - name: Check if minor/patch update
         id: decide
         run: |
@@ -79,11 +79,16 @@ jobs:
 
       - name: Rebase PR branch onto main
         if: steps.decide.outputs.is-auto-mergeable == 'true'
-        uses: devops-infra/action-pull-request@v0.2.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          pr_number: ${{ steps.find-pr.outputs.pr-number }}
-          rebase: true
+        run: |
+          PR_NUMBER="${{ steps.find-pr.outputs.pr-number }}"
+          REPO="${{ github.repository }}"
+          BRANCH=$(gh pr view $PR_NUMBER --json headRefName -q .headRefName)
+          git fetch origin main
+          git checkout $BRANCH
+          git rebase origin/main
+          git push --force-with-lease
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Wait for essential CI checks (max 10 min)
         if: steps.decide.outputs.is-auto-mergeable == 'true'
