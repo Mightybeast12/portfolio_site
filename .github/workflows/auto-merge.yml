@@ -1,265 +1,31 @@
-name: Auto-merge minor/patch dependency updates (Dependabot)
-
-on:
-  pull_request:
-    types: [opened, synchronize, reopened]
-  workflow_run:
-    workflows: ["Rust CI - Lint, Test, Security & Dependency Checks"]
-    types: [completed]
-
-permissions:
-  contents: write
-  pull-requests: write
-
 jobs:
   auto-merge:
-    name: Auto-merge Dependabot PRs
     runs-on: ubuntu-latest
     if: github.actor == 'dependabot[bot]'
-
     steps:
-      - name: Checkout code for PR analysis
-        uses: actions/checkout@v4
+      - name: Dependabot metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@v2
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
 
-      - name: Get PR details and check if it's a major version update
-        id: pr-details
+      - name: Auto-approve PR
+        if: steps.metadata.outputs.update-type != 'version-update:semver-major'
         uses: actions/github-script@v7
         with:
           script: |
-            // Get PR number from various possible sources
-            let prNumber = context.payload.pull_request?.number;
-
-            // If triggered by workflow_run, find the associated PR
-            if (!prNumber && context.payload.workflow_run) {
-              const { data: pullRequests } = await github.rest.pulls.list({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                state: 'open',
-                head: `${context.repo.owner}:${context.payload.workflow_run.head_branch}`
-              });
-
-              if (pullRequests.length > 0) {
-                prNumber = pullRequests[0].number;
-              }
-            }
-
-            // Fallback to check_suite
-            if (!prNumber) {
-              prNumber = context.payload.check_suite?.pull_requests[0]?.number;
-            }
-
-            if (!prNumber) {
-              console.log('Could not determine PR number from context');
-              core.setFailed('Unable to determine PR number');
-              return;
-            }
-
-            const { data: pr } = await github.rest.pulls.get({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: prNumber
-            });
-
-            console.log('PR Title:', pr.title);
-            console.log('PR Body:', pr.body);
-
-            // Check if this is a patch or minor update (not major)
-            const isMajorUpdate = pr.title.match(/bump .* from .* to .*\d+\.\d+\.\d+/) &&
-                                 pr.body && pr.body.includes('⚠️') && pr.body.includes('BREAKING');
-
-            const isMinorOrPatch = !isMajorUpdate;
-
-            core.setOutput('is-auto-mergeable', isMinorOrPatch);
-            core.setOutput('pr-number', pr.number);
-            core.setOutput('pr-title', pr.title);
-
-      - name: Wait for essential CI checks to pass before auto-merging (max 10 minutes)
-        if: steps.pr-details.outputs.is-auto-mergeable == 'true'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const prNumber = ${{ steps.pr-details.outputs.pr-number }};
-
-            // Essential checks we must wait for
-            const essentialChecks = [
-              'Lint Check (Dependabot)',
-              'Security Audit',
-              'Build Check'
-            ];
-
-            // Checks to ignore (often get stuck or are non-essential)
-            const ignoredChecks = [
-              'Auto-merge Dependabot PRs',
-              'pages-build-deployment'
-            ];
-
-            const maxAttempts = 20; // 10 minutes total
-            const delayMs = 30000; // 30 seconds
-
-            for (let attempt = 1; attempt <= maxAttempts; attempt++) {
-              console.log(`Attempt ${attempt}/${maxAttempts}: Checking CI status...`);
-
-              const { data: pr } = await github.rest.pulls.get({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: prNumber
-              });
-
-              // Get the latest commit SHA
-              const commitSha = pr.head.sha;
-
-              // Get all check runs for this commit
-              const { data: checkRuns } = await github.rest.checks.listForRef({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                ref: commitSha
-              });
-
-              // Filter out ignored checks
-              const relevantChecks = checkRuns.check_runs.filter(check =>
-                !ignoredChecks.includes(check.name)
-              );
-
-              console.log(`Found ${relevantChecks.length} relevant check runs`);
-
-              // Log all check statuses for debugging
-              relevantChecks.forEach(check => {
-                console.log(`- ${check.name}: ${check.status} (${check.conclusion || 'in progress'})`);
-              });
-
-              // Check if essential checks have run and passed
-              const essentialCheckResults = essentialChecks.map(checkName => {
-                const check = relevantChecks.find(c => c.name === checkName);
-                return {
-                  name: checkName,
-                  found: !!check,
-                  passed: check?.status === 'completed' && check?.conclusion === 'success',
-                  failed: check?.status === 'completed' && ['failure', 'cancelled', 'timed_out'].includes(check?.conclusion)
-                };
-              });
-
-              console.log('\nEssential checks status:');
-              essentialCheckResults.forEach(result => {
-                console.log(`- ${result.name}: ${result.found ? (result.passed ? '✅ passed' : result.failed ? '❌ failed' : '⏳ in progress') : '⏸️  not started'}`);
-              });
-
-              // Check if any essential check has failed
-              const hasFailedEssentialChecks = essentialCheckResults.some(result => result.failed);
-              if (hasFailedEssentialChecks) {
-                console.log('\n❌ Some essential checks failed. Will not auto-merge.');
-                core.setFailed('Essential CI checks failed');
-                return;
-              }
-
-              // Check if all essential checks have passed
-              const allEssentialChecksPassed = essentialCheckResults.every(result => result.passed);
-              if (allEssentialChecksPassed) {
-                console.log('\n✅ All essential CI checks passed!');
-                return;
-              }
-
-              // If we're past attempt 10 and checks haven't started, assume they won't
-              if (attempt > 10) {
-                const notStartedChecks = essentialCheckResults.filter(result => !result.found);
-                if (notStartedChecks.length > 0) {
-                  console.log(`\n⚠️  After ${attempt} attempts, these checks haven't started: ${notStartedChecks.map(r => r.name).join(', ')}`);
-                  console.log('Proceeding anyway as they may not be configured for this repository.');
-                  return;
-                }
-              }
-
-              if (attempt < maxAttempts) {
-                console.log(`\n⏳ Waiting ${delayMs/1000} seconds for checks to complete...`);
-                await new Promise(resolve => setTimeout(resolve, delayMs));
-              }
-            }
-
-            console.log('\n⏰ Timeout waiting for CI checks to complete');
-            core.setFailed('Timeout waiting for CI checks');
-
-      - name: Auto-approve PR after all checks pass
-        if: steps.pr-details.outputs.is-auto-mergeable == 'true'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const prNumber = ${{ steps.pr-details.outputs.pr-number }};
-
             await github.rest.pulls.createReview({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              pull_number: prNumber,
+              pull_number: context.payload.pull_request.number,
               event: 'APPROVE',
-              body: '🤖 Auto-approved by GitHub Actions - all CI checks passed for this dependency update.'
+              body: '🤖 Auto-approved by GitHub Actions.'
             });
 
-      - name: Merge PR using squash method
-        if: steps.pr-details.outputs.is-auto-mergeable == 'true'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const prNumber = ${{ steps.pr-details.outputs.pr-number }};
-
-            await github.rest.pulls.merge({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: prNumber,
-              merge_method: 'squash',
-              commit_title: '${{ steps.pr-details.outputs.pr-title }}',
-              commit_message: 'Auto-merged by GitHub Actions after all CI checks passed.'
-            });
-
-            console.log('✅ Successfully auto-merged Dependabot PR');
-
-      - name: Generate auto-merge summary report
-        if: steps.pr-details.outputs.is-auto-mergeable == 'true' && success()
-        run: |
-          echo "## ✅ Dependabot PR Auto-Merged Successfully" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### 📋 PR Details" >> $GITHUB_STEP_SUMMARY
-          echo "- **PR Number**: #${{ steps.pr-details.outputs.pr-number }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **PR Title**: ${{ steps.pr-details.outputs.pr-title }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Merge Method**: Squash" >> $GITHUB_STEP_SUMMARY
-          echo "- **Auto-merged at**: $(date -u '+%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### 🤖 Automation Details" >> $GITHUB_STEP_SUMMARY
-          echo "- **Triggered by**: Dependabot" >> $GITHUB_STEP_SUMMARY
-          echo "- **Approval**: Automatic (all CI checks passed)" >> $GITHUB_STEP_SUMMARY
-          echo "- **Version Type**: Minor/Patch update (non-breaking)" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### ℹ️ Note" >> $GITHUB_STEP_SUMMARY
-          echo "This PR was automatically merged because:" >> $GITHUB_STEP_SUMMARY
-          echo "1. It's a minor or patch version update" >> $GITHUB_STEP_SUMMARY
-          echo "2. All CI checks passed successfully" >> $GITHUB_STEP_SUMMARY
-          echo "3. No breaking changes were detected" >> $GITHUB_STEP_SUMMARY
-
-      - name: Comment on PR to explain why major version updates require manual review
-        if: steps.pr-details.outputs.is-auto-mergeable == 'false'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const prNumber = ${{ steps.pr-details.outputs.pr-number }};
-
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: prNumber,
-              body: '🚨 **Major version update detected** - This PR was not auto-merged as it contains breaking changes. Please review manually before merging.'
-            });
-
-      - name: Generate skip summary for major updates
-        if: steps.pr-details.outputs.is-auto-mergeable == 'false'
-        run: |
-          echo "## ⚠️ Auto-Merge Skipped - Manual Review Required" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### 📋 PR Details" >> $GITHUB_STEP_SUMMARY
-          echo "- **PR Number**: #${{ steps.pr-details.outputs.pr-number }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **PR Title**: ${{ steps.pr-details.outputs.pr-title }}" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### 🚨 Reason" >> $GITHUB_STEP_SUMMARY
-          echo "This appears to be a **major version update** that may contain breaking changes." >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### 📝 Required Actions" >> $GITHUB_STEP_SUMMARY
-          echo "1. Review the changelog for breaking changes" >> $GITHUB_STEP_SUMMARY
-          echo "2. Test the update in a development environment" >> $GITHUB_STEP_SUMMARY
-          echo "3. Update any affected code if necessary" >> $GITHUB_STEP_SUMMARY
-          echo "4. Manually approve and merge when ready" >> $GITHUB_STEP_SUMMARY
+      - name: Merge PR
+        if: steps.metadata.outputs.update-type != 'version-update:semver-major'
+        run:
+          gh pr merge --squash --auto "${{ github.event.pull_request.html_url
+          }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
