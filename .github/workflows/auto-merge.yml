@@ -79,7 +79,7 @@ jobs:
 
       - name: Rebase PR branch onto main
         if: steps.decide.outputs.is-auto-mergeable == 'true'
-        uses: devops-infra/action-pull-request@v0.3.0
+        uses: devops-infra/action-pull-request@v0.2.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pr_number: ${{ steps.find-pr.outputs.pr-number }}
