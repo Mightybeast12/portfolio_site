@@ -4,7 +4,7 @@ updates:
   - package-ecosystem: "cargo"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "daily"
       day: "sunday"
       time: "02:00"
     open-pull-requests-limit: 10
@@ -29,7 +29,7 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "daily"
       day: "sunday"
       time: "02:00"
     open-pull-requests-limit: 5
@@ -50,7 +50,7 @@ updates:
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "daily"
       day: "sunday"
       time: "02:00"
     open-pull-requests-limit: 3
