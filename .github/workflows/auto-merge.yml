@@ -10,7 +10,7 @@ on:
         required: false
   push:
     branches:
-      - dependabot/**
+      - dependabot/** # Dependabot branch updates
   pull_request:
     types: [opened, synchronize, reopened]
 
@@ -68,9 +68,7 @@ jobs:
                 return;
               }
             }
-
             core.setOutput('pr-number', prNumber);
-
       - name: Check if minor/patch update
         id: decide
         run: |
@@ -78,7 +76,6 @@ jobs:
             echo "is-auto-mergeable=false" >> $GITHUB_OUTPUT
           else
             echo "is-auto-mergeable=true" >> $GITHUB_OUTPUT
-          fi
 
       - name: Rebase PR branch onto main
         if: steps.decide.outputs.is-auto-mergeable == 'true'
@@ -159,7 +156,10 @@ jobs:
       - name: Merge PR
         if: steps.decide.outputs.is-auto-mergeable == 'true'
         run: |
-          gh pr merge --squash --auto "${{ github.event.pull_request.html_url || 'https://github.com/' + github.repository + '/pull/' + steps.find-pr.outputs.pr-number }}"
+          PR_NUMBER="${{ steps.find-pr.outputs.pr-number }}"
+          REPO="${{ github.repository }}"
+          PR_URL="https://github.com/$REPO/pull/$PR_NUMBER"
+          gh pr merge --squash --auto "$PR_URL"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -172,5 +172,5 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: "${{ steps.find-pr.outputs.pr-number }}",
-              body: 'Major version update detected. Please review manually.'
+              body: '🚨 Major version update detected. Please review manually.'
             });
