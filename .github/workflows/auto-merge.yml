@@ -1,191 +1,24 @@
-name: Auto-merge minor/patch dependency updates
-
+name: Auto-merge Dependabot PRs
 on:
-  workflow_dispatch:
-    inputs:
-      pr_number:
-        description: "PR number to auto-merge"
-        required: false
-      pr_branch:
-        description: "Branch name of the PR"
-        required: false
-  push:
-    branches:
-      - dependabot/** # Dependabot branch updates
   pull_request:
-    types: [opened, synchronize, reopened]
-
-permissions:
-  contents: write
-  pull-requests: write
+    types: [opened, reopened, synchronize]
 
 jobs:
   auto-merge:
-    name: Auto-merge minor/patch PRs
+    if: github.actor == 'dependabot[bot]'
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Determine PR number
-        id: find-pr
-        uses: actions/github-script@v7
+      - name: Auto-approve Dependabot PR
+        uses: hmarr/auto-approve-action@v2
         with:
-          script: |
-            let prNumber;
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
-            // pull_request event
-            if (context.payload.pull_request) {
-              prNumber = context.payload.pull_request.number;
-            }
-            // manual run via workflow_dispatch
-            else if (github.event_name === 'workflow_dispatch') {
-              if (github.event.inputs.pr_number) {
-                prNumber = github.event.inputs.pr_number;
-              } else if (github.event.inputs.pr_branch) {
-                const { data: prs } = await github.rest.pulls.list({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  state: 'open',
-                  head: `${context.repo.owner}:${github.event.inputs.pr_branch}`
-                });
-                if (prs.length === 0) {
-                  core.setFailed(`No open PR found for branch ${github.event.inputs.pr_branch}`);
-                  return;
-                }
-                prNumber = prs[0].number;
-              } else {
-                core.setFailed('Must provide pr_number or pr_branch for workflow_dispatch');
-                return;
-              }
-            }
-
-            core.setOutput('pr-number', prNumber);
-
-      - name: Get PR details
-        id: pr-details
-        uses: actions/github-script@v7
+      - name: Auto-merge Dependabot PR
+        uses: pascalgn/automerge-action@v0.17.0
         with:
-          script: |
-            const pr = await github.rest.pulls.get({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: "${{ steps.find-pr.outputs.pr-number }}"
-            });
-            core.setOutput('title', pr.data.title);
-            core.setOutput('branch', pr.data.head.ref);
-
-      - name: Determine if minor/patch update
-        id: decide
-        run: |
-          TITLE="${{ steps.pr-details.outputs.title }}"
-          BRANCH="${{ steps.pr-details.outputs.branch }}"
-
-          # Simple heuristic: branch name contains 'dependabot' or title contains 'Bump'
-          if [[ "$BRANCH" == dependabot/* ]] || [[ "$TITLE" == Bump* ]]; then
-            echo "is-auto-mergeable=true" >> $GITHUB_OUTPUT
-          else
-            echo "is-auto-mergeable=false" >> $GITHUB_OUTPUT
-
-      - name: Rebase PR branch onto main
-        if: steps.decide.outputs.is-auto-mergeable == 'true'
-        run: |
-          PR_NUMBER="${{ steps.find-pr.outputs.pr-number }}"
-          BRANCH="${{ steps.pr-details.outputs.branch }}"
-          git fetch origin main
-          git checkout $BRANCH
-          git rebase origin/main
-          git push --force-with-lease
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Wait for essential CI checks (max 10 min)
-        if: steps.decide.outputs.is-auto-mergeable == 'true'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const prNumber = "${{ steps.find-pr.outputs.pr-number }}";
-            const essentialChecks = [
-              'Lint Check (Dependabot)',
-              'Security Audit',
-              'Build Check'
-            ];
-            const ignoredChecks = [
-              'Auto-merge Dependabot PRs',
-              'pages-build-deployment'
-            ];
-            const maxAttempts = 20;
-            const delayMs = 30000;
-
-            for (let attempt = 1; attempt <= maxAttempts; attempt++) {
-              const { data: pr } = await github.rest.pulls.get({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: prNumber
-              });
-              const commitSha = pr.head.sha;
-              const { data: checkRuns } = await github.rest.checks.listForRef({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                ref: commitSha
-              });
-              const relevantChecks = checkRuns.check_runs.filter(c => !ignoredChecks.includes(c.name));
-
-              const essentialResults = essentialChecks.map(name => {
-                const check = relevantChecks.find(c => c.name === name);
-                return {
-                  name,
-                  passed: check?.status === 'completed' &&
-                          (check?.conclusion === 'success' || check?.conclusion === 'skipped'),
-                  failed: check?.status === 'completed' && ['failure','cancelled','timed_out'].includes(check?.conclusion)
-                };
-              });
-
-              const hasFailed = essentialResults.some(c => c.failed);
-              if (hasFailed) {
-                core.setFailed('Some essential checks failed. Cannot merge.');
-                return;
-              }
-
-              const allPassed = essentialResults.every(c => c.passed);
-              if (allPassed) return;
-
-              if (attempt < maxAttempts) await new Promise(r => setTimeout(r, delayMs));
-            }
-            core.setFailed('Timeout waiting for CI checks');
-
-      - name: Auto-approve PR
-        if: steps.decide.outputs.is-auto-mergeable == 'true'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            await github.rest.pulls.createReview({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: "${{ steps.find-pr.outputs.pr-number }}",
-              event: 'APPROVE',
-              body: '🤖 Auto-approved by GitHub Actions.'
-            });
-
-      - name: Merge PR
-        if: steps.decide.outputs.is-auto-mergeable == 'true'
-        run: |
-          PR_NUMBER="${{ steps.find-pr.outputs.pr-number }}"
-          REPO="${{ github.repository }}"
-          PR_URL="https://github.com/$REPO/pull/$PR_NUMBER"
-          gh pr merge --squash --auto "$PR_URL"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Comment on major updates
-        if: steps.decide.outputs.is-auto-mergeable == 'false'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: "${{ steps.find-pr.outputs.pr-number }}",
-              body: '🚨 Major update detected. Please review manually.'
-            });
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          merge-method: squash
+          commit-message: squash
+          merge-when: all-success
