@@ -1,6 +1,6 @@
 version: 2
 updates:
-  # Enable version updates for Cargo
+  # Cargo
   - package-ecosystem: "cargo"
     directory: "/"
     schedule:
@@ -20,12 +20,12 @@ updates:
     allow:
       - dependency-type: "direct"
       - dependency-type: "indirect"
+    rebase-strategy: "auto"
     ignore:
-      # Ignore major version updates for all dependencies
       - dependency-name: "*"
         update-types: ["version-update:semver-major"]
 
-  # Enable version updates for GitHub Actions
+  # GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
@@ -41,12 +41,12 @@ updates:
     labels:
       - "dependencies"
       - "github-actions"
+    rebase-strategy: "auto"
     ignore:
-      # Ignore major version updates
       - dependency-name: "*"
         update-types: ["version-update:semver-major"]
 
-  # Enable version updates for Docker
+  # Docker
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
@@ -62,7 +62,7 @@ updates:
     labels:
       - "dependencies"
       - "docker"
+    rebase-strategy: "auto"
     ignore:
-      # Ignore major version updates
       - dependency-name: "*"
         update-types: ["version-update:semver-major"]
