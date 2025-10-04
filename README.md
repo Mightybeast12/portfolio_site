@@ -1,7 +1,6 @@
 # Portfolio Site
 
 [![Rust CI - Lint, Test, Security & Dependency Checks](https://github.com/Mightybeast12/portfolio_site/actions/workflows/ci-quality.yml/badge.svg)](https://github.com/Mightybeast12/portfolio_site/actions/workflows/ci-quality.yml)
-[![Auto-merge](https://github.com/Mightybeast12/portfolio_site/actions/workflows/auto-merge.yml/badge.svg)](https://github.com/Mightybeast12/portfolio_site/actions/workflows/auto-merge.yml)
 [![Terraform Deploy](https://github.com/Mightybeast12/portfolio_site/actions/workflows/terraform.yml/badge.svg)](https://github.com/Mightybeast12/portfolio_site/actions/workflows/terraform.yml)
 [![Auto-close stale issues & PRs (30/14 days)](https://github.com/Mightybeast12/portfolio_site/actions/workflows/maintenance.yml/badge.svg)](https://github.com/Mightybeast12/portfolio_site/actions/workflows/maintenance.yml)
 
