@@ -1,73 +1,35 @@
-name: Dependabot auto-merge
+name: Automerge the dependabot updates
 on:
   pull_request:
-  workflow_dispatch:
-
-permissions:
-  contents: write
-  pull-requests: write
+    types: [opened, reopened, synchronize]
+    branches:
+      - main
 
 jobs:
-  dependabot:
+  wait-for-status:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.user.login == 'dependabot[bot]' || github.event_name == 'workflow_dispatch'
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Get Dependabot metadata (for PR trigger)
-        if: github.event_name == 'pull_request'
-        id: metadata
-        uses: dependabot/fetch-metadata@v2
+      - name: Wait for status checks
+        uses: actions/wait-for-status@v1
         with:
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
+          timeout: 300
 
-      - name: Approve Dependabot PR (for PR trigger)
-        if: github.event_name == 'pull_request'
-        run: gh pr review --approve "$PR_URL"
-        env:
-          PR_URL: ${{ github.event.pull_request.html_url }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Automate Merge
+        uses: ahmadnassri/action-dependabot-auto-merge@v2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Enable auto-merge for Dependabot PRs (for PR trigger)
-        if: github.event_name == 'pull_request' && (steps.metadata.outputs.update-type == 'version-update:semver-patch' || steps.metadata.outputs.update-type == 'version-update:semver-minor')
-        run: gh pr merge --auto --squash "$PR_URL"
-        env:
-          PR_URL: ${{ github.event.pull_request.html_url }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  manual-merge:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    steps:
+      - name: Wait for status checks
+        uses: actions/wait-for-status@v1
+        with:
+          timeout: 300
 
-      - name: Find and merge all Dependabot PRs (for manual trigger)
-        if: github.event_name == 'workflow_dispatch'
-        run: |
-          # Get all open PRs from dependabot
-          prs=$(gh pr list --author="dependabot[bot]" --state=open --json number --jq '.[].number')
-          
-          if [ -z "$prs" ]; then
-            echo "No open Dependabot PRs found"
-            exit 0
-          fi
-          
-          echo "Found Dependabot PRs: $prs"
-          
-          for pr_number in $prs; do
-            echo "Processing PR #$pr_number"
-            
-            # Approve the PR
-            gh pr review --approve "$pr_number" || true
-            
-            # Check if PR is ready to merge
-            pr_state=$(gh pr view "$pr_number" --json state --jq '.state')
-            pr_mergeable=$(gh pr view "$pr_number" --json mergeable --jq '.mergeable')
-            
-            echo "PR #$pr_number state: $pr_state, mergeable: $pr_mergeable"
-            
-            if [ "$pr_mergeable" = "MERGEABLE" ] && [ "$pr_state" = "OPEN" ]; then
-              echo "Auto-merging PR #$pr_number"
-              gh pr merge --auto --squash "$pr_number" && echo "Auto-merge enabled" || echo "Auto-merge failed or already enabled"
-            else
-              echo "PR #$pr_number is not ready to merge (mergeable: $pr_mergeable, state: $pr_state)"
-            fi
-          done
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Request a manual merge
+        uses: ahmadnassri/action-dependabot-auto-merge@v2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          merge_method: merge
