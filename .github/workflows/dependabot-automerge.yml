@@ -10,14 +10,37 @@ permissions:
 jobs:
   dependabot:
     runs-on: ubuntu-latest
+    if: github.event.pull_request.user.login == 'dependabot[bot]' || github.event_name == 'workflow_dispatch'
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Find and merge Dependabot PRs
+      - name: Get Dependabot metadata (for PR trigger)
+        if: github.event_name == 'pull_request'
+        id: metadata
+        uses: dependabot/fetch-metadata@v2
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Approve Dependabot PR (for PR trigger)
+        if: github.event_name == 'pull_request'
+        run: gh pr review --approve "$PR_URL"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Enable auto-merge for Dependabot PRs (for PR trigger)
+        if: github.event_name == 'pull_request' && (steps.metadata.outputs.update-type == 'version-update:semver-patch' || steps.metadata.outputs.update-type == 'version-update:semver-minor')
+        run: gh pr merge --auto --squash "$PR_URL"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Find and merge all Dependabot PRs (for manual trigger)
+        if: github.event_name == 'workflow_dispatch'
         run: |
           # Get all open PRs from dependabot
-          prs=$(gh pr list --author="dependabot[bot]" --state=open --json number,title,body --jq '.[].number')
+          prs=$(gh pr list --author="dependabot[bot]" --state=open --json number --jq '.[].number')
           
           if [ -z "$prs" ]; then
             echo "No open Dependabot PRs found"
@@ -32,15 +55,17 @@ jobs:
             # Approve the PR
             gh pr review --approve "$pr_number" || true
             
-            # Get update type from PR body
-            update_type=$(gh pr view "$pr_number" --json body --jq '.body' | grep -oP 'update-type:\s*\K[^ ]*' | head -1)
+            # Check if PR is ready to merge
+            pr_state=$(gh pr view "$pr_number" --json state --jq '.state')
+            pr_mergeable=$(gh pr view "$pr_number" --json mergeable --jq '.mergeable')
             
-            # Auto-merge if patch or minor update
-            if [[ "$update_type" == "version-update:semver-patch" ]] || [[ "$update_type" == "version-update:semver-minor" ]]; then
-              echo "Auto-merging PR #$pr_number (type: $update_type)"
-              gh pr merge --auto --squash "$pr_number" || echo "Auto-merge already enabled or PR not ready"
+            echo "PR #$pr_number state: $pr_state, mergeable: $pr_mergeable"
+            
+            if [ "$pr_mergeable" = "MERGEABLE" ] && [ "$pr_state" = "OPEN" ]; then
+              echo "Auto-merging PR #$pr_number"
+              gh pr merge --auto --squash "$pr_number" && echo "Auto-merge enabled" || echo "Auto-merge failed or already enabled"
             else
-              echo "Skipping auto-merge for PR #$pr_number (type: $update_type)"
+              echo "PR #$pr_number is not ready to merge (mergeable: $pr_mergeable, state: $pr_state)"
             fi
           done
         env:
